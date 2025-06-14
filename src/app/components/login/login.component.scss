@@ -1,0 +1,107 @@
+.auth-container.edu-bg {
+  margin-bottom: 40px;
+  min-height: 100vh;
+  background: linear-gradient(120deg, #c9d5f5 0%, #005ea2 100%);
+  align-items: center;
+  justify-content: center;
+
+}
+.auth-box.edu-shadow {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+  padding: 36px 32px 32px 32px;
+  width: 100%;
+  max-width: 410px;
+  transition: box-shadow 0.2s;
+}
+.auth-tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 28px;
+}
+.auth-tab {
+  flex: 1;
+  text-align: center;
+  padding: 12px 0;
+  cursor: pointer;
+  font-weight: 600;
+  color: #4f5fa3;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+  background: none;
+  border-radius: 8px 8px 0 0;
+}
+.auth-tab.active {
+  color: #2a3a7b;
+  border-bottom: 3px solid #4f5fa3;
+  background: #f0f4ff;
+}
+.edu-form .form-group {
+  margin-bottom: 18px;
+}
+.form-label {
+  display: block;
+  margin-bottom: 7px;
+  font-weight: 500;
+  color: #2a3a7b;
+}
+.form-input {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid #c3c8e6;
+  border-radius: 7px;
+  font-size: 1rem;
+  background: #f8faff;
+  transition: border-color 0.2s;
+}
+.form-input:focus {
+  border-color: #4f5fa3;
+  outline: none;
+  background: #eef2ff;
+}
+.validation-error {
+  color: #e53e3e;
+  font-size: 0.92em;
+  margin-top: 4px;
+}
+.error-message {
+  color: #fff;
+  background: #e53e3e;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-top: 14px;
+  text-align: center;
+}
+.success-message {
+  color: #155724;
+  background: #d4edda;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-top: 14px;
+  text-align: center;
+}
+.edu-btn {
+  width: 100%;
+  background: linear-gradient(90deg, #4f5fa3 0%, #2a3a7b 100%);
+  color: #fff;
+  font-weight: 600;
+  border: none;
+  border-radius: 7px;
+  padding: 12px 0;
+  font-size: 1.08rem;
+  margin-top: 10px;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px 0 rgba(79, 95, 163, 0.08);
+}
+.edu-btn:disabled {
+  background: #bfc8e6;
+  cursor: not-allowed;
+}
+@media (max-width: 600px) {
+  .auth-box.edu-shadow {
+    padding: 24px 8px 20px 8px;
+    max-width: 98vw;
+  }
+}

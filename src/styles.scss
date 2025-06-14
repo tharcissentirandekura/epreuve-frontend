@@ -1,0 +1,189 @@
+/* You can add global styles to this file, and also import other style files */
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  min-height: 100dvh;
+  overflow-x: hidden;
+}
+
+.font-inter {
+  font-family: 'Inter', sans-serif;
+}
+
+.p-custom-font {
+  font-family: 'Arial', sans-serif!important;
+}
+
+:root {
+  --sidebar-width: 250px;
+  --primary-color: #005ea2;
+  --secondary-color: #858796;
+  --success-color: #1cc88a;
+  --info-color: #36b9cc;
+  --warning-color: #f6c23e;
+  --danger-color: #e74a3b;
+  --dark-color: #5a5c69;
+  --sidebar-dark: #231a1a;
+  --side-bg-color: #5e130c;
+  --light-gb-color: #f8f9fc;
+  --light-color:#f8f9fc;
+  //added the below
+  --primary-hover: #005ea2;
+  --light-gray: #f5f5f7;
+  --medium-gray: #d2d2d7;
+  --dark-gray: #1d1d1f;
+  --success-color: #34c759;
+  --warning-color: #ff9f0a;
+  --error-color: #ff3b30;
+  --box-shadow: 0 8px 16px rgba(0, 0, 0, 0.05);
+  --border-radius: 12px;
+  --transition-speed: 0.25s;
+}
+.textfonts {
+    background-color: var(--light-color);
+    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23d9d9d9' fill-opacity='0.1'%3E%3Ccircle cx='16' cy='16' r='8' /%3E%3Ccircle cx='12' cy='2' r='1' /%3E%3Ccircle cx='7' cy='7' r='1' opacity='0.8' /%3E%3Ccircle cx='17' cy='7' r='1' opacity='0.8' /%3E%3Ccircle cx='2' cy='12' r='1' opacity='0.6' /%3E%3Ccircle cx='12' cy='12' r='1' opacity='0.6' /%3E%3Ccircle cx='7' cy='17' r='1' opacity='0.4' /%3E%3Ccircle cx='17' cy='17' r='1' opacity='0.4' /%3E%3C/g%3E%3C/svg%3E");
+    background-repeat: repeat;
+    min-height: 100vh;
+  }
+
+//styles for all filters for MPT BCT Langues and 9 grade
+// Main title styling
+.main-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 0;
+}
+
+.tests-list {
+  background-color: #fff;
+
+  .list-group-item {
+    border: none;
+    background: #fff;
+  }
+
+  .test-name {
+    color: #005ea2;
+    font-weight: 500;
+  }
+}
+
+.textfonts {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  /* the container that holds your tests, filters, etc. */
+  .container-fluid {
+    flex: 1 0 auto;
+  }
+
+  /* ensure footer never shrinks */
+  app-footer {
+    flex-shrink: 0;
+  }
+}
+
+// Search container
+.search-container {
+  position: relative;
+  
+  .search-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #005ea2;
+    z-index: 2;
+  }
+  
+  .search-input {
+    padding-left: 45px;
+    height: 50px;
+    border: 2px solid #e9ecef;
+    border-radius: 25px;
+    font-size: 14px;
+    transition: all 0.3s ease;
+    
+    &:focus {
+      border-color: #005ea2;
+      box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
+      outline: none;
+    }
+    
+    &::placeholder {
+      color: #005ea2;
+    }
+  }
+}
+
+// Filter tabs
+.filter-tabs-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.filter-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: center;
+  
+  .filter-tab {
+    background: darkgray;
+    border: none;
+    color: #ffffff;
+    padding: 8px 20px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    
+    &:hover {
+      background-color: #005ea2;
+      color: white;
+    }
+    
+    &.active {
+      background-color: #005ea2;
+      color: white;
+    }
+  }
+}
+
+/*  Round the search input completely */
+.search-container .form-control {
+  border-radius: 40px;        
+  border: 1px solid #ccc;  
+}
+
+/* Make the placeholder text blue */
+.search-container .form-control::placeholder {
+  color: #005ea2;         
+  opacity: 1;
+}
+
+// Responsive adjustments
+@media (max-width: 768px) {
+  .main-title {
+    font-size: 1.5rem;
+  }
+  
+  .filter-tabs {
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 10px;
+    
+    .filter-tab {
+      flex-shrink: 0;
+    }
+  }
+  
+  .search-input {
+    font-size: 16px; // Prevents zoom on iOS
+  }
+}

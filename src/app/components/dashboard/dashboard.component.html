@@ -1,0 +1,172 @@
+    
+
+    <!-- Sidebar -->
+<div class="sidebar">
+    <div class="sidebar-brand">
+        <i class="bi bi-lightning-charge"></i>
+        <span class="ms-2 text-warning">Admin Panel</span>
+    </div>
+    <div class="sidebar-nav">
+        <div class="nav-item">
+        <a routerLink="/dashboard" class="nav-link active">
+            <i class="bi bi-house"></i>
+            Dashboard
+        </a>
+        </div>
+
+        <div class="nav-item">
+        <a routerLink="/" class="nav-link">
+            <i class="bi bi-house"></i>
+            Main page
+        </a>
+        </div>
+        <div class="nav-item">
+        <a routerLink="/sections" class="nav-link">
+            <i class="bi bi-collection"></i>
+            Sections
+        </a>
+        </div>
+        <div class="nav-item">
+        <a href="#" class="nav-link">
+            <i class="bi bi-book"></i>
+            Courses
+        </a>
+        </div>
+        <div class="nav-item">
+        <a href="#" class="nav-link">
+            <i class="bi bi-file-text"></i>
+            Tests
+        </a>
+        </div>
+        <div class="nav-item">
+        <a href="#" class="nav-link">
+            <i class="bi bi-people"></i>
+            Users
+        </a>
+        </div>
+        <div class="nav-item">
+        <a href="#" class="nav-link">
+            <i class="bi bi-gear"></i>
+            Settings
+        </a>
+        </div>
+    </div>
+    </div>
+
+    <!-- Top Navbar -->
+    <nav class="navbar top-navbar">
+    <div class="container-fluid p-2">
+
+        <div class="d-flex align-items-center">
+        <button class="btn btn-link text-dark d-md-none">
+            <i class="bi bi-list"></i>
+        </button>
+        <div class="input-group ms-md-4" style="width: 400px;">
+            <span class="input-group-text bg-light border-0 p-2">
+            <i class="bi bi-search"></i>
+            </span>
+            <input type="text" class="form-control border-0 bg-light" placeholder="Recherche...">
+        </div>
+        </div>
+        <div class="d-flex align-items-center">
+        <div class="dropdown">
+            <a href="#" class="text-dark text-decoration-none" data-bs-toggle="dropdown">
+            <i class="bi bi-bell me-3 text-light fs-5"></i>
+            </a>
+        </div>
+        <div class="dropdown">
+            <a href="#" class="text-dark text-decoration-none" data-bs-toggle="dropdown">
+            <i class="bi bi-person-circle fs-2 text-light"></i>
+            </a>
+        </div>
+        </div>
+    </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+        <div class="col-12 mb-4">
+            <h1 class="h3 mb-0 text-gray-800">Dashboard Overview</h1>
+        </div>
+        </div>
+        <!-- dashboard cards -->
+        <div class="row g-4">
+        <div class="col-md-6 col-lg-3">
+            <div class="card dashboard-card h-100" style="background: linear-gradient(45deg, #4e73df, #224abe);">
+            <div class="card-body text-center p-4">
+                <i class="bi bi-collection stat-icon text-white-50"></i>
+                <h3 class="stat-value text-white">{{sections}}</h3>
+                <p class="stat-label mb-0">Sections</p>
+            </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card dashboard-card h-100" style="background: linear-gradient(45deg, #1cc88a, #13855c);">
+            <div class="card-body text-center p-4">
+                <i class="bi bi-book stat-icon text-white-50"></i>
+                <h3 class="stat-value text-white">{{courses}}</h3>
+                <p class="stat-label mb-0">Courses</p>
+            </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card dashboard-card h-100" style="background: linear-gradient(45deg, #f6c23e, #dda20a);">
+            <div class="card-body text-center p-4">
+                <i class="bi bi-file-text stat-icon text-white-50"></i>
+                <h3 class="stat-value text-white">{{epreuves}}</h3>
+                <p class="stat-label mb-0">Tests</p>
+            </div>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card dashboard-card h-100" style="background: linear-gradient(45deg, #36b9cc, #258391);">
+            <div class="card-body text-center p-4">
+                <i class="bi bi-people stat-icon text-white-50"></i>
+                <h3 class="stat-value text-white">{{users}}</h3>
+                <p class="stat-label mb-0">Users</p>
+            </div>
+            </div>
+        </div>
+        </div>
+    <!--Recent activities  -->
+        <div class="row mt-5">
+        <div class="col-12">
+            <div class="card activity-card">
+            <div class="card-header bg-white py-3">
+                <h6 class="m-0 font-weight-bold text-primary">Recent Activity</h6>
+            </div>
+            <div class="card-body">
+                <div class="list-group list-group-flush">
+                <div class="list-group-item d-flex justify-content-between align-items-center px-0">
+                    <div>
+                    <h6 class="mb-1">Nouvelle Epreuve type de français ajoutée</h6>
+                    <small class="text-muted"></small>
+                    </div>
+                    <small class="text-muted">5 mins ago</small>
+                </div>
+                <div class="list-group-item d-flex justify-content-between align-items-center px-0">
+                    <div>
+                    <h6 class="mb-1">Un nouveau utilisateur </h6>
+                    <small class="text-muted">Tharcisse Ntirandekura</small>
+                    </div>
+                    <small class="text-muted">1 hour ago</small>
+                </div>
+                <div class="list-group-item d-flex justify-content-between align-items-center px-0">
+                    <div>
+                    <h6 class="mb-1">Epreuve completée</h6>
+                    <small class="text-muted">Preparation de le'exetat 2025</small>
+                    </div>
+                    <small class="text-muted">2 hours ago</small>
+                </div>
+                </div>
+            </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</div>

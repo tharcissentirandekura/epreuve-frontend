@@ -1,0 +1,121 @@
+<div class="textfonts">
+  <!-- Navbar -->
+  <div>
+    <app-navbar></app-navbar>
+  </div>
+
+  <!-- Two-Column Layout -->
+  <div class="container mb-4">
+    <div class="row mb-4">
+
+      <!-- Left Column: Informational Panel -->
+      <div class="col-md-6 d-flex flex-column justify-content-center align-items-start p-5 mt-4" style="background-color: #EFF7FC;">
+        <h2 class="mb-2 fw-bold fs-1">Restons en contact!</h2>
+        <hr class="mb-4" style="width: 100px; border-top: 4px solid #005ea2;">
+        <p class="mb-4 fs-4">
+          Nous serions ravis d’avoir de vos nouvelles. Envoyez-nous un message 
+          et nous vous répondrons dans les plus brefs délais.  
+          Que vous ayez une question sur nos services ou que vous souhaitiez 
+          simplement dire bonjour, nous sommes là pour vous aider.  
+          Votre message ira directement à notre équipe, et nous nous assurerons 
+          de revenir vers vous rapidement avec les informations dont vous avez besoin.
+        </p>
+      </div>
+
+      <!-- Right Column: Contact Form -->
+      <div class="col-md-6 px-5 py-4 mt-4" style="background-color: #FFFFFF;">
+
+        <!-- Heading with Bold Underline -->
+        <h1 class="mb-2 mt-4 fw-bold fs-1">Contactez-nous!</h1>
+        <hr class="mb-4" style="width: 90px; border-top: 4px solid #005ea2;">
+
+        <!-- Contact Form -->
+        <form (ngSubmit)="onSubmit()" #contactForm="ngForm">
+          <!-- First Name -->
+          <div class="mb-3">
+            <label for="firstName" class="form-label fs-6 fw-bold">Prénom</label>
+            <input
+              type="text"
+              class="form-control border-0 border-bottom rounded-0"
+              id="firstName"
+              name="firstName"
+              placeholder="Entrez votre prénom"
+              [(ngModel)]="formData.firstName"
+              required
+            >
+          </div>
+
+          <!-- Last Name -->
+          <div class="mb-3">
+            <label for="lastName" class="form-label fs-6 fw-bold">Nom de famille</label>
+            <input
+              type="text"
+              class="form-control border-0 border-bottom rounded-0"
+              id="lastName"
+              name="lastName"
+              placeholder="Entrez votre nom de famille"
+              [(ngModel)]="formData.lastName"
+              required
+            >
+          </div>
+
+          <!-- Email -->
+          <div class="mb-3">
+            <label for="email" class="form-label fs-6 fw-bold">Adresse e-mail</label>
+            <input
+              type="email"
+              class="form-control border-0 border-bottom rounded-0"
+              id="email"
+              name="email"
+              placeholder="Entrez votre adresse e-mail"
+              [(ngModel)]="formData.email"
+              required email
+            >
+          </div>
+
+          <!-- Message -->
+          <div class="mb-3">
+            <label for="message" class="form-label fs-5 fw-bold">Message</label>
+            <textarea
+              class="form-control border-0 border-bottom rounded-0"
+              id="message"
+              name="message"
+              rows="3"
+              placeholder="Entrez votre message"
+              [(ngModel)]="formData.message"
+              required
+            ></textarea>
+          </div>
+
+          <!-- Submit Button -->
+          <div>
+            <button
+            type="submit"
+            class="btn btn-send px-5 py-2 font-Inter fs-5"
+            [disabled]="!contactForm.form.valid || isSubmitting"
+            >
+            {{ isSubmitting ? 'Sending...' : 'ENVOYER' }}
+          </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Popup Message -->
+  <div class="modal fade show d-block" tabindex="-1" role="dialog"
+      *ngIf="popupMessage" style="background: rgba(0,0,0,0.4);">
+    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+      <div class="modal-content text-center p-4 shadow rounded-4">
+        <div class="modal-body">
+          <h4 style="color: RoyalBlue;">
+            {{ popupMessage }}
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <app-footer></app-footer>
+</div>

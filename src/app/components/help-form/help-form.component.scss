@@ -1,0 +1,235 @@
+.breadcrumb {
+    background-color: transparent;
+    padding: 0;
+    margin-bottom: 24px;
+  }
+  
+  .breadcrumb-item a {
+    color: var(--primary-color);
+    text-decoration: none;
+  }
+  
+  .breadcrumb-item.active {
+    color: var(--secondary-color);
+  }
+  
+  /* Animation for accordion */
+  .accordion-button {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .accordion-button::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    background-color: #005ea2;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.3s ease;
+  }
+  
+  .accordion-button:not(.collapsed)::before {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+  
+  /* Animation for category filter */
+  .category-filter {
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .category-filter::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--primary-color);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+  }
+  
+  .category-filter:hover::after {
+    transform: scaleX(1);
+  }
+
+  //added the below
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  color: var(--dark-gray);
+  background-color: #fff;
+  margin: 0;
+  padding: 0;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Container for the entire application */
+.app-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Main content area */
+.main-content {
+  flex: 1;
+  padding: 32px 0;
+}
+
+/* For accordion animation */
+.accordion-button:not(.collapsed)::after {
+  transform: rotate(180deg);
+  transition: transform var(--transition-speed) ease;
+}
+
+.accordion-button::after {
+  transition: transform var(--transition-speed) ease;
+}
+
+/* Custom accordion styling */
+.accordion {
+  --bs-accordion-btn-bg: white;
+  --bs-accordion-active-bg: var(--light-gray);
+  --bs-accordion-active-color: var(--primary-color);
+  --bs-accordion-btn-focus-box-shadow: 0 0 0 0.15rem rgba(0, 113, 227, 0.25);
+  border-radius: var(--border-radius);
+  overflow: hidden;
+  box-shadow: var(--box-shadow);
+}
+
+.accordion-item {
+  border: none;
+  border-bottom: 1px solid var(--medium-gray);
+}
+
+.accordion-item:last-child {
+  border-bottom: none;
+}
+
+.accordion-button {
+  font-weight: 500;
+  padding: 16px 24px;
+  transition: all var(--transition-speed) ease;
+}
+
+.accordion-button:not(.collapsed) {
+  color: var(--primary-color);
+  background-color: var(--light-gray);
+}
+
+.accordion-body {
+  padding: 24px;
+  background-color: white;
+  line-height: 1.6;
+}
+
+/* Section headers */
+.section-header {
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.section-header h1 {
+  font-size: 40px;
+  font-weight: 700;
+  margin-bottom: 16px;
+}
+
+.section-header p {
+  font-size: 18px;
+  color: var(--secondary-color);
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* Category filters */
+.category-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 32px;
+  justify-content: center;
+}
+
+.category-filter {
+  padding: 8px 16px;
+  border-radius: 100px;
+  background-color: darkgrey;
+  color: #ffffff;
+  border: none;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-speed) ease;
+}
+
+.category-filter:hover {
+  background-color: #005ea2;
+}
+
+.category-filter.active {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+/* Button styles */
+.btn {
+  background-color: #005ea2;
+  border-radius: 100px;
+  font-weight: 500;
+  padding: 8px 20px;
+  transition: all var(--transition-speed) ease;
+}
+.btn:hover{
+  background-color: darkgray;
+  color: white;
+}
+
+/* Contact section */
+.contact-section {
+  background-color: var(--light-gray);
+  padding: 64px 0;
+  margin-top: 64px;
+  text-align: center;
+  box-shadow: 3px 10px 10px rgba(0,0,0,0.1);
+}
+
+.contact-section h2 {
+  font-weight: 700;
+  margin-bottom: 24px;
+}
+
+.contact-section p {
+  color: var(--secondary-color);
+  margin-bottom: 32px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .section-header h1 {
+    font-size: 32px;
+  }
+  
+  .section-header p {
+    font-size: 16px;
+  }
+  
+  .accordion-button {
+    padding: 12px 16px;
+  }
+  
+  .accordion-body {
+    padding: 16px;
+  }
+}

@@ -1,0 +1,94 @@
+<nav class="navbar navbar-dark py-4 p-custom-font">
+	<div class="container-fluid navbar-top">
+		<!-- Logo -->
+		<a class="navbar-brand d-flex flex-column lh-sm" routerLink="/home">
+			<i class="fas fa-graduation-cap fa-1x"><span class="fw-bold fs-5">Bdi</span></i>
+			<span class="brand-subtext fs-5">PastExams</span>
+		</a>
+
+		<!-- Search icon + User dropdown -->
+		<div class="search-bar d-flex align-items-center">
+			<!-- Add app search bar -->
+			<app-search-bar></app-search-bar>
+			<!-- user icon dropdown -->
+			<div class="dropdown">
+				<a class="nav-link text-white dropdown-toggle" href="#" id="userMenu" data-bs-toggle="dropdown"
+					aria-expanded="false">
+					<i class="fa-solid fa-user fa-lg"></i>
+				</a>
+
+				<ul class="dropdown-menu dropdown-menu-end user-panel" aria-labelledby="userMenu">
+					<h6 class="dropdown-header">Menu d'utilisateur</h6>
+					<li *ngIf="!isLoggedIn">
+						<a class="dropdown-item" href="/login">Connectez-vous</a>
+					</li>
+					<li *ngIf="!isLoggedIn">
+						<a class="dropdown-item" href="/signup">Inscrivez-vous</a>
+					</li>
+					<li *ngIf="isLoggedIn">
+						<a class="dropdown-item" href="/profile">Profile</a>
+					</li>
+					<li *ngIf="isLoggedIn">
+						<a class="dropdown-item" (click)="logout()">Déconnectez-vous</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</nav>
+
+<!-- BOTTOM BAR -->
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom p-custom-font fw-bold fs-5 mt-5">
+	<div class="container-fluid">
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+			aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<div class="collapse navbar-collapse" id="mainNav">
+			<ul class="navbar-nav ms-auto">
+				<li class="nav-item px-2">
+					<a class="nav-link" routerLink="/home" routerLinkActive="active">
+						<i class="fa-solid fa-house me-1"></i> Accueil
+					</a>
+				</li>
+
+				<li class="nav-item px-2">
+					<a class="nav-link" routerLink="/mathphys" routerLinkActive="active">
+						<i class="fa-solid fa-calculator me-1"></i> MPT
+					</a>
+				</li>
+
+				<li class="nav-item px-2">
+					<a class="nav-link" routerLink="/biochimie" routerLinkActive="active">
+						<i class="fa-solid fa-dna me-1"></i> BCT
+					</a>
+				</li>
+
+				<li class="nav-item px-2">
+					<a class="nav-link" routerLink="/langues" routerLinkActive="active">
+						<i class="fa-solid fa-book-open me-1"></i> Langues
+					</a>
+				</li>
+
+				<li class="nav-item px-2">
+					<a class="nav-link" routerLink="/concours" routerLinkActive="active">
+						<i class="fa-solid fa-pen-square me-1"></i> 9ème
+					</a>
+				</li>
+
+				<li class="nav-item px-2">
+					<a class="nav-link" routerLink="/help" routerLinkActive="active">
+						<i class="fa-solid fa-circle-question me-1"></i> Aide
+					</a>
+				</li>
+
+				<li class="nav-item px-2">
+					<a class="nav-link" routerLink="/contact" routerLinkActive="active">
+						<i class="fa-solid fa-comments me-1"></i> Contact
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
+</nav>

@@ -1,0 +1,131 @@
+<app-navbar></app-navbar>
+    <div class="container-fluid px-4 mt-4 mb-5 flex-grow-1">
+    <!-- Header + reset button -->
+        <div class="container-fluid px-4 mt-4 mb-5 flex-grow-1">
+            <div class="row mb-4 page-header">
+                <div class="col-12 d-flex justify-content-center position-relative">
+                    <h1 class="main-title mb-0">{{ sectionTitle }}</h1>
+                    <button class="btn btn-refresh position-absolute end-0" (click)="resetFilters()">
+                        <i class="fas fa-sync-alt"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    <!-- Search Bar -->
+    <div class="row mb-4">
+        <div class="col-md-8 col-lg-6 mx-auto">
+        <div class="search-container position-relative">
+            <i class="fas fa-search search-icon position-absolute top-50 translate-middle-y ms-3"></i>
+            <input
+            type="text"
+            class="form-control ps-5"
+            placeholder="Rechercher par titre ou cours"
+            [(ngModel)]="searchTerm"
+            (input)="onSearchInput($event)"
+            />
+        </div>
+        </div>
+    </div>
+
+    <!-- Course Filter Tabs + “Vidéos” -->
+    <div class="row mb-4">
+        <div class="col-12">
+        <div class="filter-tabs d-flex flex-wrap gap-2">
+            <button
+            class="filter-tab"
+            [class.active]="!selectedCourse && !showVideos"
+            (click)="showVideos = false; onCourseSelect('')"
+            >
+            Tous
+            </button>
+            <button
+            *ngFor="let course of uniqueCourses"
+            class="filter-tab"
+            [class.active]="selectedCourse === course && !showVideos"
+            (click)="showVideos = false; onCourseSelect(course)"
+            >
+            {{ course }}
+            </button>
+            <button
+            class="filter-tab"
+            [class.active]="showVideos"
+            (click)="showVideos = true"
+            >
+            Vidéos
+            </button>
+        </div>
+        </div>
+    </div>
+
+    <!-- TESTS LIST -->
+    <ng-container *ngIf="!showVideos">
+        <ul class="list-group list-group-flush tests-list">
+        <li
+            *ngFor="let t of filteredTests; trackBy: trackByTest"
+            class="list-group-item px-0"
+        >
+            <div class="row align-items-center w-100 gx-2">
+            <div class="col-12 col-md-7 col-lg-6">
+                <div class="test-name mb-1">{{ t.test }}</div>
+                <small class="text-muted">{{ t.year | date:'yyyy' }}</small>
+            </div>
+            <div class="col-12 col-md-5 col-lg-6 text-lg-end mt-2 mt-lg-0">
+                <a
+                [href]="t.link"
+                target="_blank"
+                class="btn btn-sm"
+                >
+                <i class="fas fa-download me-1"></i>
+                Télécharger
+                </a>
+            </div>
+            </div>
+        </li>
+        </ul>
+        <div *ngIf="filteredTests.length === 0" class="row">
+        <div class="col-12 text-center py-5">
+            <i class="fas fa-search fa-3x mb-3 text-secondary"></i>
+            <h4>Aucun test trouvé</h4>
+            <p>Aucun test ne correspond à vos critères de recherche.</p>
+            <button class="btn btn-outline-primary" (click)="resetFilters()">
+            Réinitialiser
+            </button>
+        </div>
+        </div>
+    </ng-container>
+
+    <!-- VIDEO CARDS -->
+    <ng-container *ngIf="showVideos">
+        <div class="row">
+        <div
+            *ngFor="let v of videoList; trackBy: trackByVideo"
+            class="col-lg-3 col-md-4 col-sm-6 mb-4"
+        >
+            <div class="campaign-card h-100 d-flex flex-column">
+            <div class="card-image-container text-center">
+                <img
+                [src]="v.thumbnailUrl"
+                alt="{{ v.title }}"
+                class="card-img-top"
+                />
+            </div>
+            <div class="card-content flex-grow-1 px-3">
+                <h5 class="card-title">{{ v.title }}</h5>
+            </div>
+            <div class="card-actions px-3 pb-3">
+                <a
+                [href]="v.thumbnailUrl"
+                target="_blank"
+                class="btn w-100"
+                >
+                <i class="fab fa-youtube me-1"></i>
+                Regarder
+                </a>
+            </div>
+            </div>
+        </div>
+        </div>
+    </ng-container>
+    </div>
+<app-footer></app-footer>

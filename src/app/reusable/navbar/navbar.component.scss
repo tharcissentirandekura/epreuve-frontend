@@ -1,0 +1,32 @@
+.navbar-top {
+  background-color: #005ea2;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  padding: 1.2rem 2rem;
+}
+
+ul li a:hover {
+  color: #005ea2;
+}
+
+.nav-item .active {
+  color: #005ea2 !important;
+}
+
+
+@media (max-width: 768px) {
+  .navbar {
+    padding: 0.5rem 0;
+
+    .nav-item {
+      margin: 0.2rem 0;
+
+      .nav-link {
+        padding: 0.7rem 1rem;
+      }
+    }
+  }
+}
