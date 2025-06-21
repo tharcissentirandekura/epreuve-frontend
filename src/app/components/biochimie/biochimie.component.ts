@@ -80,8 +80,8 @@ export class BiochimieComponent implements OnInit {
 
     // fetch videos
     this.apiService.getDataHandler('videos').subscribe({
-      next: (res: any[]) => {
-        this.videoList = res.map(v => ({
+      next: (res: any) => {
+        this.videoList = res.results.map((v:any)=> ({
           title:     v.title,
           thumbnail: v.thumbnailUrl,
           url:       v.youtubeLink
