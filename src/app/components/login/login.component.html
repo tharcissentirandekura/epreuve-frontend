@@ -1,173 +1,119 @@
-<app-navbar></app-navbar>
+<div class="textfonts">
+  <app-navbar></app-navbar>
 
-<div class="container-fluid auth-container edu-bg d-flex justify-content-center align-items-center mt-0">
-  <div class="row w-100 gx-0">
+  <div class="container mb-4">
+    <div class="row mb-4">
 
-    <!-- header panel -->
-    <div class="col-12 col-md-6 auth-header p-4">
-      <h2 class="auth-title">Bienvenu à la plateforme d'épreuves</h2>
-      <p class="auth-subtitle">
-        Inscrivez-vous pour accéder tous les outils disponible.
-      </p>
-    </div>
-
-    <!-- form panel -->
-    <div class="col-12 col-md-6 auth-box edu-shadow">
-      <div class="auth-tabs">
-        <div
-          class="auth-tab"
-          [class.active]="activeTab === 'login'"
-          (click)="setActiveTab('login')">
-          Login
-        </div>
-        <div
-          class="auth-tab"
-          [class.active]="activeTab === 'register'"
-          (click)="setActiveTab('register')">
-          Register
-        </div>
+      <div class="col-md-6 d-flex flex-column justify-content-center align-items-start p-5 mt-4" style="background-color: #EFF7FC;">
+        <h2 class="mb-2 fw-bold fs-1">Connectez-vous !</h2>
+        <hr class="mb-4 border-4 border-primary w-25">
+        <p class="mb-4 fs-4">
+          Pour avoir accès à toutes les fonctionnalités de notre site, veuillez vous connecter. Si vous n’avez pas encore de compte, vous pouvez en créer un facilement.
+        </p>
       </div>
+      <div class="col-md-6 px-5 py-4 mt-4 bg-light">
 
-      <!-- login form -->
-      @if (activeTab === 'login') {
-      <form (ngSubmit)="login()" #loginForm="ngForm" class="edu-form">
-        <div class="form-group">
-          <label for="login-username" class="form-label">Username</label>
-          <input 
-            type="text" 
-            id="login-username" 
-            class="form-input"
-            [(ngModel)]="credentials.username" 
-            name="username" 
-            required
-            #usernameInput="ngModel"
-            autocomplete="username">
-          @if (usernameInput.invalid && usernameInput.touched) {
-            <div class="validation-error">Username is required</div>
-          }
-        </div>
+        <ul class="nav nav-tabs mb-4 justify-content-center">
+          <li class="nav-item w-50 text-center">
+            <a class="nav-link fs-5" [class.active]="activeTab==='login'" (click)="setActiveTab('login')">Connexion</a>
+          </li>
+          <li class="nav-item w-50">
+            <a class="nav-link fs-5 text-center" [class.active]="activeTab==='register'" (click)="setActiveTab('register')">Inscription</a>
+          </li>
+        </ul>
 
-        <div class="form-group">
-          <label for="login-password" class="form-label">Password</label>
-          <input 
-            type="password" 
-            id="login-password" 
-            class="form-input"
-            [(ngModel)]="credentials.password" 
-            name="password" 
-            required
-            minlength="6"
-            #passwordInput="ngModel"
-            autocomplete="current-password">
-          @if (passwordInput.invalid && passwordInput.touched) {
-            <div class="validation-error">
-              Password must be at least 6 characters long
-            </div>
-          }
-        </div>
+        <!-- LOGIN FORM -->
+        <form *ngIf="activeTab==='login'" (ngSubmit)="login()" #loginForm="ngForm">
+          <div class="mb-3">
+            <label for="loginUsername" class="form-label fs-5 fw-bold">Nom d’utilisateur</label>
+            <input id="loginUsername"
+                   name="username"
+                   type="text"
+                   class="form-control border-0 border-bottom rounded-4 p-3 fs-5"
+                   placeholder="Entrez votre nom d’utilisateur"
+                   required
+                   [(ngModel)]="credentials.username">
+          </div>
+          <div class="mb-3">
+            <label for="loginPassword" class="form-label fs-5 fw-bold">Mot de passe</label>
+            <input id="loginPassword"
+                   name="password"
+                   type="password"
+                   class="form-control border-0 border-bottom rounded-4 p-3 fs-5"
+                   placeholder="Entrez votre mot de passe"
+                   required
+                   [(ngModel)]="credentials.password">
+          </div>
+          <button type="submit"
+                  class="btn btn-secondary px-5 py-2 fs-5"
+                  [disabled]="!loginForm.form.valid || isSubmitting">
+            {{ isSubmitting ? 'Connexion…' : 'Se connecter' }}
+          </button>
+        </form>
 
-        <button 
-          type="submit" 
-          class="submit-button edu-btn"
-          [disabled]="loginForm.invalid || isSubmitting">
-          {{ isSubmitting ? 'Logging in...' : 'Login' }}
-        </button>
+        <!-- REGISTER FORM -->
+        <form *ngIf="activeTab==='register'" (ngSubmit)="register()" #registerForm="ngForm">
+          <div class="mb-3">
+            <label for="regUsername" class="form-label fs-5 fw-bold">Nom d’utilisateur</label>
+            <input id="regUsername"
+                   name="username"
+                   type="text"
+                   class="form-control border-0 border-bottom rounded-4 p-3 fs-5"
+                   placeholder="Entrez votre nom d’utilisateur"
+                   required
+                   [(ngModel)]="user.username">
+          </div>
+          <div class="mb-3">
+            <label for="regPassword" class="form-label fs-5 fw-bold">Mot de passe</label>
+            <input id="regPassword"
+                   name="password"
+                   type="password"
+                   class="form-control border-0 border-bottom rounded-4 p-3 fs-5"
+                   placeholder="Entrez votre mot de passe"
+                   required
+                   [(ngModel)]="user.password">
+          </div>
+          <div class="mb-3">
+            <label for="firstName" class="form-label fs-5 fw-bold">Prénom</label>
+            <input id="firstName"
+                   name="first_name"
+                   type="text"
+                   class="form-control border-0 border-bottom rounded-4 p-3 fs-5"
+                   placeholder="Entrez votre prénom"
+                   required
+                   [(ngModel)]="user.first_name">
+          </div>
+          <div class="mb-3">
+            <label for="lastName" class="form-label fs-5 fw-bold">Nom</label>
+            <input id="lastName"
+                   name="last_name"
+                   type="text"
+                   class="form-control border-0 border-bottom rounded-4 p-3 fs-5"
+                   placeholder="Entrez votre nom"
+                   required
+                   [(ngModel)]="user.last_name">
+          </div>
+          <button type="submit"
+                  class="btn btn-secondary px-5 py-2 fs-5"
+                  [disabled]="!registerForm.form.valid || isSubmitting">
+            {{ isSubmitting ? 'Inscription…' : 'S’inscrire' }}
+          </button>
+        </form>
 
-        @if (errorMessage) {
-          <div class="error-message">{{ errorMessage }}</div>
-        }
-
-        @if (successMessage) {
-          <div class="success-message">{{ successMessage }}</div>
-        }
-      </form>
-    }
-
-      <!-- register form -->
-      @if (activeTab === 'register') {
-      <form (ngSubmit)="register()" #registerForm="ngForm" class="edu-form">
-        <div class="form-group">
-          <label for="register-username" class="form-label">Username</label>
-          <input 
-            type="text" 
-            id="register-username" 
-            class="form-input"
-            [(ngModel)]="user.username" 
-            name="username" 
-            required
-            #regUsernameInput="ngModel"
-            autocomplete="username">
-          @if (regUsernameInput.invalid && regUsernameInput.touched) {
-            <div class="validation-error">Nom utilisateur est Obligatoire</div>
-          }
-        </div>
-
-        <div class="form-group">
-          <label for="register-password" class="form-label">Password</label>
-          <input 
-            type="password" 
-            id="register-password" 
-            class="form-input"
-            [(ngModel)]="user.password" 
-            name="password" 
-            required
-            minlength="6"
-            #regPasswordInput="ngModel"
-            autocomplete="new-password">
-          @if (regPasswordInput.invalid && regPasswordInput.touched) {
-            <div class="validation-error">
-              Mot de passe doit être au moins 6 caractères
-            </div>
-          }
-        </div>
-
-        <div class="form-group">
-          <label for="register-firstname" class="form-label">Nom</label>
-          <input 
-            type="text" 
-            id="register-firstname" 
-            class="form-input"
-            [(ngModel)]="user.first_name" 
-            name="first_name"
-            required
-            #firstNameInput="ngModel">
-          @if (firstNameInput.invalid && firstNameInput.touched) {
-            <div class="validation-error">Nom et prénon sont Obligatoire</div>
-          }
-        </div>
-        <div class="form-group">
-          <label for="register-firstname" class="form-label">Votre prénon</label>
-          <input 
-            type="text" 
-            id="register-ecole" 
-            class="form-input"
-            [(ngModel)]="user.last_name" 
-            name="ecole"
-            required
-            #firstNameInput="ngModel">
-          @if (firstNameInput.invalid && firstNameInput.touched) {
-            <div class="validation-error">prénon</div>
-          }
-        </div>
-
-        <button 
-          type="submit" 
-          class="submit-button edu-btn"
-          [disabled]="registerForm.invalid || isSubmitting">
-          {{ isSubmitting ? 'Creating account...' : 'Register' }}
-        </button>
-
-        @if (errorMessage) {
-          <div class="error-message">{{ errorMessage }}</div>
-        }
-
-        @if (successMessage) {
-          <div class="success-message">{{ successMessage }}</div>
-        }
-      </form>
-    }
+      </div>
     </div>
   </div>
-</div>
 
-<app-footer></app-footer>
+  <!-- Popup & Footer (unchanged) -->
+  <div class="modal fade show d-block" *ngIf="popupMessage" style="background: rgba(0,0,0,0.4);">
+    <div class="modal-dialog modal-dialog-centered modal-lg">
+      <div class="modal-content text-center p-4 shadow rounded-4">
+        <div class="modal-body">
+          <h4 style="color: RoyalBlue;">{{ popupMessage }}</h4>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <app-footer></app-footer>
+</div>

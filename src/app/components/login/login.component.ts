@@ -19,7 +19,9 @@ export class LoginComponent {
 
   credentials: Credentials = { username: '', password: '' };
   user: User = { username: '', password: '', first_name: '', last_name: '' };
-
+  popupMessage: string | null = null;
+  popupSuccess = false;
+  
   isSubmitting: boolean = false;
   errorMessage: string = '';
   successMessage: string = '';
@@ -52,46 +54,54 @@ export class LoginComponent {
     this.resetForms();
   }
 
-  async login() {
+  login() {
     if (this.isSubmitting) return;
 
     this.isSubmitting = true;
     this.errorMessage = '';
 
-    try {
-
-      const token = this.authService.login(this.credentials);
-      if (token){
-        console.log('Login successful', token, this.credentials);
+    this.authService.login(this.credentials).subscribe({
+      next: response => {
+        console.log('Login successful', response);
         this.authService.setIsLoggedInState(true);
-        this.router.navigate(['/']);
+        this.router.navigate(['/home']);
+      },
+      error: error => {
+        this.errorMessage = 'Login failed';
+        this.popupSuccess = false;
+        this.popupMessage = 'Login failed. Try again.';
+        console.error('Login error:', error);
+      },
+      complete: () => {
+        this.isSubmitting = false;
+        setTimeout(() => this.popupMessage = null, 300);
       }
+    })
 
-    } catch (error) {
-      this.errorMessage = 'Invalid username or password';
-    } finally {
-      this.isSubmitting = false;
-    }
   }
 
-  async register() {
+  register() {
     this.clearMessages();
     if (this.isSubmitting) return;
 
     this.isSubmitting = true;
     this.errorMessage = '';
 
-    try {
-      await this.authService.register(this.user).toPromise();
-      console.log('Registration successful', this.user);
-      this.setActiveTab('login');
-      this.successMessage = 'Registration successful';
-    } catch (error) {
-      this.errorMessage = 'Registration failed';
-      console.error('Registration error:', error);
-    } finally {
-      this.isSubmitting = false;
-    }
+    this.authService.register(this.user).subscribe({
+      next: response => {
+        this.successMessage = 'Registration successful. You can now log in.';
+        console.log('Registration successful', response);
+        this.setActiveTab('login');
+      },
+      error: error => {
+        this.errorMessage = 'Registration failed';
+        console.error('Registration error:', error);
+      },
+      complete: () => {
+        this.isSubmitting = false;
+      }
+    });
+
   }
 
   async logout() {

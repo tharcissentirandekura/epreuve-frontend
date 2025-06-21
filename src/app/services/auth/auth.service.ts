@@ -1,23 +1,20 @@
 
-import { Injectable,PLATFORM_ID,Inject} from '@angular/core';
-import { HttpClient, HttpHeaders} from '@angular/common/http';
-import { Observable,BehaviorSubject} from 'rxjs';
-import { tap} from 'rxjs/operators';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Observable, BehaviorSubject, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import {jwtDecode} from 'jwt-decode';
-import { isPlatformBrowser } from '@angular/common';
+import { jwtDecode } from 'jwt-decode';
 import { environment } from '../../../environments/environment';
 
+interface Decoded {exp: number;}
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
   private apiUrl = environment.apiBaseUrl; // Replace with your API URL
-  // private token = this.getToken();
-  // private isLoggedIn = false;
   private isLoggedInSubject = new BehaviorSubject<boolean>(false);
   isLoggedIn$ = this.isLoggedInSubject.asObservable();
-  // private headers = new HttpHeaders().set("Authorization", `Bearer ${this.token}`);
 
   setIsLoggedInState(isLoggedIn: boolean) {
     this.isLoggedInSubject.next(isLoggedIn);
@@ -26,25 +23,23 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router:Router,
-    @Inject(PLATFORM_ID) private platformId: Object,
   ) {}
 
   login(credentials: { username: string, password: string }): Observable<any> {
     return this.http.post<any>(`${this.apiUrl}/login/`, credentials)
       .pipe(
-        tap((response) => {
-          console.log(response);
-          this.setToken(response.refresh, response.access);
-          console.log('User logged in successfully');
-          
+        tap(token => {
+          this.setToken(token.refresh, token.access);
+          this.setIsLoggedInState(true);          
+        }),
+        catchError((error)=>{
+          console.error(`Error:`, error);
+          return throwError(() => error);
         })
+
+
       );
 
-    //simulate login
-    // const token = 'fake-jwt-token';
-    // localStorage.setItem('token', token);
-    // this.isLoggedInSubject.next(true);
-    // return token; // set it to any
   }
 
   register(user:any): Observable<any> {
@@ -52,46 +47,65 @@ export class AuthService {
       .pipe(
         tap((response) => {
           console.log(response);
-          console.log('User registered successfully');
         })
       );
-
-    //simulate register
-    // return Promise.resolve("Registration successfully");
   }
 
   logout(): void {
-    // this.removeToken();
-    localStorage.removeItem('token');
+    this.removeToken();
     this.isLoggedInSubject.next(false);
-    // this.router.navigate(['/login']);
+    this.router.navigate(['/login']);
   }
 
   setToken(refresh: string,access:string): void {
-    if(isPlatformBrowser(this.platformId)){
-      // console.log('Setting token in local storage');
+    console.log('Setting tokens in local storage');
+    console.log('Access Token:', access);
+    console.log('Refresh Token:', refresh);
       localStorage.setItem('access_token', access);
       localStorage.setItem('refresh_token', refresh);
-    }
 
   }
   getToken(){
-    return localStorage.getItem('token');
+    return localStorage.getItem('access_token');
 
   }
   removeToken(): void {
-    if(isPlatformBrowser(this.platformId)){
-      // console.log('Romoving token in local storage');
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
       localStorage.clear();
-    }
-    // window.location.reload();
   }
 
-  getTokenExpirationDate(){
+  /**
+   * managing tokens
+   * 
+   */
+
+  isLoggedIn():boolean{
     const token = this.getToken();
-    // console.log('Token:', token);
+    if (!token) return false;
+    try {
+      const {exp} = jwtDecode<Decoded>(token || '');
+      return Date.now() < exp * 1000; // exp is in seconds, convert to milliseconds
+    } catch (error) {
+      return false
+    }
+  }
+
+  checkSession(){
+    if (this.isLoggedIn()){
+      this.setIsLoggedInState(true);
+    }else{
+      this.logout();
+    }
+
+  }
+  /**
+   * 
+   * @returns additional token info handlers
+   */
+
+  getTokenExpirationDate(){
+    const token = localStorage.getItem('access_token');
     if (!token) {
       return null;
     }
@@ -129,8 +143,6 @@ export class AuthService {
   }
 
   refreshToken(): Observable<any> {
-    // console.log('Refreshing access token');
-    // console.log('Refresh token:', this.getRefreshToken());
     return this.http.post<any>(`${this.apiUrl}/token/refresh/`, { refresh: this.getRefreshToken() })
       .pipe(
         tap((response) => {
