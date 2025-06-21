@@ -4,12 +4,13 @@ import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import {SearchBarComponent} from '../search-bar/search.component';
 import { AuthService } from '../../services/auth/auth.service';
+import { MatIconModule } from '@angular/material/icon';
 
 
 @Component({
 	selector: 'app-navbar',
 	standalone: true,
-	imports: [RouterLink, RouterLinkActive, CommonModule, FormsModule,SearchBarComponent],
+	imports: [RouterLink, RouterLinkActive, CommonModule, FormsModule,SearchBarComponent,MatIconModule],
 	templateUrl: './navbar.component.html',
 	styleUrl: './navbar.component.scss',
 

@@ -6,7 +6,7 @@
             <div class="col-12 d-flex justify-content-center position-relative">
                 <h1 class="main-title mb-0">{{ sectionTitle }}</h1>
                 <button class="btn btn-refresh position-absolute end-0" (click)="resetFilters()">
-                    <i class="fas fa-sync-alt"></i>
+                    <mat-icon class="me-2 ">autorenew</mat-icon>
                 </button>
             </div>
         </div>
@@ -16,7 +16,7 @@
     <div class="row mb-4">
         <div class="col-md-8 col-lg-6 mx-auto">
             <div class="search-container position-relative">
-                <i class="fas fa-search search-icon position-absolute top-50 translate-middle-y ms-3"></i>
+                <mat-icon class="search-icon position-absolute top-50 translate-middle-y ms-3 fs-3">search</mat-icon>
                 <input type="text" class="form-control ps-5" placeholder="Rechercher par titre ou cours"
                     [(ngModel)]="searchTerm" (input)="onSearchInput($event)" />
             </div>
@@ -55,7 +55,8 @@
                         </div>
                         <div class="col-12 col-md-5 col-lg-6 text-lg-end mt-2 mt-lg-0">
                             <a [href]="t.link" target="_blank" class="btn btn-sm">
-                                <i class="fas fa-download me-1"></i>
+                                 <mat-icon class="">download</mat-icon>
+                                
                                 Télécharger
                             </a>
                         </div>
@@ -88,7 +89,7 @@
                     </div>
                     <div class="card-actions px-3 pb-3">
                         <a [href]="v.thumbnailUrl" target="_blank" class="btn w-100">
-                            <i class="fab fa-youtube me-1"></i>
+                             <mat-icon class="me-1">youtube</mat-icon>
                             Regarder
                         </a>
                     </div>

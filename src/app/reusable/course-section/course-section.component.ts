@@ -5,13 +5,13 @@ import { ApiService } from '../../services/api/api.service';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { FooterComponent } from '../footer/footer.component';
 import { Test, Video } from '../../models/api.model';
-
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-course-section',
   templateUrl: './course-section.component.html',
   styleUrls: ['./course-section.component.scss'],
-  imports: [NavbarComponent, FooterComponent, DatePipe, CommonModule, FormsModule],
+  imports: [NavbarComponent, FooterComponent, DatePipe, CommonModule, FormsModule,MatIconModule],
   standalone: true
 })
 export class CourseSectionComponent implements OnInit {

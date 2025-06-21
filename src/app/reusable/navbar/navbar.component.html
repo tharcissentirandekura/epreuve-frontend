@@ -1,20 +1,16 @@
 <nav class="navbar navbar-dark py-4 p-custom-font">
 	<div class="container-fluid navbar-top">
-		<!-- Logo -->
 		<a class="navbar-brand d-flex flex-column lh-sm" routerLink="/home">
-			<i class="fas fa-graduation-cap fa-1x"><span class="fw-bold fs-5">Bdi</span></i>
-			<span class="brand-subtext fs-5">PastExams</span>
+			<mat-icon class="fa-3x fs-4">school</mat-icon>
+			Epreuves.com
 		</a>
 
-		<!-- Search icon + User dropdown -->
 		<div class="search-bar d-flex align-items-center">
-			<!-- Add app search bar -->
 			<app-search-bar></app-search-bar>
-			<!-- user icon dropdown -->
 			<div class="dropdown">
 				<a class="nav-link text-white dropdown-toggle" href="#" id="userMenu" data-bs-toggle="dropdown"
 					aria-expanded="false">
-					<i class="fa-solid fa-user fa-lg"></i>
+					<mat-icon class="user-icon">account_circle</mat-icon>
 				</a>
 
 				<ul class="dropdown-menu dropdown-menu-end user-panel" aria-labelledby="userMenu">

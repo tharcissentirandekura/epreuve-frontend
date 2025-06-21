@@ -4,27 +4,7 @@ body, .textfonts {
   color: #222;
 }
 
-/* Header */
-.main-title {
-  font-size: 2.2rem;
-  font-weight: 700;
-  letter-spacing: -1px;
-}
 
-/* Refresh Button */
-.btn-refresh {
-  background: #EFF7FC;
-  color: #005ea2;
-  border: none;
-  border-radius: 50%;
-  width: 40px;
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.3rem;
-  transition: background 0.2s, color 0.2s;
-}
 .btn-refresh:hover {
   background: #005ea2;
   color: #fff;
@@ -170,26 +150,12 @@ body, .textfonts {
   }
 
 
-  .btn {
-    position: relative;
-    width: 100%;
-
-    // transform: translateX(-50%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    }
-    .btn-refresh{
-      position: relative;
-      width:  0%;
-      transform: translateX(-50%);
-
-    }
   .main-title {
     position: relative;
-    transform: translateX(2%);
+    // transform: translateX(2%);
     display: flex;
     justify-content: center;
     align-items: center;
+    font-size: 1.8rem;
     }
 }
