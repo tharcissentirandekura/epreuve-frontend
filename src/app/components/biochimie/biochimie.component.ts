@@ -26,7 +26,7 @@ interface Video {
 @Component({
   selector:    'app-biochimie',
   standalone:  true,
-  imports:     [NavbarComponent, FooterComponent, DatePipe, CourseSectionComponent],
+  imports:     [CourseSectionComponent],
   templateUrl: './biochimie.component.html',
   styleUrl:    './biochimie.component.scss'
 })
