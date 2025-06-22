@@ -1,9 +1,10 @@
 
-import { Injectable } from '@angular/core';
+import { Injectable,Inject,PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import { isPlatformBrowser } from '@angular/common';
 import { jwtDecode } from 'jwt-decode';
 import { environment } from '../../../environments/environment';
 
@@ -23,6 +24,7 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router:Router,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {}
 
   login(credentials: { username: string, password: string }): Observable<any> {
@@ -57,24 +59,25 @@ export class AuthService {
     this.router.navigate(['/dashboard']);
   }
 
-  setToken(refresh: string,access:string): void {
-    console.log('Setting tokens in local storage');
-    console.log('Access Token:', access);
-    console.log('Refresh Token:', refresh);
+  setToken(refresh: string, access: string): void {
+    if (isPlatformBrowser(this.platformId)) {
+      console.log('Setting tokens in local storage');
       localStorage.setItem('access_token', access);
       localStorage.setItem('refresh_token', refresh);
-
+    }
   }
-  getToken(){
-    return localStorage.getItem('access_token');
-
+  getToken(): string | null {
+    return isPlatformBrowser(this.platformId)
+      ? localStorage.getItem('access_token')
+      : null;
   }
   removeToken(): void {
+    if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem('access_token');
       localStorage.removeItem('refresh_token');
       localStorage.clear();
+    }
   }
-
   /**
    * managing tokens
    * 
@@ -104,21 +107,21 @@ export class AuthService {
    * @returns additional token info handlers
    */
 
-  getTokenExpirationDate(){
+  getTokenExpirationDate(): Date | null {
+    if (!isPlatformBrowser(this.platformId)) {
+      return null;
+    }
     const token = localStorage.getItem('access_token');
     if (!token) {
       return null;
     }
     try {
-      const decodedToken:any = jwtDecode(token);
-      if(decodedToken.exp){
-        return new Date(decodedToken.exp * 1000); // convert to milliseconds
-      }else{
-        return null;
-      }
-    } catch (error) {
-      console.error("Error decoding token", error);
-      return null; 
+      const decodedToken: any = jwtDecode(token);
+      return decodedToken.exp
+        ? new Date(decodedToken.exp * 1000)
+        : null;
+    } catch {
+      return null;
     }
   }
 
@@ -134,10 +137,10 @@ export class AuthService {
   }
 
   getRefreshToken(): string | null {
-    // console.log('Getting refresh token from local storage');
-    return localStorage.getItem('refresh_token');
+    return isPlatformBrowser(this.platformId)
+      ? localStorage.getItem('refresh_token')
+      : null;
   }
-
   isAuthenticated(): boolean {
     return !!this.getToken();
   }
