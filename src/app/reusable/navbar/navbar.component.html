@@ -1,7 +1,7 @@
 <nav class="navbar navbar-dark py-4 p-custom-font">
 	<div class="container-fluid navbar-top">
 		<a class="navbar-brand d-flex flex-column lh-sm" routerLink="/home">
-			<mat-icon class="fa-3x fs-4">school</mat-icon>
+			 <i class="pi pi-graduation-cap text-white fs-2"></i>
 			Epreuves.com
 		</a>
 
@@ -10,7 +10,8 @@
 			<div class="dropdown">
 				<a class="nav-link text-white dropdown-toggle" href="#" id="userMenu" data-bs-toggle="dropdown"
 					aria-expanded="false">
-					<mat-icon class="user-icon">account_circle</mat-icon>
+					<i class="pi pi-user bg-white text-primary p-2 rounded-5"></i>
+					<!-- {{ isLoggedIn ? 'Bienvenue, ' + "name" : '' }} -->
 				</a>
 
 				<ul class="dropdown-menu dropdown-menu-end user-panel" aria-labelledby="userMenu">
@@ -45,43 +46,43 @@
 			<ul class="navbar-nav ms-auto">
 				<li class="nav-item px-2">
 					<a class="nav-link" routerLink="/home" routerLinkActive="active">
-						<i class="fa-solid fa-house me-1"></i> Accueil
+						<i class="me-1"></i> Accueil
 					</a>
 				</li>
 
 				<li class="nav-item px-2">
 					<a class="nav-link" routerLink="/mathphys" routerLinkActive="active">
-						<i class="fa-solid fa-calculator me-1"></i> MPT
+						<i class=" me-1"></i> Math-phy..
 					</a>
 				</li>
 
 				<li class="nav-item px-2">
 					<a class="nav-link" routerLink="/biochimie" routerLinkActive="active">
-						<i class="fa-solid fa-dna me-1"></i> BCT
+						<i class="me-1"></i> Bio-chimie
 					</a>
 				</li>
 
 				<li class="nav-item px-2">
 					<a class="nav-link" routerLink="/langues" routerLinkActive="active">
-						<i class="fa-solid fa-book-open me-1"></i> Langues
+						<i class="me-1"></i> Langues
 					</a>
 				</li>
 
 				<li class="nav-item px-2">
 					<a class="nav-link" routerLink="/concours" routerLinkActive="active">
-						<i class="fa-solid fa-pen-square me-1"></i> 9ème
+						<i class="me-1"></i> 9ème
 					</a>
 				</li>
 
 				<li class="nav-item px-2">
 					<a class="nav-link" routerLink="/help" routerLinkActive="active">
-						<i class="fa-solid fa-circle-question me-1"></i> Aide
+						<i class="me-1"></i> Aide
 					</a>
 				</li>
 
 				<li class="nav-item px-2">
 					<a class="nav-link" routerLink="/contact" routerLinkActive="active">
-						<i class="fa-solid fa-comments me-1"></i> Contact
+						<i class="me-1"></i> Contact
 					</a>
 				</li>
 			</ul>

@@ -54,7 +54,7 @@ export class AuthService {
   logout(): void {
     this.removeToken();
     this.isLoggedInSubject.next(false);
-    this.router.navigate(['/login']);
+    this.router.navigate(['/dashboard']);
   }
 
   setToken(refresh: string,access:string): void {

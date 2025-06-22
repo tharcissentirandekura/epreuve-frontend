@@ -104,7 +104,7 @@ export class SearchBarComponent implements OnInit {
 		if (trimmedQuery) {
 			this.apiService.getTestByCategory(endpoint, trimmedQuery).subscribe({
 				next: (response) => {
-                    let filteredResults = response
+                    let filteredResults = response.results
                         .filter((epreuve:any) => 
                             epreuve.test.toLowerCase().includes(trimmedQuery));
                     //apply category filter if selected

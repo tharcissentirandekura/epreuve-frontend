@@ -1,4 +1,7 @@
 /* make the active tab stand out */
+.container{
+   background-color: #EFF7FC;
+}
 .nav-tabs {
   .nav-link {
     &.active {

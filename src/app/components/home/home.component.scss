@@ -8,7 +8,13 @@
 .p-custom-font {
   font-family: 'Inter', sans-serif;
 }
-
+hr{
+  width: 80px; 
+  height: 4px; 
+  background-color: #005ea2; 
+  border: none; 
+  border-radius: 2px;
+}
 .textfonts {
   font-family: 'Inter', sans-serif;
 }
@@ -17,6 +23,7 @@
 .hero-section {
   position: relative;
   min-height: 60vh;
+  background: linear-gradient(135deg, #EFF7FC 0%, #D6EFFF 100%);
   
   &::before {
     content: '';
@@ -224,6 +231,7 @@ span {
   background-color: rgba(0, 0, 0, 0.1);
   border-radius: 10px;
   overflow: hidden;
+  height: 8px;
   
   .progress-bar {
     border-radius: 10px;

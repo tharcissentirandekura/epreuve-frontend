@@ -36,6 +36,7 @@
     "localstorage-polyfill": "^1.0.1",
     "lucide-angular": "^0.511.0",
     "nvm": "^0.0.4",
+    "primeicons": "^7.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
