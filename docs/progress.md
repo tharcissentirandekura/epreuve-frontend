@@ -1,0 +1,32 @@
+- Project Setup
+    - ✓ Initialize repository
+    - ✓ Setup basic project structure
+    - ✓ Configure development environment
+
+-  Frontend Development
+    - ✓ Create main layout
+    - ✓ Implement user interface
+    - ✓ Add responsive design
+    -  Test cross-browser compatibility
+- Current progress todo
+    - Try a material UI 
+    - Add AI helper page
+    - Add user and admin dashboard
+    - Customize login page/register
+-  Documentation
+    -  Write technical documentation
+    -  Add usage instructions
+    -  Include deployment guide
+    -  Add hovering effects
+    - ✓ Style button states
+    - ✓ Implement click animations
+    -  Ensure button accessibility
+-  Testing 
+    - ✓ Unit tests
+    -  Integration tests
+    -  User acceptance testing
+
+-  Deployment
+    -  Setup deployment pipeline
+    - ✓ Configure production environment
+    -  Launch application
