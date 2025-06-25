@@ -46,6 +46,18 @@
     <!-- TESTS LIST -->
     <ng-container *ngIf="!showVideos">
         <div class="container rounded-lg bg-white  p-4 border rounded-5 ">
+            <div class="row mb-3" *ngIf="totalPages > pageSize && !showVideos">
+            <app-paginator
+                [totalPages]="totalPages"
+                [count]="count"
+                [currentPage]="currentPage"
+                [previous]="previous"
+                [next]="next"
+                (pageChange)="goToPage($event)">
+            </app-paginator>
+            </div>
+
+
             <ul class="list-group list-group-flush tests-list">
                 <li *ngFor="let t of filteredTests; trackBy: trackByTest" class="list-group-item px-5">
                     <div class="row align-items-center w-100 gx-2">
@@ -77,6 +89,17 @@
     <!-- VIDEO CARDS -->
     <ng-container *ngIf="showVideos">
         <div class="row justify-content-center">
+            <div class="row mb-3" *ngIf="videoCount > pageSize && showVideos">
+                <app-paginator
+                    [totalPages]="videoTotalPages"
+                    [count]="videoCount"
+                    [currentPage]="videoCurrentPage"
+                    [previous]="videoPrevious"
+                    [next]="videoNext"
+                    (pageChange)="goToPage($event)">
+                </app-paginator>
+            </div>
+
             <div *ngFor="let v of videoList; trackBy: trackByVideo" class="col-lg-3 col-md-4 col-sm-6 mb-4">
                 <div class="campaign-card h-100 d-flex flex-column">
                     <div class="card-image-container text-center">

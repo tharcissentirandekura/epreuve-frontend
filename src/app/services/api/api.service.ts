@@ -1,10 +1,10 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 import { throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
-
+import { ApiResponse } from '../../models/api.model';
 /**
  * This file is to fetch data from the api
  * The handlers are built to be reusable for section, course, or test to avoid repetition
@@ -18,10 +18,6 @@ export class ApiService {
   private apiUrl:string = environment.apiBaseUrl;
 
   constructor(private http: HttpClient) {
-    // this.apiKey = environment.apiKey;
-
-
-    // console.log('API Key:', this.apiKey);
   }
 /**
  * 
@@ -29,9 +25,9 @@ export class ApiService {
  * example : /sections; /courses,....
  * @returns  the response or error
  */
-  getDataHandler(endpoint: string): Observable<any> {
+  getDataHandler(endpoint: string,page:number): Observable<any> {
 
-    return this.http.get<any>(`${this.apiUrl}/${endpoint}`, { headers: this.headers })
+    return this.http.get<any>(`${this.apiUrl}/${endpoint}?page=${page}`)
     .pipe(
       catchError((error) => {
         console.error('Error fetching data:', error);

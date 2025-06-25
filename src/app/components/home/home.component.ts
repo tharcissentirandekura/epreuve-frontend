@@ -126,7 +126,7 @@ export class HomeComponent implements OnInit {
   constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
-    this.apiService.getDataHandler('sections').subscribe({
+    this.apiService.getDataHandler('sections',1).subscribe({
       next: (response) => {
         this.data = response;
       },

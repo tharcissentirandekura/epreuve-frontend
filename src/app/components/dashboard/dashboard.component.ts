@@ -38,7 +38,7 @@ export class DashboardComponent implements OnInit{
       this.router.navigate(['/login']);
     }
 
-    this.apiService.getDataHandler('sections').subscribe({
+    this.apiService.getDataHandler('sections',1).subscribe({
       next:(data) => {
         this.sections = data.length;
         this.courses = data.reduce((acc:number,section:any) => acc + section.courses.length,0);
