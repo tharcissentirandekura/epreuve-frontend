@@ -1,4 +1,4 @@
-<div class="home-container">
+<div class="home-container textfont ">
   <app-navbar></app-navbar>
 
   <!-- Enhanced Hero Section -->
@@ -38,11 +38,11 @@
         <div class="col-lg-8">
           <div class="text-center mb-5 animate__animated animate__fadeIn">
             <h2 class="display-5 fw-bold mb-4 p-custom-font text-primary">À Propos de Notre Plateforme</h2>
-            <hr class="mx-auto">
+            <hr class="mx-auto w-25 border-4 text-primary rounded-2">
           </div>
-          <div class="card shadow-lg border-0 rounded-4 overflow-hidden animate__animated animate__fadeInUp">
+          <div class="card shadow-lg border-0 rounded-4 overflow-hidden animate__animated animate__fadeInUp ">
             <div class="card-body p-5">
-              <div class="row align-items-center">
+              <div class="row align-items-center ">
                 <div class="col-md-4 text-center mb-4 mb-md-0">
                   <div class="d-inline-flex align-items-center justify-content-center">
                     <i class="pi pi-book text-primary fw-bold fs-3 bg-primary p-5 bg-opacity-10 rounded-circle"></i>
@@ -86,7 +86,7 @@
         <p class="fs-5 text-muted p-custom-font">
           Découvrez notre mission et notre vision pour l'éducation au Burundi
         </p>
-        <hr class="mx-auto">
+        <hr class="mx-auto w-25 border-4 text-primary rounded-2">
       </div>
 
       <div class="row g-5 align-items-center">
@@ -166,7 +166,7 @@
         <p class="fs-5 text-muted p-custom-font">
           Découvrez notre collection d'examens par discipline
         </p>
-        <hr class="mx-auto">
+        <hr class="mx-auto w-100 border-2 text-primary rounded-2">
       </div>
 
       <div class="row justify-content-center g-4">
@@ -187,7 +187,7 @@
                   <small class="text-muted">Examens disponibles</small>
                   <small class="fw-bold {{course.examsColor}}">{{course.exams}}</small>
                 </div>
-                <div class="progress">
+                <div class="progress h-25">
                   <div class="progress-bar {{course.progressBar}}" [style.width]="course.progress + '%' "></div>
                 </div>
               </div>

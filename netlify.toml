@@ -1,0 +1,18 @@
+[build]
+    # command = "npm run build:static"
+    publish = "dist/epreuves/browser"
+
+[[redirects]]
+    from = "/epreuves/*"
+    to = "/index.html"
+    status = 200
+
+[[redirects]]
+    from = "/epreuves/*"
+    to = "/epreuves/:splat"
+    status = 200
+
+[[redirects]]
+    from = "/epreuves/browser/*"
+    to = "/epreuves/browser/:splat"
+    status = 200

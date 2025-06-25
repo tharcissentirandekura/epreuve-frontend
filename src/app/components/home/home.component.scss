@@ -1,41 +1,33 @@
 
-/* Import Inter font */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
-
-/* Apply the Inter font-family globally */
-.hero-section h1,
-.hero-section p,
-.p-custom-font {
-  font-family: 'Inter', sans-serif;
+.btn-primary{
+  background-color: #0776c6;
+  border-color: #005ea2;
+  transition: background-color var(--transition-speed),
+  box-shadow var(--transition-speed);
 }
-hr{
-  width: 80px; 
-  height: 4px; 
-  background-color: #005ea2; 
-  border: none; 
-  border-radius: 2px;
-}
-.textfonts {
-  font-family: 'Inter', sans-serif;
+.btn-primary:hover {
+  background-color: #03528b;
+  box-shadow: 0 4px 16px rgba(0,94,162,0.10);
 }
 
-/* Hero Section Enhancements */
-.hero-section {
-  position: relative;
-  min-height: 60vh;
-  background: linear-gradient(135deg, #EFF7FC 0%, #D6EFFF 100%);
-  
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: linear-gradient(135deg, transparent 0%, rgba(0, 94, 162, 0.05) 100%);
-    z-index: 1;
-  }
+.btn-outline-primary:hover {
+  color: #f5f7f8;
+  background-color: #0776c6;
+  border-color: #005ea2;
+  transition: color var(--transition-speed), border-color var(--transition-speed);
 }
+
+.text-primary {
+  color: #137eca !important;
+}
+
+.hero-section{
+  background: linear-gradient(135deg, #f0f6fa, #d8effe);
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 16px rgba(0,94,162,0.1);
+}
+
 
 /* Animations */
 .animate__animated {
@@ -91,106 +83,9 @@ hr{
 .animate__fadeInRight { animation-name: fadeInRight; }
 .animate__fadeIn { animation-name: fadeIn; }
 
-/* General Styles */
-.text-primary,
-span {
-  color: #005ea2 !important;
-}
-
-.leading-relaxed {
-  line-height: 1.8;
-}
-
-/* Button Styles */
-.btn {
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  border: none;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-  
-  &.btn-primary {
-    background: linear-gradient(135deg, #005ea2 0%, #0066b8 100%);
-    
-    &:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(0, 94, 162, 0.3);
-      background: linear-gradient(135deg, #004a85 0%, #005ea2 100%);
-    }
-  }
-  
-  &.btn-outline-primary {
-    border: 2px solid #005ea2;
-    color: #005ea2;
-    background: transparent;
-    
-    &:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(66, 167, 239, 0.2);
-      background: #005ea2;
-      border-color: #005ea2;
-      color: white;
-    }
-  }
-  
-  &.btn-success {
-    background: linear-gradient(135deg, #198754 0%, #20c997 100%);
-    
-    &:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(25, 135, 84, 0.3);
-    }
-  }
-  
-  &.btn-warning {
-    background: linear-gradient(135deg, #ffc107 0%, #ffca2c 100%);
-    color: #000;
-    
-    &:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(255, 193, 7, 0.3);
-    }
-  }
-  
-  &.btn-info {
-    background: linear-gradient(135deg, #0dcaf0 0%, #3dd5f3 100%);
-    color: #000;
-    
-    &:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 8px 25px rgba(13, 202, 240, 0.3);
-    }
-  }
-}
-
-/* Card Styles */
-.card {
-  border: none;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  
-  &.shadow-lg {
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
-  }
-}
-
-/* Video Cards */
-.video-card {
-  &:hover {
-    transform: translateY(-10px);
-    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
-  }
-  
-  iframe {
-    transition: all 0.3s ease;
-  }
-  
-  &:hover iframe {
-    transform: scale(1.02);
-  }
-}
 
 /* Modern Course Cards */
-.modern-course-card {
+.modern-course-card,.card {
   border: 1px solid rgba(0, 0, 0, 0.08);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   
@@ -205,8 +100,9 @@ span {
   }
 }
 
-/* Mission and Vision Cards */
+// /* Mission and Vision Cards */
 .mission-card,
+.propos-info,
 .vision-card {
   border: 1px solid rgba(0, 0, 0, 0.08);
   
@@ -216,122 +112,14 @@ span {
   }
 }
 
-/* Badge Enhancements */
-.badge {
-  font-weight: 500;
-  font-size: 0.875rem;
-  
-  &.bg-opacity-10 {
-    border: 1px solid rgba(255, 255, 255, 0.2);
-  }
-}
-
-/* Progress Bar Custom */
-.progress {
-  background-color: rgba(0, 0, 0, 0.1);
-  border-radius: 10px;
-  overflow: hidden;
-  height: 8px;
-  
-  .progress-bar {
-    border-radius: 10px;
-    transition: width 0.6s ease;
-  }
-}
-
-/* Section Spacing */
-section {
-  scroll-margin-top: 80px;
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-  .hero-section {
-    min-height: 50vh;
-    
-    h1 {
-      font-size: 2.5rem !important;
-    }
-    
-    p {
-      font-size: 1.1rem !important;
-    }
-  }
-  
-  .modern-course-card,
-  .video-card {
-    &:hover {
-      transform: translateY(-5px);
-    }
-  }
-  
-  .btn-lg {
-    font-size: 1rem;
-    padding: 0.75rem 2rem;
-  }
-  
-  .display-5 {
-    font-size: 2rem !important;
-  }
-  
-  .fs-5 {
-    font-size: 1rem !important;
-  }
-}
-
-@media (max-width: 576px) {
-  .hero-section h1 {
-    font-size: 2rem !important;
-    padding: 1rem !important;
-  }
-  
-  .hero-section p {
-    font-size: 1rem !important;
-    padding: 1rem !important;
-  }
-  
-  .card-body {
-    padding: 1.5rem !important;
-  }
-}
-
-/* Smooth Scrolling */
-html {
-  scroll-behavior: smooth;
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #005ea2;
-  border-radius: 4px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: #004a85;
-}
-
-/* Loading Animation for Videos */
-.ratio iframe {
-  border: none;
-  border-radius: 12px;
-}
-
-/* Accessibility Improvements */
+// /* Accessibility Improvements */
 .btn:focus,
 .card:focus-within {
   outline: 2px solid #005ea2;
   outline-offset: 2px;
 }
 
-/* Print Styles */
+// /* Print Styles */
 @media print {
   .btn,
   .shadow-lg,

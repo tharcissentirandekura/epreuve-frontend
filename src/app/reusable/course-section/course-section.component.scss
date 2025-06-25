@@ -1,14 +1,3 @@
-body, .textfonts {
-  font-family: 'Inter', 'Roboto', Arial, sans-serif;
-  background: #f7fbfd;
-  color: #222;
-}
-
-
-.btn-refresh:hover {
-  background: #005ea2;
-  color: #fff;
-}
 
 /* Search Bar */
 .search-container {
@@ -40,12 +29,7 @@ body, .textfonts {
   background: #f0f6fa;
   border: 1px solid #e0e7ff;
   color: #005ea2;
-  border-radius: 20px;
   padding: 0.4em 1.3em;
-  font-size: 1.05rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: background 0.2s, border 0.2s, color 0.2s, box-shadow 0.2s;
   box-shadow: 0 1px 4px rgba(0,94,162,0.03);
 }
 .filter-tab.active,
@@ -58,23 +42,14 @@ body, .textfonts {
 
 /* Test List */
 .tests-list .list-group-item {
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(0,94,162,0.06);
-  margin-bottom: 1.1rem;
-  border: none;
+  box-shadow: 0 2px 8px rgba(1, 71, 120, 0.06);
   transition: box-shadow 0.2s;
 }
 .tests-list .list-group-item:hover {
   box-shadow: 0 6px 20px rgba(0,94,162,0.16);
 }
 .test-name {
-  font-size: 1.13rem;
-  font-weight: 600;
   color: #005ea2;
-}
-.text-muted {
-  font-size: 0.97rem;
 }
 
 /* Download Button */
@@ -92,52 +67,32 @@ body, .textfonts {
   gap: 0.4em;
   transition: background 0.2s, color 0.2s, box-shadow 0.2s;
 }
-.btn i {
-  font-size: 1.2em;
-}
+
 .btn:hover {
   background-color: #005ea2;
   color: #fff;
   box-shadow: 0 4px 16px rgba(0,94,162,0.10);
 }
 
-/* Empty State */
-.text-center .fa-search {
-  font-size: 3rem;
-  margin-bottom: 1rem;
-  color: #b5d3ea;
-}
-.text-center h4 {
-  color: #005ea2;
-  font-weight: 600;
-}
+
 
 /* Video Cards */
 .campaign-card {
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 2px 8px rgba(0,94,162,0.06);
   transition: box-shadow 0.2s;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
 }
+
 .campaign-card:hover {
   box-shadow: 0 6px 20px rgba(0,94,162,0.13);
 }
 .card-image-container img {
-  border-radius: 12px 12px 0 0;
   width: 100%;
   object-fit: cover;
 }
 .card-title {
-  font-size: 1.09rem;
-  font-weight: 600;
   color: #005ea2;
 }
 .card-actions .btn {
   width: 100%;
-  margin-top: 0.7em;
 }
 
 /* Responsive tweaks */
