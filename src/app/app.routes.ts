@@ -7,6 +7,7 @@ import { LanguesComponent } from './components/langues/langues.component';
 import { ConcoursComponent } from './components/concours/concours.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
+// import { RegisterComponent } from './components/register/register.component';
 import { NgModule } from '@angular/core';
 import { HelpFormComponent } from './components/help-form/help-form.component';
 export const routes: Routes = [
@@ -20,7 +21,8 @@ export const routes: Routes = [
   { path: 'contact', component: ContactComponent },
   {path: 'dashboard',component: DashboardComponent},
   {path: 'login',component: LoginComponent},
-  {path: 'signup',component: LoginComponent},
+  // {path: 'register',component: RegisterComponent},
+  
   { path: '**', redirectTo: 'home' },
 ];
 
