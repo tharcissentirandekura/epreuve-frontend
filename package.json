@@ -15,7 +15,6 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:epreuves": "node dist/epreuves/server/server.mjs"
-
   },
   "private": true,
   "dependencies": {
@@ -49,7 +48,7 @@
     "zone.js": "~0.14.3"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^18.0.3",
+    "@angular-devkit/build-angular": "^18.2.20",
     "@angular/cli": "^18.0.3",
     "@angular/compiler-cli": "^18.0.0",
     "@types/bootstrap": "^5.2.10",
