@@ -1,119 +1,221 @@
-<div class="textfonts">
-  <app-navbar></app-navbar>
-
-  <div class="container mb-4">
-    <div class="row mb-4">
-
-      <div class="login col-md-6 d-flex flex-column justify-content-center align-items-start p-5 mt-4">
-        <h2 class="mb-2 fw-bold fs-1">Connectez-vous !</h2>
-        <hr class="mb-4 border-4 border-primary w-25">
-        <p class="mb-4 fs-4">
-          Pour avoir accès à toutes les fonctionnalités de notre site, veuillez vous connecter. Si vous n’avez pas encore de compte, vous pouvez en créer un facilement.
-        </p>
+<div class="login-container">
+  <div class="container-fluid h-100">
+    <div class="row h-100">
+      <!-- Left Side - Hero Section -->
+      <div class="col-lg-6 d-none d-lg-flex hero-section">
+        <div class="hero-content">
+          <div class="hero-overlay"></div>
+          <div class="hero-text">
+            <h1 class="display-4 fw-bold text-primary mb-4">
+              {{ loginpageInfo.subtitle }}
+            </h1>
+            <p class="lead text-dark mb-4 fs-6">
+              {{ loginpageInfo.description }}
+            </p>
+            <div class="platforme-icon">
+            </div>
+            <div class="feature-list">
+              <div class="feature-item">
+                <i class="bi bi-shield-check text-success"></i>
+                <span class="text-dark">Plateforme avec confidentialité</span>
+              </div>
+              <div class="feature-item">
+                <i class="bi bi-lightning text-primary"></i>
+                <span class="text-dark">Gratuitement pour tous</span>
+              </div>
+              <div class="feature-item">
+                <i class="bi bi-people text-primary"></i>
+                <span class="text-dark">Succès garanti</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-      <div class="col-md-6 px-5 py-4 mt-4 bg-light">
 
-        <ul class="nav nav-tabs mb-4 justify-content-center">
-          <li class="nav-item w-50 text-center">
-            <a class="nav-link fs-5" [class.active]="activeTab==='login'" (click)="setActiveTab('login')">Connexion</a>
-          </li>
-          <li class="nav-item w-50">
-            <a class="nav-link fs-5 text-center" [class.active]="activeTab==='register'" (click)="setActiveTab('register')">Inscription</a>
-          </li>
-        </ul>
+      <!-- Right Side - Form -->
+      <div class="col-lg-6 d-flex align-items-center justify-content-center">
+        <div class="login-form-container">
+          <!-- Success/Error Message -->
+          <div *ngIf="popupMessage" class="alert mb-4" 
+               [class.alert-success]="popupSuccess" 
+               [class.alert-danger]="!popupSuccess">
+            {{ popupMessage }}
+          </div>
 
-        <!-- LOGIN FORM -->
-        <form *ngIf="activeTab==='login'" (ngSubmit)="login()" #loginForm="ngForm" class="login-form">
-          <div class="mb-3">
-            <label for="loginUsername" class="form-label fs-5 fw-bold">Nom d’utilisateur</label>
-            <input id="loginUsername"
-                   name="username"
-                   type="text"
-                   class="form-control border-0 border-bottom rounded-4 p-3 fs-5"
-                   placeholder="Entrez votre nom d’utilisateur"
-                   required
-                   [(ngModel)]="credentials.username">
+          <div class="text-center mb-5">
+            <div class="logo-container mb-4">
+              <div class="logo-circle">
+                <i [class]="isLoginPage ? 'bi bi-person-circle' : 'bi bi-person-plus'"></i>
+              </div>
+            </div>
+            <h2 class="fw-bold text-dark mb-2">{{ loginpageInfo.title }}</h2>
+            <p class="text-muted" *ngIf="isRegisterPage">Créez votre compte pour commencer</p>
           </div>
-          <div class="mb-3">
-            <label for="loginPassword" class="form-label fs-5 fw-bold">Mot de passe</label>
-            <input id="loginPassword"
-                   name="password"
-                   type="password"
-                   class="form-control border-0 border-bottom rounded-4 p-3 fs-5"
-                   placeholder="Entrez votre mot de passe"
-                   required
-                   [(ngModel)]="credentials.password">
-          </div>
-          <button type="submit"
-                  class="btn btn-secondary px-5 py-2 fs-5"
-                  [disabled]="!loginForm.form.valid || isSubmitting">
-            {{ isSubmitting ? 'Connexion…' : 'Se connecter' }}
-          </button>
-        </form>
 
-        <!-- REGISTER FORM -->
-        <form *ngIf="activeTab==='register'" (ngSubmit)="register()" #registerForm="ngForm">
-          <div class="mb-3">
-            <label for="regUsername" class="form-label fs-5 fw-bold">Nom d’utilisateur</label>
-            <input id="regUsername"
-                   name="username"
-                   type="text"
-                   class="form-control border-0 border-bottom rounded-4 p-3 fs-5"
-                   placeholder="Entrez votre nom d’utilisateur"
-                   required
-                   [(ngModel)]="user.username">
+          <!-- Social Login/Register Buttons -->
+          <div class="social-login mb-4">
+            <button 
+              type="button" 
+              class="btn btn-outline-primary w-100 mb-3 social-btn"
+              (click)="socialLogin('facebook')">
+              <i class="bi bi-facebook me-2"></i>
+              {{ loginpageInfo.socialText }}
+            </button>
           </div>
-          <div class="mb-3">
-            <label for="regPassword" class="form-label fs-5 fw-bold">Mot de passe</label>
-            <input id="regPassword"
-                   name="password"
-                   type="password"
-                   class="form-control border-0 border-bottom rounded-4 p-3 fs-5"
-                   placeholder="Entrez votre mot de passe"
-                   required
-                   [(ngModel)]="user.password">
-          </div>
-          <div class="mb-3">
-            <label for="firstName" class="form-label fs-5 fw-bold">Prénom</label>
-            <input id="firstName"
-                   name="first_name"
-                   type="text"
-                   class="form-control border-0 border-bottom rounded-4 p-3 fs-5"
-                   placeholder="Entrez votre prénom"
-                   required
-                   [(ngModel)]="user.first_name">
-          </div>
-          <div class="mb-3">
-            <label for="lastName" class="form-label fs-5 fw-bold">Nom</label>
-            <input id="lastName"
-                   name="last_name"
-                   type="text"
-                   class="form-control border-0 border-bottom rounded-4 p-3 fs-5"
-                   placeholder="Entrez votre nom"
-                   required
-                   [(ngModel)]="user.last_name">
-          </div>
-          <button type="submit"
-                  class="btn btn-secondary px-5 py-2 fs-5"
-                  [disabled]="!registerForm.form.valid || isSubmitting">
-            {{ isSubmitting ? 'Inscription…' : 'S’inscrire' }}
-          </button>
-        </form>
 
-      </div>
-    </div>
-  </div>
+          <div class="divider mb-4">
+            <span class="">{{ loginpageInfo.dividerText }}</span>
+          </div>
 
-  <!-- Popup & Footer (unchanged) -->
-  <div class="modal fade show d-block" *ngIf="popupMessage">
-    <div class="modal-dialog modal-dialog-centered modal-lg">
-      <div class="modal-content text-center p-4 shadow rounded-4">
-        <div class="modal-body">
-          <h4 class="">{{ popupMessage }}</h4>
+          <!-- Dynamic Form -->
+          <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
+            
+            <!-- Registration Fields -->
+            <div *ngIf="isRegisterPage">
+              <!-- First Name Field -->
+              <div class="mb-3">
+                <label for="first_name" class="form-label fw-semibold">Prénom</label>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="bi bi-person"></i>
+                  </span>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="first_name"
+                    formControlName="first_name"
+                    placeholder="Entrez votre prénom"
+                    [class.is-invalid]="firstName?.invalid && firstName?.touched"
+                    [class.is-valid]="firstName?.valid && firstName?.touched">
+                </div>
+                <div class="invalid-feedback" *ngIf="firstName?.invalid && firstName?.touched">
+                  <small *ngIf="firstName?.errors?.['required']">Le prénom est obligatoire</small>
+                  <small *ngIf="firstName?.errors?.['minlength']">Le prénom doit contenir au moins 2 caractères</small>
+                </div>
+              </div>
+
+              <!-- Last Name Field -->
+              <div class="mb-3">
+                <label for="last_name" class="form-label fw-semibold">Nom de famille</label>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="bi bi-person-fill"></i>
+                  </span>
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="last_name"
+                    formControlName="last_name"
+                    placeholder="Entrez votre nom de famille"
+                    [class.is-invalid]="lastName?.invalid && lastName?.touched"
+                    [class.is-valid]="lastName?.valid && lastName?.touched">
+                </div>
+                <div class="invalid-feedback" *ngIf="lastName?.invalid && lastName?.touched">
+                  <small *ngIf="lastName?.errors?.['required']">Le nom de famille est obligatoire</small>
+                  <small *ngIf="lastName?.errors?.['minlength']">Le nom de famille doit contenir au moins 2 caractères</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Username Field -->
+            <div class="mb-3">
+              <label for="username" class="form-label fw-semibold">
+                {{ isLoginPage ? 'Entrez votre nom d\'utilisateur' : 'Nom d\'utilisateur' }}
+              </label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i [class]="isLoginPage ? 'bi bi-envelope' : 'bi bi-at'"></i>
+                </span>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="username"
+                  formControlName="username"
+                  [placeholder]="isLoginPage ? 'Entrez votre nom d\'utilisateur' : 'Choisissez un nom d\'utilisateur'"
+                  [class.is-invalid]="username?.invalid && username?.touched"
+                  [class.is-valid]="username?.valid && username?.touched">
+              </div>
+              <div class="invalid-feedback" *ngIf="username?.invalid && username?.touched">
+                <small *ngIf="username?.errors?.['required']">Le nom d'utilisateur est obligatoire</small>
+                <small *ngIf="username?.errors?.['minlength'] && isRegisterPage">Le nom d'utilisateur doit contenir au moins 3 caractères</small>
+              </div>
+            </div>
+
+            <!-- Password Field -->
+            <div class="mb-3">
+              <label for="password" class="form-label fw-semibold">
+                {{ isLoginPage ? 'Mot de passe' : 'Créer un mot de passe' }}
+              </label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-lock"></i>
+                </span>
+                <input
+                  [type]="showPassword ? 'text' : 'password'"
+                  class="form-control"
+                  id="password"
+                  formControlName="password"
+                  [placeholder]="isLoginPage ? 'Entrez votre mot de passe' : 'Créez un mot de passe sécurisé'"
+                  [class.is-invalid]="password?.invalid && password?.touched"
+                  [class.is-valid]="password?.valid && password?.touched">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  (click)="togglePasswordVisibility()">
+                  <i [class]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                </button>
+              </div>
+              <div class="invalid-feedback" *ngIf="password?.invalid && password?.touched">
+                <small *ngIf="password?.errors?.['required']">Le mot de passe est obligatoire</small>
+                <small *ngIf="password?.errors?.['minlength']">Le mot de passe doit contenir au moins 6 caractères</small>
+              </div>
+            </div>
+
+            <!-- Remember Me & Forgot Password (Login only) -->
+            <div *ngIf="isLoginPage" class="d-flex justify-content-between align-items-center mb-4">
+              <div class="form-check">
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  id="rememberMe"
+                  [(ngModel)]="rememberMe"
+                  [ngModelOptions]="{standalone: true}">
+                <label class="form-check-label" for="rememberMe">
+                  Se souvenir de moi
+                </label>
+              </div>
+              <a href="#" class="text-primary text-decoration-none">
+                Mot de passe oublié?
+              </a>
+            </div>
+
+            <!-- Submit Button -->
+            <button
+              type="submit"
+              class="btn btn-primary w-100 mb-3 login-btn"
+              [disabled]="isSubmitting">
+              <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2"></span>
+              <span *ngIf="!isSubmitting">{{ loginpageInfo.title }}</span>
+              <span *ngIf="isSubmitting">{{ isLoginPage ? 'Connexion...' : 'Inscription...' }}</span>
+            </button>
+          </form>
+
+          <!-- Switch Mode Link -->
+          <div class="text-center">
+            <p class="text-muted mb-0">
+              <span *ngIf="isLoginPage">Pas de compte?</span>
+              <span *ngIf="isRegisterPage">Vous avez déjà un compte?</span>
+              <button 
+                type="button"
+                class="btn btn-link text-primary text-decoration-none fw-semibold p-0"
+                (click)="isLoginPage ? switchToRegister() : switchToLogin()">
+                {{ isLoginPage ? 'S\'inscrire' : 'Se connecter' }}
+              </button>
+            </p>
+          </div>
         </div>
       </div>
     </div>
   </div>
-
   <app-footer></app-footer>
 </div>
