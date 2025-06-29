@@ -1,3 +1,9 @@
+.hero-section {
+  width: 100%;
+  background: linear-gradient(135deg, #f0f6fa, #d8effe);
+  background-size: cover;
+  background-position: center;
+}
 
 .btn-primary{
   background-color: #0776c6;
@@ -125,5 +131,18 @@
   .shadow-lg,
   .animate__animated {
     display: none !important;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .hero-section {
+    padding-top: 2rem !important;
+    padding-bottom: 2rem !important;
+  }
+  .hero-section h1 {
+    line-height: 1.2;
+  }
+  .hero-section .lead {
+    line-height: 1.4;
   }
 }
