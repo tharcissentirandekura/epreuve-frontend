@@ -36,7 +36,7 @@
             </button>
             <button 
                 *ngFor="let category of categories" 
-                class="btn btn-outline-primary rounded-pill px-4 py-2 fw-medium category-btn"
+                class="btn btn-outline-primary rounded-pill px-4 py-2 fw-medium category-btn font-inter"
                 [class.btn-primary]="selectedCategory === category"
                 [class.text-white]="selectedCategory === category"
                 (click)="filterByCategory(category)"
@@ -58,7 +58,7 @@
         </nav>
         
         <!-- Results Count -->
-        <div class="mb-3" *ngIf="filteredFaqs.length > 0">
+        <div class="mb-3 font-inter" *ngIf="filteredFaqs.length > 0">
             <small class="text-muted">Affichage de {{ filteredFaqs.length }} résultat(s)</small>
         </div>
         
@@ -67,7 +67,7 @@
             <div class="accordion-item border-0 border-bottom" *ngFor="let faq of filteredFaqs; let i = index">
                 <h2 class="accordion-header" [id]="'heading' + i ">
                     <button
-                        class="accordion-button collapsed fw-medium py-0 px-4 bg-white hover-bg-light"
+                        class="accordion-button collapsed fw-medium py-3 px-4 bg-white hover-bg-light"
                         type="button"
                         data-bs-toggle="collapse"
                         [attr.data-bs-target]="'#collapse' + i"
@@ -75,7 +75,7 @@
                         [attr.aria-controls]="'collapse' + i"
                     >
                         <span class="me-3">
-                            <i class="bi bi-question-circle text-primary"></i>
+                            <i class="bi bi-question-circle text-primary font-inter fs-md"></i>
                         </span>
                         {{ faq.question }}
                     </button>
@@ -88,7 +88,7 @@
                 >
                     <div class="accordion-body px-4 py-4 bg-light">
                         <div class="d-flex">
-                            <span class="me-3 text-success">
+                            <span class="me-3 text-success font-inter fs-md">
                                 <i class="bi bi-check-circle"></i>
                             </span>
                             <div class="lh-lg">{{ faq.answer }}</div>
