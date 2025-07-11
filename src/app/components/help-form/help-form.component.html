@@ -5,8 +5,8 @@
 
     <div class="container-fluid px-3 px-md-4">
         <div class="text-center py-5">
-            <h1 class="display-4 fs-1 fs-sm-1 fs-md-1 fs-lg-1 fw-bold mb-3">How can we help you?</h1>
-            <p class="lead text-muted mx-auto w-50">Find answers to common questions and learn how to get the most out of our website.</p>
+            <h1 class="display-4 fs-1 fs-sm-1 fs-md-1 fs-lg-1 fw-bold mb-3">Comment pouvons-nous vous aider ?</h1>
+            <p class="lead text-muted mx-auto w-50">Trouvez des réponses aux questions fréquentes et apprenez comment tirer le meilleur parti de notre site web.</p>
         </div>
         
         <!-- Search Bar -->
@@ -32,7 +32,7 @@
                 [class.text-white]="selectedCategory === ''"
                 (click)="filterByCategory('')"
             >
-                All Topics
+                Tous les sujets
             </button>
             <button 
                 *ngFor="let category of categories" 
@@ -50,7 +50,7 @@
             <ol class="breadcrumb bg-transparent p-0">
                 <li class="breadcrumb-item">
                     <a href="#" class="text-decoration-none" (click)="filterByCategory(''); $event.preventDefault()">
-                        Help Center
+                        Centre d'aide
                     </a>
                 </li>
                 <li class="breadcrumb-item active fw-medium" aria-current="page">{{ selectedCategory }}</li>
@@ -59,7 +59,7 @@
         
         <!-- Results Count -->
         <div class="mb-3" *ngIf="filteredFaqs.length > 0">
-            <small class="text-muted">Showing {{ filteredFaqs.length }} result(s)</small>
+            <small class="text-muted">Affichage de {{ filteredFaqs.length }} résultat(s)</small>
         </div>
         
         <!-- FAQ Accordion -->
@@ -119,12 +119,12 @@
                             <i class="bi bi-chat-dots display-4 text-primary"></i>
                         </div>
                         <!-- TODO: to be implemented later -->
-                        <h5 class="card-title fw-bold">Live Chat</h5>
-                        <p class="card-text text-muted">Get instant help from our support team</p>
+                        <h5 class="card-title fw-bold">Chat en direct</h5>
+                        <p class="card-text text-muted">Obtenez de l’aide instantanée de notre équipe d’assistance</p>
                         <button 
                           class="btn btn-outline-primary rounded-pill px-4"
                         >
-                          Start Chat
+                          Démarrer le chat
                         </button>
                     </div>
                 </div>
@@ -135,9 +135,9 @@
                         <div class="mb-3">
                             <i class="bi bi-envelope display-4 text-success"></i>
                         </div>
-                        <h5 class="card-title fw-bold">Email Support</h5>
-                        <p class="card-text text-muted">Send us a detailed message</p>
-                        <button class="btn btn-outline-success rounded-pill px-4" (click)="goToContact()">Send Email</button>
+                        <h5 class="card-title fw-bold">Support par e-mail</h5>
+                        <p class="card-text text-muted">Envoyez-nous un message détaillé</p>
+                        <button class="btn btn-outline-success rounded-pill px-4" (click)="goToContact()">Envoyer un e-mail</button>
                     </div>
                 </div>
             </div>
@@ -149,8 +149,8 @@
                             <i class="bi bi-book display-4 text-info"></i>
                         </div>
                         <h5 class="card-title fw-bold">Documentation</h5>
-                        <p class="card-text text-muted">Browse our comprehensive guides</p>
-                        <button class="btn btn-outline-info rounded-pill px-4">View Docs</button>
+                        <p class="card-text text-muted">Parcourez nos guides complets</p>
+                        <button class="btn btn-outline-info rounded-pill px-4">Voir la documentation</button>
                     </div>
                 </div>
             </div>
@@ -159,9 +159,9 @@
         <!-- Contact Section -->
         <div class="bg-light rounded-4 p-5 text-center mb-5 position-relative overflow-hidden">
             <div class="position-relative z-1 d-flex flex-column align-items-center">
-                <h2 class="display-6 fw-bold mb-4">Still need help?</h2>
+                <h2 class="display-6 fw-bold mb-4">Vous avez encore besoin d’aide?</h2>
                 <p class="lead text-muted mb-4 mx-auto w-50">
-                    Our support team is here to help. Reach out to us and we'll get back to you as soon as possible.
+                    Notre équipe d’assistance est là pour vous aider. Contactez-nous et nous vous répondrons dès que possible.
                 </p>
                 <div class="flex-sm-row gap-3 justify-content-center">
                     <a class="rounded-pill border-0 p-1" (click)="goToContact()">
