@@ -71,3 +71,18 @@ h2 {
 span{
   color: rgb(63, 172, 250);
 }
+
+.modal-blur-backdrop {
+  position: fixed; 
+  inset: 0;
+  background-color: rgba(255, 255, 255, 0.2) !important;
+  backdrop-filter: blur(6px); 
+  display: flex;              
+  align-items: center;
+  justify-content: center;
+  z-index: 1050; 
+}
+
+.modal-blur-backdrop .modal-content {
+  background-color: #fff; 
+}
