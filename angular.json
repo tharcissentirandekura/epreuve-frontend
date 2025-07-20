@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "EpreuvesTypes-website": {
+    "epreuves": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -17,7 +17,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
-            "outputPath": "dist/epreuves-types-website",
+            "outputPath": "dist/epreuves",
             "baseHref": "/",
             "index": "src/index.html",
             "browser": "src/main.ts",
@@ -58,7 +58,7 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "500kB",
+                  "maximumWarning": "950kB",
                   "maximumError": "1MB"
                 },
                 {
@@ -78,7 +78,7 @@
               ],
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": false
             }
           },
     
@@ -88,10 +88,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "EpreuvesTypes-website:build:production"
+              "buildTarget": "epreuves:build:production"
             },
             "development": {
-              "buildTarget": "EpreuvesTypes-website:build:development"
+              "buildTarget": "epreuves:build:development"
             }
           },
           "defaultConfiguration": "development"

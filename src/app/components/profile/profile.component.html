@@ -1,0 +1,390 @@
+<div class="profile-container">
+  <div class="container-fluid py-4">
+    <!-- Header -->
+    <div class="row mb-4">
+      <div class="col-12">
+        <div class="d-flex align-items-center justify-content-between">
+          <div>
+            <h1 class="h3 mb-0 text-gray-800">Mon Profil</h1>
+            <p class="text-muted">Gérez vos informations personnelles et paramètres de compte</p>
+          </div>
+          <div class="profile-avatar-large">
+            <img 
+              [src]="currentUser?.avatar || '/default-avatar.svg'" 
+              alt="Photo de profil"
+              class="rounded-circle"
+              width="80" 
+              height="80">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Success/Error Messages -->
+    <div class="row mb-4" *ngIf="successMessage || errorMessage">
+      <div class="col-12">
+        <div class="alert" 
+             [class.alert-success]="successMessage" 
+             [class.alert-danger]="errorMessage">
+          {{ successMessage || errorMessage }}
+        </div>
+      </div>
+    </div>
+
+    <!-- Loading State -->
+    <div class="row" *ngIf="isLoadingProfile">
+      <div class="col-12 text-center py-5">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Chargement...</span>
+        </div>
+        <p class="mt-2 text-muted">Chargement du profil...</p>
+      </div>
+    </div>
+
+    <!-- Profile Content -->
+    <div class="row" *ngIf="!isLoadingProfile">
+      <!-- Profile Information -->
+      <div class="col-lg-8">
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+          <div class="card-header bg-white py-3 border-bottom">
+            <h5 class="mb-0 fw-bold text-primary">
+              <i class="bi bi-person-circle me-2"></i>
+              Informations Personnelles
+            </h5>
+          </div>
+          <div class="card-body p-4">
+            <form [formGroup]="profileForm" (ngSubmit)="updateProfile()">
+              <div class="row">
+                <!-- First Name -->
+                <div class="col-md-6 mb-3">
+                  <label for="firstName" class="form-label fw-semibold">Prénom</label>
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i class="bi bi-person"></i>
+                    </span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="firstName"
+                      formControlName="firstName"
+                      placeholder="Votre prénom"
+                      [class.is-invalid]="firstName?.invalid && firstName?.touched"
+                      [class.is-valid]="firstName?.valid && firstName?.touched">
+                  </div>
+                  <div class="invalid-feedback" *ngIf="firstName?.invalid && firstName?.touched">
+                    <small>{{ getFieldError('profile', 'firstName') }}</small>
+                  </div>
+                </div>
+
+                <!-- Last Name -->
+                <div class="col-md-6 mb-3">
+                  <label for="lastName" class="form-label fw-semibold">Nom de famille</label>
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i class="bi bi-person-fill"></i>
+                    </span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="lastName"
+                      formControlName="lastName"
+                      placeholder="Votre nom de famille"
+                      [class.is-invalid]="lastName?.invalid && lastName?.touched"
+                      [class.is-valid]="lastName?.valid && lastName?.touched">
+                  </div>
+                  <div class="invalid-feedback" *ngIf="lastName?.invalid && lastName?.touched">
+                    <small>{{ getFieldError('profile', 'lastName') }}</small>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <!-- Username -->
+                <div class="col-md-6 mb-3">
+                  <label for="username" class="form-label fw-semibold">Nom d'utilisateur</label>
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i class="bi bi-at"></i>
+                    </span>
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="username"
+                      formControlName="username"
+                      placeholder="Votre nom d'utilisateur"
+                      [class.is-invalid]="username?.invalid && username?.touched"
+                      [class.is-valid]="username?.valid && username?.touched">
+                  </div>
+                  <div class="invalid-feedback" *ngIf="username?.invalid && username?.touched">
+                    <small>{{ getFieldError('profile', 'username') }}</small>
+                  </div>
+                </div>
+
+                <!-- Email -->
+                <div class="col-md-6 mb-3">
+                  <label for="email" class="form-label fw-semibold">Adresse email</label>
+                  <div class="input-group">
+                    <span class="input-group-text">
+                      <i class="bi bi-envelope"></i>
+                    </span>
+                    <input
+                      type="email"
+                      class="form-control"
+                      id="email"
+                      formControlName="email"
+                      placeholder="Votre adresse email"
+                      [class.is-invalid]="email?.invalid && email?.touched"
+                      [class.is-valid]="email?.valid && email?.touched">
+                  </div>
+                  <div class="invalid-feedback" *ngIf="email?.invalid && email?.touched">
+                    <small>{{ getFieldError('profile', 'email') }}</small>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Update Button -->
+              <div class="d-flex justify-content-end">
+                <button
+                  type="submit"
+                  class="btn btn-primary px-4"
+                  [disabled]="profileForm.invalid || isUpdatingProfile">
+                  <span *ngIf="isUpdatingProfile" class="spinner-border spinner-border-sm me-2"></span>
+                  <i *ngIf="!isUpdatingProfile" class="bi bi-check-circle me-2"></i>
+                  {{ isUpdatingProfile ? 'Mise à jour...' : 'Mettre à jour' }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        <!-- Password Change Section -->
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+          <div class="card-header bg-white py-3 border-bottom">
+            <div class="d-flex justify-content-between align-items-center">
+              <h5 class="mb-0 fw-bold text-primary">
+                <i class="bi bi-shield-lock me-2"></i>
+                Sécurité du Compte
+              </h5>
+              <button
+                type="button"
+                class="btn btn-outline-primary btn-sm"
+                (click)="togglePasswordForm()">
+                <i class="bi bi-key me-1"></i>
+                {{ showPasswordForm ? 'Annuler' : 'Changer le mot de passe' }}
+              </button>
+            </div>
+          </div>
+          
+          <!-- Password Change Form -->
+          <div class="card-body p-4" *ngIf="showPasswordForm">
+            <form [formGroup]="passwordForm" (ngSubmit)="changePassword()">
+              <!-- Current Password -->
+              <div class="mb-3">
+                <label for="currentPassword" class="form-label fw-semibold">Mot de passe actuel</label>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="bi bi-lock"></i>
+                  </span>
+                  <input
+                    [type]="showCurrentPassword ? 'text' : 'password'"
+                    class="form-control"
+                    id="currentPassword"
+                    formControlName="currentPassword"
+                    placeholder="Entrez votre mot de passe actuel"
+                    [class.is-invalid]="currentPassword?.invalid && currentPassword?.touched"
+                    [class.is-valid]="currentPassword?.valid && currentPassword?.touched">
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    (click)="toggleCurrentPasswordVisibility()">
+                    <i [class]="showCurrentPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                  </button>
+                </div>
+                <div class="invalid-feedback" *ngIf="currentPassword?.invalid && currentPassword?.touched">
+                  <small>{{ getFieldError('password', 'currentPassword') }}</small>
+                </div>
+              </div>
+
+              <!-- New Password -->
+              <div class="mb-3">
+                <label for="newPassword" class="form-label fw-semibold">Nouveau mot de passe</label>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="bi bi-lock-fill"></i>
+                  </span>
+                  <input
+                    [type]="showNewPassword ? 'text' : 'password'"
+                    class="form-control"
+                    id="newPassword"
+                    formControlName="newPassword"
+                    placeholder="Entrez votre nouveau mot de passe"
+                    [class.is-invalid]="newPassword?.invalid && newPassword?.touched"
+                    [class.is-valid]="newPassword?.valid && newPassword?.touched">
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    (click)="toggleNewPasswordVisibility()">
+                    <i [class]="showNewPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                  </button>
+                </div>
+                <div class="invalid-feedback" *ngIf="newPassword?.invalid && newPassword?.touched">
+                  <small>{{ getFieldError('password', 'newPassword') }}</small>
+                </div>
+                
+                <!-- Password Strength Indicator -->
+                <div *ngIf="newPassword?.value" class="mt-2">
+                  <div class="password-strength">
+                    <div class="progress" style="height: 4px;">
+                      <div class="progress-bar" 
+                           [class]="'bg-' + (getPasswordStrength().score <= 2 ? 'danger' : getPasswordStrength().score <= 3 ? 'warning' : 'success')"
+                           [style.width]="(getPasswordStrength().score / 5 * 100) + '%'"></div>
+                    </div>
+                    <small class="text-muted mt-1 d-block">
+                      Force du mot de passe: 
+                      <span [class]="'text-' + (getPasswordStrength().score <= 2 ? 'danger' : getPasswordStrength().score <= 3 ? 'warning' : 'success')">
+                        {{ getPasswordStrength().score <= 2 ? 'Faible' : getPasswordStrength().score <= 3 ? 'Moyen' : 'Fort' }}
+                      </span>
+                    </small>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Confirm Password -->
+              <div class="mb-4">
+                <label for="confirmPassword" class="form-label fw-semibold">Confirmer le nouveau mot de passe</label>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="bi bi-shield-check"></i>
+                  </span>
+                  <input
+                    [type]="showConfirmPassword ? 'text' : 'password'"
+                    class="form-control"
+                    id="confirmPassword"
+                    formControlName="confirmPassword"
+                    placeholder="Confirmez votre nouveau mot de passe"
+                    [class.is-invalid]="(confirmPassword?.invalid && confirmPassword?.touched) || hasPasswordMismatch"
+                    [class.is-valid]="confirmPassword?.valid && confirmPassword?.touched && !hasPasswordMismatch">
+                  <button
+                    type="button"
+                    class="btn btn-outline-secondary"
+                    (click)="toggleConfirmPasswordVisibility()">
+                    <i [class]="showConfirmPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                  </button>
+                </div>
+                <div class="invalid-feedback" *ngIf="(confirmPassword?.invalid && confirmPassword?.touched) || hasPasswordMismatch">
+                  <small *ngIf="confirmPassword?.errors?.['required']">La confirmation du mot de passe est obligatoire</small>
+                  <small *ngIf="hasPasswordMismatch">Les mots de passe ne correspondent pas</small>
+                </div>
+              </div>
+
+              <!-- Change Password Button -->
+              <div class="d-flex justify-content-end">
+                <button
+                  type="submit"
+                  class="btn btn-warning px-4"
+                  [disabled]="passwordForm.invalid || isChangingPassword">
+                  <span *ngIf="isChangingPassword" class="spinner-border spinner-border-sm me-2"></span>
+                  <i *ngIf="!isChangingPassword" class="bi bi-shield-lock me-2"></i>
+                  {{ isChangingPassword ? 'Changement...' : 'Changer le mot de passe' }}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Avatar Upload Sidebar -->
+      <div class="col-lg-4">
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+          <div class="card-header bg-white py-3 border-bottom">
+            <h5 class="mb-0 fw-bold text-primary">
+              <i class="bi bi-camera me-2"></i>
+              Photo de Profil
+            </h5>
+          </div>
+          <div class="card-body p-4 text-center">
+            <!-- Current Avatar -->
+            <div class="mb-4">
+              <img 
+                [src]="avatarPreview || currentUser?.avatar || '/default-avatar.svg'" 
+                alt="Photo de profil"
+                class="rounded-circle shadow-sm"
+                width="120" 
+                height="120"
+                style="object-fit: cover;">
+            </div>
+
+            <!-- Avatar Upload -->
+            <div class="mb-3">
+              <input
+                type="file"
+                class="form-control"
+                id="avatarInput"
+                accept="image/*"
+                (change)="onAvatarSelected($event)"
+                style="display: none;">
+              <label
+                for="avatarInput"
+                class="btn btn-outline-primary w-100 mb-2"
+                [class.disabled]="isUploadingAvatar">
+                <i class="bi bi-upload me-2"></i>
+                Choisir une photo
+              </label>
+              <small class="text-muted d-block">
+                Formats acceptés: JPG, PNG, GIF (max 5MB)
+              </small>
+            </div>
+
+            <!-- Upload Actions -->
+            <div *ngIf="selectedAvatarFile" class="d-flex gap-2">
+              <button
+                type="button"
+                class="btn btn-success flex-fill"
+                (click)="uploadAvatar()"
+                [disabled]="isUploadingAvatar">
+                <span *ngIf="isUploadingAvatar" class="spinner-border spinner-border-sm me-2"></span>
+                <i *ngIf="!isUploadingAvatar" class="bi bi-check me-2"></i>
+                {{ isUploadingAvatar ? 'Upload...' : 'Confirmer' }}
+              </button>
+              <button
+                type="button"
+                class="btn btn-outline-secondary"
+                (click)="cancelAvatarUpload()"
+                [disabled]="isUploadingAvatar">
+                <i class="bi bi-x"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Account Info -->
+        <div class="card shadow-sm border-0 rounded-4">
+          <div class="card-header bg-white py-3 border-bottom">
+            <h5 class="mb-0 fw-bold text-primary">
+              <i class="bi bi-info-circle me-2"></i>
+              Informations du Compte
+            </h5>
+          </div>
+          <div class="card-body p-4">
+            <div class="mb-3">
+              <small class="text-muted">Rôle</small>
+              <div class="fw-semibold">
+                <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill">
+                  {{ currentUser?.role || 'Utilisateur' }}
+                </span>
+              </div>
+            </div>
+            <div class="mb-3" *ngIf="currentUser?.createdAt">
+              <small class="text-muted">Membre depuis</small>
+              <div class="fw-semibold">{{ currentUser?.createdAt | date:'longDate' }}</div>
+            </div>
+            <div *ngIf="currentUser?.updatedAt">
+              <small class="text-muted">Dernière mise à jour</small>
+              <div class="fw-semibold">{{ currentUser?.updatedAt | date:'short' }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

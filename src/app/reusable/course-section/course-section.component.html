@@ -3,10 +3,11 @@
     <!-- Header + reset button -->
     <div class="container-fluid px-4 mt-4 mb-5 flex-grow-1">
         <div class="row mb-4 page-header">
-            <div class="col-12 d-flex justify-content-center position-relative">
-                <h1 class="main-title mb-0">{{ sectionTitle }}</h1>
-                <button class="btn btn-refresh position-absolute end-0" (click)="resetFilters()">
-                    <mat-icon class="me-2 ">autorenew</mat-icon>
+            <div class="col-12 d-flex justify-content-center position-relative flex-wrap">
+                <h1 class="main-title mb-0 text-center">{{ sectionTitle }}</h1>
+                <button class="btn btn-refresh d-flex align-items-center" (click)="resetFilters()">
+                     <i class="pi pi-sync me-2"></i>
+                     <span class="d-none d-sm-inline">Réinitialiser</span>
                 </button>
             </div>
         </div>
@@ -16,7 +17,7 @@
     <div class="row mb-4">
         <div class="col-md-8 col-lg-6 mx-auto">
             <div class="search-container position-relative">
-                <mat-icon class="search-icon position-absolute top-50 translate-middle-y ms-3 fs-3">search</mat-icon>
+                <i class="pi pi-search search-icon position-absolute top-50 translate-middle-y ms-3 fs-4"></i>
                 <input type="text" class="form-control ps-5" placeholder="Rechercher par titre ou cours"
                     [(ngModel)]="searchTerm" (input)="onSearchInput($event)" />
             </div>
@@ -45,18 +46,33 @@
 
     <!-- TESTS LIST -->
     <ng-container *ngIf="!showVideos">
-        <div class="container rounded-lg bg-white  p-4 border rounded-5 ">
-            <ul class="list-group list-group-flush tests-list">
-                <li *ngFor="let t of filteredTests; trackBy: trackByTest" class="list-group-item px-5">
+        <div class="container rounded-lg bg-white  p-4  rounded-2" *ngIf="filteredTests.length > 0">
+            <div class="row mb-3" *ngIf="totalPages > pageSize && !showVideos">
+                <app-paginator
+                    [totalPages]="totalPages"
+                    [count]="count"
+                    [currentPage]="currentPage"
+                    [previous]="previous"
+                    [next]="next"
+                    (pageChange)="goToPage($event)">
+                </app-paginator>
+            </div>
+
+
+            <ul class="list-group list-group-flush tests-list ">
+                <li *ngFor="let t of filteredTests; trackBy: trackByTest" class="list-group-item px-5 rounded-4 mb-1">
                     <div class="row align-items-center w-100 gx-2">
                         <div class="col-12 col-md-7 col-lg-6">
-                            <div class="test-name mb-1">{{ t.test }}</div>
-                            <small class="text-muted">Année {{ t.year | date:'yyyy' }}</small>
+                            <div class="test-name mb-1 fw-bold text-break">{{ t.test }}</div>
+                            <div class="d-flex flex-row">
+                                <small class="text-muted">Année {{ t.year | date:'yyyy' }}</small>
+                                <!-- <small class="text-muted">{{ t.course}}</small> -->
+                            </div>
+                            
                         </div>
                         <div class="col-12 col-md-5 col-lg-6 text-lg-end mt-2 mt-lg-0">
                             <a [href]="t.link" target="_blank" class="btn btn-sm">
-                                 <mat-icon class="">download</mat-icon>
-                                
+                                 <i class="pi pi-cloud-download me-1 fs-3"></i>
                                 Télécharger
                             </a>
                         </div>
@@ -66,8 +82,7 @@
         </div>
         <div *ngIf="filteredTests.length === 0" class="row">
             <div class="col-12 text-center py-5">
-                <i class="fas fa-search fa-3x mb-3 text-secondary"></i>
-                <h4>Aucun test trouvé</h4>
+                <i class="pi pi-search  fs-3 mb-3 text-secondary"></i>
                 <p>Aucun test ne correspond à vos critères de recherche.</p>
                 <button class="btn btn-outline-primary" (click)="resetFilters()">
                     Réinitialiser
@@ -78,18 +93,29 @@
 
     <!-- VIDEO CARDS -->
     <ng-container *ngIf="showVideos">
-        <div class="row">
+        <div class="row justify-content-center">
+            <div class="row mb-3" *ngIf="videoCount > pageSize && showVideos">
+                <app-paginator
+                    [totalPages]="videoTotalPages"
+                    [count]="videoCount"
+                    [currentPage]="videoCurrentPage"
+                    [previous]="videoPrevious"
+                    [next]="videoNext"
+                    (pageChange)="goToPage($event)">
+                </app-paginator>
+            </div>
+
             <div *ngFor="let v of videoList; trackBy: trackByVideo" class="col-lg-3 col-md-4 col-sm-6 mb-4">
-                <div class="campaign-card h-100 d-flex flex-column">
-                    <div class="card-image-container text-center">
-                        <img [src]="v.thumbnailUrl" alt="{{ v.title }}" class="card-img-top" />
+                <div class="d-flex flex-column h-100 campaign-card h-100 d-flex flex-column bg-white rounded-4 shadow-sm">
+                    <div class="card-image-container text-center ">
+                        <img [src]="v.thumbnailUrl" alt="{{ v.title }}" class="card-img-top rounded-top-4" />
                     </div>
-                    <div class="card-content flex-grow-1 px-3">
-                        <h5 class="card-title">{{ v.title }}</h5>
+                    <div class="card-content flex-grow-1 px-3 ">
+                        <h5 class="card-title text-center fs-5 fw-bold">{{ v.title }}</h5>
                     </div>
-                    <div class="card-actions px-3 pb-3">
-                        <a [href]="v.thumbnailUrl" target="_blank" class="btn w-100">
-                             <mat-icon class="me-1">youtube</mat-icon>
+                    <div class="card-actions px-3 pb-3 mt-2">
+                        <a [href]="v.youtubeUrl" target="_blank" class="btn w-100 justify-content-center">
+                             <i class="pi pi-youtube me-1"></i>
                             Regarder
                         </a>
                     </div>

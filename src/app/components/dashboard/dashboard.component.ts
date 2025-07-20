@@ -1,4 +1,4 @@
-import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../services/api/api.service';
 import { FormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router'; // Import RouterModule
@@ -38,7 +38,7 @@ export class DashboardComponent implements OnInit{
       this.router.navigate(['/login']);
     }
 
-    this.apiService.getDataHandler('sections').subscribe({
+    this.apiService.getDataHandler('sections',1).subscribe({
       next:(data) => {
         this.sections = data.length;
         this.courses = data.reduce((acc:number,section:any) => acc + section.courses.length,0);
@@ -53,7 +53,7 @@ export class DashboardComponent implements OnInit{
 
     this.authService.getUser().subscribe({
       next: (response) => {
-        this.users = response.length;
+        this.users = 0;
         console.log('Users successfully fetched:');
       },
       error: (err) => {

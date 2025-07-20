@@ -1,24 +1,24 @@
-<div class="textfonts">
+<div class="home-container">
   <app-navbar></app-navbar>
 
   <!-- Enhanced Hero Section -->
-  <div class="hero-section d-flex flex-column align-items-center text-center py-5 text-dark position-relative overflow-hidden" style="background: linear-gradient(135deg, #EFF7FC 0%, #D6EFFF 100%);">
-    <div class="container position-relative z-2">
+  <div class="hero-section d-flex flex-column align-items-center text-center py-5 text-dark position-relative">
+    <div class="container-fluid position-relative z-2">
       <div class="row justify-content-center">
         <div class="col-lg-10">
-          <h1 class="display-3 fw-bold p-4 font-inter mb-4 animate__animated animate__fadeInUp">
+          <h1 class="display-4 fs-1 fs-sm-1 fs-md-1 fs-lg-1 fw-bold p-4 font-inter mb-4 animate__animated animate__fadeInUp">
             Votre partenaire de confiance pour la réussite académique au Burundi
           </h1>
           <p class="lead mb-5 fw-light p-4 p-custom-font fs-4 animate__animated animate__fadeInUp animate__delay-1s">
             Révisez gratuitement avec toutes les ressources dont vous avez besoin et mettez toutes les chances de votre côté pour réussir vos examens! </p>
             <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center animate__animated animate__fadeInUp animate__delay-2s">
-            <a href="#courses" class="btn btn-primary btn-lg px-5 py-3 rounded-pill">
-              <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="rocket_launch"></mat-icon>
+            <a href="#courses" class="btn btn-primary btn-lg py-3 rounded-pill">
+               <i class="pi pi-arrow-up-right fw-bold me-2"></i>
 
               Commencer maintenant
             </a>
             <a href="#about" class="btn btn-outline-primary btn-lg px-5 py-3 rounded-pill">
-               <mat-icon class="me-2 justify-content-center">info</mat-icon>
+              <i class="pi pi-info-circle fw-bold me-2"></i>
               En savoir plus
             </a>
           </div>
@@ -28,7 +28,6 @@
     
     <!-- Decorative elements -->
     <div class="position-absolute top-0 end-0 opacity-10">
-      <!-- <i class="fas fa-graduation-cap" style="font-size: 15rem; color: #005ea2;"></i> -->
     </div>
   </div>
 
@@ -39,14 +38,15 @@
         <div class="col-lg-8">
           <div class="text-center mb-5 animate__animated animate__fadeIn">
             <h2 class="display-5 fw-bold mb-4 p-custom-font text-primary">À Propos de Notre Plateforme</h2>
-            <hr class="mx-auto" style="width: 80px; height: 4px; background-color: #005ea2; border: none; border-radius: 2px;">
+            <hr class="mx-auto w-25 border-4 text-primary rounded-2">
           </div>
-          <div class="card shadow-lg border-0 rounded-4 overflow-hidden animate__animated animate__fadeInUp">
+          <div class="card shadow-lg border-0 rounded-4 overflow-hidden animate__animated animate__fadeInUp ">
             <div class="card-body p-5">
-              <div class="row align-items-center">
+              <div class="row align-items-center ">
                 <div class="col-md-4 text-center mb-4 mb-md-0">
-                  <div class="bg-primary bg-opacity-10 rounded-circle d-inline-flex align-items-center justify-content-center" style="width: 120px; height: 120px;">
-                    <mat-icon class="fa-3x text-primary">menu_book</mat-icon>
+                  <div class="d-inline-flex align-items-center justify-content-center">
+                    <i class="pi pi-book text-primary fw-bold fs-3 bg-primary p-5 bg-opacity-10 rounded-circle"></i>
+
                   </div>
                 </div>
                 <div class="col-md-8">
@@ -57,14 +57,14 @@
                     outils pour réussir ses examens nationaux.
                   </p>
                   <div class="d-flex flex-wrap gap-3">
-                    <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fs-6">
-                       <mat-icon class="me fs-5">check_circle</mat-icon>100% Gratuit
+                    <span class="badge bg-primary bg-opacity-10 text-primary px-3 py-3 rounded-pill fs-6">
+                        <i class="pi pi-check-circle fw-bold me-2"></i>100% Gratuit
                     </span>
-                    <span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill fs-6">
-                      <mat-icon class="mt-1">groups</mat-icon>Accessible à tous
+                    <span class="badge bg-success bg-opacity-10 text-success px-3 py-3 rounded-pill fs-6">
+                      <i class="pi pi-users fw-bold me-2"></i>Accessible à tous
                     </span>
-                    <span class="badge bg-info bg-opacity-10 text-info px-3 py-2 rounded-pill fs-6">
-                      <mat-icon >emoji_events</mat-icon>Qualité garantie
+                    <span class="badge bg-info bg-opacity-10 text-info px-3 py-3 rounded-pill fs-6">
+                      <i class="pi pi-trophy fw-bold me-2"></i>Qualité garantie
                     </span>
                   </div>
                 </div>
@@ -86,7 +86,7 @@
         <p class="fs-5 text-muted p-custom-font">
           Découvrez notre mission et notre vision pour l'éducation au Burundi
         </p>
-        <hr class="mx-auto" style="width: 80px; height: 4px; background-color: #005ea2; border: none; border-radius: 2px;">
+        <hr class="mx-auto w-25 border-4 text-primary rounded-2">
       </div>
 
       <div class="row g-5 align-items-center">
@@ -94,9 +94,8 @@
           <div class="card shadow-lg border-0 rounded-4 h-100 mission-card">
             <div class="card-body p-5">
               <div class="d-flex align-items-center mb-4">
-                <div class="bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-4" style="width: 80px; height: 80px;">
-                  <!-- <i class="fas fa-bullseye fa-2x text-success"></i> -->
-                   <mat-icon class="text-primary">target</mat-icon>
+                <div class="bg-success bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-4">
+                    <i class="pi pi-bullseye text-success fs-2"></i>
                 </div>
                 <h3 class="fs-2 fw-bold text-success mb-0 p-custom-font">Notre Mission</h3>
               </div>
@@ -107,15 +106,15 @@
               </p>
               <div class="mt-4">
                 <div class="d-flex align-items-center mb-3">
-                   <mat-icon class="me-2 text-success">check_circle</mat-icon>
+                    <i class="bi bi-check-circle-fill text-success me-2"></i>
                   <span class="p-custom-font">Accès gratuit pour tous</span>
                 </div>
                 <div class="d-flex align-items-center mb-3">
-                   <mat-icon class="me-2 text-success">check_circle</mat-icon>
+                    <i class="bi bi-check-circle-fill text-success me-2"></i>
                   <span class="p-custom-font">Ressources de qualité</span>
                 </div>
                 <div class="d-flex align-items-center">
-                   <mat-icon class="me-2 text-success">check_circle</mat-icon>
+                    <i class="bi bi-check-circle-fill text-success me-2"></i>
                   <span class="p-custom-font">Support continu</span>
                 </div>
               </div>
@@ -127,9 +126,8 @@
           <div class="card shadow-lg border-0 rounded-4 h-100 vision-card">
             <div class="card-body p-5">
               <div class="d-flex align-items-center mb-4">
-                <div class="bg-warning bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-4" style="width: 80px; height: 80px;">
-                  <!-- <i class="fas fa-eye fa-2x text-warning"></i> -->
-                   <mat-icon class="fa-2x text-warning">visibility</mat-icon>
+                <div class="bg-warning bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-4" >
+                  <i class="pi pi-eye fa-2x text-warning"></i>
                 </div>
                 <h3 class="fs-2 fw-bold text-warning mb-0 p-custom-font">Notre Vision</h3>
               </div>
@@ -141,15 +139,15 @@
               </p>
               <div class="mt-4">
                 <div class="d-flex align-items-center mb-3">
-                  <i class="fas fa-star text-warning me-3"></i>
+                  <i class="bi bi-star-fill text-warning me-3"></i>
                   <span class="p-custom-font">Excellence académique</span>
                 </div>
                 <div class="d-flex align-items-center mb-3">
-                  <i class="fas fa-star text-warning me-3"></i>
+                  <i class="bi bi-star-fill  text-warning me-3"></i>
                   <span class="p-custom-font">Innovation pédagogique</span>
                 </div>
                 <div class="d-flex align-items-center">
-                  <i class="fas fa-star text-warning me-3"></i>
+                  <i class="bi bi-star-fill  text-warning me-3"></i>
                   <span class="p-custom-font">Impact social positif</span>
                 </div>
               </div>
@@ -161,14 +159,14 @@
   </section>
 
   <!-- Enhanced Courses Section -->
-  <section id="courses" class="py-5" style="background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);">
+  <section id="courses" class="py-5">
     <div class="container">
       <div class="text-center mb-5 animate__animated animate__fadeIn">
         <h2 class="display-5 fw-bold p-custom-font mb-4">Explorez Nos <span class="text-primary">Matières</span></h2>
         <p class="fs-5 text-muted p-custom-font">
           Découvrez notre collection d'examens par discipline
         </p>
-        <hr class="mx-auto" style="width: 80px; height: 4px; background-color: #005ea2; border: none; border-radius: 2px;">
+        <hr class="mx-auto w-100 border-2 text-primary rounded-2">
       </div>
 
       <div class="row justify-content-center g-4">
@@ -176,8 +174,8 @@
           <div class="card shadow-lg border-0 rounded-4 h-100 modern-course-card">
             <div class="card-body p-4 d-flex flex-column">
               <div class="text-center mb-4">
-                <div class="{{course.bgColor}} rounded-circle d-inline-flex align-items-center justify-content-center mb-3" style="width: 100px; height: 100px;">
-                  <i class="fas {{course.icon}} fa-3x {{course.iconColor}}"></i>
+                <div class="{{course.bgColor}} rounded-circle d-inline-flex align-items-center justify-content-center mb-3" >
+                  <i class="pi {{course.icon}} {{course.iconColor}}"></i>
                 </div>
                 <h4 class="fw-bold p-custom-font mb-3">{{course.title}}</h4>
               </div>
@@ -189,14 +187,13 @@
                   <small class="text-muted">Examens disponibles</small>
                   <small class="fw-bold {{course.examsColor}}">{{course.exams}}</small>
                 </div>
-                <div class="progress" style="height: 8px;">
+                <div class="progress h-25">
                   <div class="progress-bar {{course.progressBar}}" [style.width]="course.progress + '%' "></div>
                 </div>
               </div>
               <a href="{{course.link}}" class="btn {{course.btnClass}} btn-lg rounded-pill w-100">
-                <!-- <i class="fas fa-arrow-right me-2"></i> -->
-                 <mat-icon class="me-3">arrow_forward</mat-icon>
-                Accéder aux ressources
+                <i class="pi pi-arrow-right me-2"></i>
+                Accéder ...
               </a>
             </div>
           </div>
@@ -213,11 +210,11 @@
             </p>
             <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
               <a href="#courses" class="btn btn-light btn-lg px-5 py-3 rounded-pill">
-                 <mat-icon class="me-2 fs-2">play_arrow</mat-icon>
+                <i class="pi pi-arrow-up-right me-2"></i>
                 Commencer maintenant
               </a>
               <a href="/contact" class="btn btn-light btn-lg px-5 py-3 rounded-pill">
-                 <mat-icon class="me-2 fs-2">mail</mat-icon>
+                <i class="pi pi-envelope me-2"></i>
                 Nous contacter
               </a>
             </div>

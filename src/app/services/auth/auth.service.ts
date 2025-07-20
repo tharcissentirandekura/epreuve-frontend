@@ -1,165 +1,296 @@
 
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, BehaviorSubject, throwError } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
+import { catchError, tap, map } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { jwtDecode } from 'jwt-decode';
+import { isPlatformBrowser } from '@angular/common';
 import { environment } from '../../../environments/environment';
-
-interface Decoded {exp: number;}
+import { TokenService } from './token.service';
+import {
+  User,
+  LoginCredentials,
+  RegisterData,
+  AuthResponse,
+  UserRole
+} from '../../models/user.model';
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = environment.apiBaseUrl; // Replace with your API URL
+  private apiUrl = environment.apiBaseUrl;
+
+  // Enhanced authentication state management
+  private currentUserSubject = new BehaviorSubject<User | null>(null);
+  public currentUser$ = this.currentUserSubject.asObservable();
+
+  private isAuthenticatedSubject = new BehaviorSubject<boolean>(false);
+  public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
+
+  // Legacy support
   private isLoggedInSubject = new BehaviorSubject<boolean>(false);
   isLoggedIn$ = this.isLoggedInSubject.asObservable();
 
-  setIsLoggedInState(isLoggedIn: boolean) {
-    this.isLoggedInSubject.next(isLoggedIn);
-  }
-
   constructor(
     private http: HttpClient,
-    private router:Router,
-  ) {}
-
-  login(credentials: { username: string, password: string }): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/login/`, credentials)
-      .pipe(
-        tap(token => {
-          this.setToken(token.refresh, token.access);
-          this.setIsLoggedInState(true);          
-        }),
-        catchError((error)=>{
-          console.error(`Error:`, error);
-          return throwError(() => error);
-        })
-
-
-      );
-
+    private router: Router,
+    private tokenService: TokenService,
+    @Inject(PLATFORM_ID) private platformId: Object
+  ) {
+    this.initializeAuth();
   }
 
-  register(user:any): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/register/`, user)
+  // Initialize authentication state on service creation
+  private initializeAuth(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      this.tokenService.cleanupExpiredTokens();
+
+      if (this.tokenService.hasValidSession()) {
+        const user = this.tokenService.getUser();
+        if (user) {
+          this.setAuthenticationState(true, user);
+        } else {
+          // Token exists but no user data, fetch user info
+          this.fetchCurrentUser().subscribe({
+            next: (user) => this.setAuthenticationState(true, user),
+            error: () => this.logout()
+          });
+        }
+      } else {
+        this.setAuthenticationState(false, null);
+      }
+    }
+  }
+
+  // Enhanced authentication methods
+  login(credentials: LoginCredentials): Observable<AuthResponse> {
+    return this.http.post<any>(`${this.apiUrl}/login/`, {
+      username: credentials.username,
+      password: credentials.password
+    }).pipe(
+      tap(response => {
+        // Store tokens using the new token service
+        this.tokenService.setTokens(
+          response.access,
+          response.refresh,
+          credentials.rememberMe || false
+        );
+
+        // Fetch and store user data
+        this.fetchCurrentUser().subscribe({
+          next: (user) => {
+            this.tokenService.setUser(user);
+            this.setAuthenticationState(true, user);
+          },
+          error: (error) => {
+            console.error('Failed to fetch user data:', error);
+            // Still set as authenticated but without user data
+            this.setAuthenticationState(true, null);
+          }
+        });
+      }),
+      map(response => {
+        if (!response.user) {
+          throw new Error('No user data received from login');
+        }
+        return {
+          user: response.user,
+          access: response.access,
+          refresh: response.refresh,
+          expiresIn: response.expiresIn
+        };
+      }),
+      catchError((error) => {
+        console.error('Login error:', error);
+        return throwError(() => error);
+      })
+    );
+  }
+
+  register(userData: RegisterData): Observable<AuthResponse> {
+    const registerPayload = {
+      first_name: userData.firstName,
+      last_name: userData.lastName,
+      username: userData.username,
+      email: userData.email,
+      password: userData.password
+    };
+
+    return this.http.post<any>(`${this.apiUrl}/register/`, registerPayload)
       .pipe(
-        tap((response) => {
-          console.log(response);
+        map(response => {
+          if (!response.user) {
+            throw new Error('No user data received from registration');
+          }
+          return {
+            user: response.user,
+            access: response.access || '',
+            refresh: response.refresh || '',
+            expiresIn: response.expiresIn
+          };
+        }),
+        catchError((error) => {
+          console.error('Registration error:', error);
+          return throwError(() => error);
         })
       );
   }
 
   logout(): void {
-    this.removeToken();
-    this.isLoggedInSubject.next(false);
-    this.router.navigate(['/login']);
+    // Clear all authentication data
+    this.tokenService.removeTokens();
+    this.setAuthenticationState(false, null);
+
+    // Navigate to home page
+    this.router.navigate(['/home']);
   }
 
-  setToken(refresh: string,access:string): void {
-    console.log('Setting tokens in local storage');
-    console.log('Access Token:', access);
-    console.log('Refresh Token:', refresh);
-      localStorage.setItem('access_token', access);
-      localStorage.setItem('refresh_token', refresh);
+  // Enhanced authentication state management
+  private setAuthenticationState(isAuthenticated: boolean, user: User | null): void {
+    this.isAuthenticatedSubject.next(isAuthenticated);
+    this.currentUserSubject.next(user);
 
-  }
-  getToken(){
-    return localStorage.getItem('access_token');
-
-  }
-  removeToken(): void {
-      localStorage.removeItem('access_token');
-      localStorage.removeItem('refresh_token');
-      localStorage.clear();
+    // Legacy support
+    this.isLoggedInSubject.next(isAuthenticated);
   }
 
-  /**
-   * managing tokens
-   * 
-   */
-
-  isLoggedIn():boolean{
-    const token = this.getToken();
-    if (!token) return false;
-    try {
-      const {exp} = jwtDecode<Decoded>(token || '');
-      return Date.now() < exp * 1000; // exp is in seconds, convert to milliseconds
-    } catch (error) {
-      return false
-    }
+  // Legacy support method
+  setIsLoggedInState(isLoggedIn: boolean): void {
+    this.isLoggedInSubject.next(isLoggedIn);
   }
 
-  checkSession(){
-    if (this.isLoggedIn()){
-      this.setIsLoggedInState(true);
-    }else{
-      this.logout();
+  // Enhanced token management methods
+  refreshToken(): Observable<AuthResponse> {
+    const refreshToken = this.tokenService.getRefreshToken();
+    if (!refreshToken) {
+      return throwError(() => new Error('No refresh token available'));
     }
 
+    return this.http.post<any>(`${this.apiUrl}/token/refresh/`, {
+      refresh: refreshToken
+    }).pipe(
+      tap(response => {
+        // Update access token
+        this.tokenService.updateAccessToken(response.access);
+      }),
+      map(response => {
+        const currentUser = this.getCurrentUser();
+        if (!currentUser) {
+          throw new Error('No current user available');
+        }
+        return {
+          user: currentUser,
+          access: response.access,
+          refresh: refreshToken,
+          expiresIn: response.expiresIn
+        };
+      }),
+      catchError((error) => {
+        console.error('Token refresh error:', error);
+        // If refresh fails, logout user
+        this.logout();
+        return throwError(() => error);
+      })
+    );
   }
-  /**
-   * 
-   * @returns additional token info handlers
-   */
 
-  getTokenExpirationDate(){
-    const token = localStorage.getItem('access_token');
+  // User data methods
+  fetchCurrentUser(): Observable<User> {
+    const token = this.tokenService.getAccessToken();
     if (!token) {
-      return null;
+      return throwError(() => new Error('No access token available'));
     }
-    try {
-      const decodedToken:any = jwtDecode(token);
-      if(decodedToken.exp){
-        return new Date(decodedToken.exp * 1000); // convert to milliseconds
-      }else{
-        return null;
-      }
-    } catch (error) {
-      console.error("Error decoding token", error);
-      return null; 
-    }
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<any>(`${this.apiUrl}/users/`, { headers }).pipe(
+      map(response => {
+        // Transform API response to User model
+        const userData = response.data || response;
+        return {
+          id: userData.id,
+          firstName: userData.first_name || userData.firstName,
+          lastName: userData.last_name || userData.lastName,
+          username: userData.username,
+          email: userData.email,
+          avatar: userData.avatar,
+          role: userData.role || UserRole.USER,
+          isActive: userData.is_active !== false,
+          createdAt: userData.created_at ? new Date(userData.created_at) : undefined,
+          updatedAt: userData.updated_at ? new Date(userData.updated_at) : undefined,
+          preferences: userData.preferences
+        } as User;
+      }),
+      catchError((error) => {
+        console.error('Fetch user error:', error);
+        return throwError(() => error);
+      })
+    );
   }
 
-  isTokenExpired():boolean{
-    const expirationDate = this.getTokenExpirationDate();
-    if(!expirationDate){
-      
-      return true; // treat missing or invalid token as expired
-    }
-    console.log('Token Expiration date:', expirationDate);
-    return expirationDate.getTime() < new Date().getTime();
-
-  }
-
-  getRefreshToken(): string | null {
-    // console.log('Getting refresh token from local storage');
-    return localStorage.getItem('refresh_token');
+  // Public getter methods
+  getCurrentUser(): User | null {
+    return this.currentUserSubject.value;
   }
 
   isAuthenticated(): boolean {
-    return !!this.getToken();
+    return this.isAuthenticatedSubject.value && this.tokenService.hasValidSession();
   }
 
-  refreshToken(): Observable<any> {
-    return this.http.post<any>(`${this.apiUrl}/token/refresh/`, { refresh: this.getRefreshToken() })
-      .pipe(
-        tap((response) => {
-          console.log(response);
-          localStorage.setItem('access_token', response.access);
-        })
-      );
+  // Legacy support methods
+  getToken(): string | null {
+    return this.tokenService.getAccessToken();
   }
 
-  getUser(): Observable<any> {
-    const token = this.getToken();
-    const headers = new HttpHeaders().set("Authorization", `Bearer ${token}`);
-    return this.http.get<any>(`${this.apiUrl}/users/`, { headers})
-      .pipe(
-        tap((response) => {
-          return response.data;
-        })
-      );
+  getRefreshToken(): string | null {
+    return this.tokenService.getRefreshToken();
+  }
+
+  isLoggedIn(): boolean {
+    return this.isAuthenticated();
+  }
+
+  getTokenExpirationDate(): Date | null {
+    return this.tokenService.getTokenExpirationDate();
+  }
+
+  isTokenExpired(): boolean {
+    return this.tokenService.isTokenExpired();
+  }
+
+  checkSession(): void {
+    if (this.tokenService.shouldRefreshToken()) {
+      // Attempt to refresh token
+      this.refreshToken().subscribe({
+        next: () => {
+          console.log('Token refreshed successfully');
+        },
+        error: (error) => {
+          console.error('Token refresh failed:', error);
+          this.logout();
+        }
+      });
+    } else if (!this.tokenService.hasValidSession()) {
+      this.logout();
+    }
+  }
+
+  // Social authentication placeholder
+  socialLogin(provider: string): Observable<AuthResponse> {
+    // This will be implemented when social auth is added
+    return throwError(() => new Error('Social authentication not implemented yet'));
+  }
+
+  // User management methods
+  getUser(): Observable<User> {
+    return this.fetchCurrentUser();
+  }
+
+  // Legacy token methods for backward compatibility
+  setToken(refresh: string, access: string): void {
+    this.tokenService.setTokens(access, refresh, false);
+  }
+
+  removeToken(): void {
+    this.tokenService.removeTokens();
   }
 }

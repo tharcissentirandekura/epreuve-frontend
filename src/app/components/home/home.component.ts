@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
   courses = [
     {
       title: 'Bio-Chimie',
-      icon: 'fa-flask',
+      icon: 'pi-inbox ',
       iconColor: 'text-primary',
       bgColor: 'bg-primary bg-opacity-10',
       exams: '15+',
@@ -33,7 +33,7 @@ export class HomeComponent implements OnInit {
     },
     {
       title: 'Langues',
-      icon: 'fa-language',
+      icon: 'pi-language',
       iconColor: 'text-success',
       bgColor: 'bg-success bg-opacity-10',
       exams: '12+',
@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit {
     },
     {
       title: 'Maths-Phys',
-      icon: 'fa-infinity',
+      icon: 'pi-chart-line',
       iconColor: 'text-warning',
       bgColor: 'bg-warning bg-opacity-10',
       exams: '18+',
@@ -61,7 +61,7 @@ export class HomeComponent implements OnInit {
     },
     {
       title: '9ème',
-      icon: 'fa-graduation-cap',
+      icon: 'pi-graduation-cap',
       iconColor: 'text-info',
       bgColor: 'bg-info bg-opacity-10',
       exams: '20+',
@@ -81,7 +81,7 @@ export class HomeComponent implements OnInit {
       title: 'Mathématiques et Physique',
       badge: 'Maths-Phys',
       badgeClass: 'bg-primary',
-      icon: 'fa-infinity',
+      icon: 'pi-chart-line',
       iconColor: 'text-primary',
       src: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
       duration: '45 min',
@@ -92,7 +92,7 @@ export class HomeComponent implements OnInit {
       title: 'Biologie et Chimie',
       badge: 'Bio-Chimie',
       badgeClass: 'bg-success',
-      icon: 'fa-flask',
+      icon: 'pi-inbox ',
       iconColor: 'text-success',
       src: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
       duration: '38 min',
@@ -103,7 +103,7 @@ export class HomeComponent implements OnInit {
       title: 'Langues',
       badge: 'Langues',
       badgeClass: 'bg-warning',
-      icon: 'fa-language',
+      icon: 'pi-language',
       iconColor: 'text-warning',
       src: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
       duration: '52 min',
@@ -114,7 +114,7 @@ export class HomeComponent implements OnInit {
       title: 'Concours 9ème',
       badge: '9ème',
       badgeClass: 'bg-info',
-      icon: 'fa-graduation-cap',
+      icon: 'pi-graduation-cap',
       iconColor: 'text-info',
       src: 'https://www.youtube.com/embed/dQw4w9WgXcQ',
       duration: '35 min',
@@ -126,7 +126,7 @@ export class HomeComponent implements OnInit {
   constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
-    this.apiService.getDataHandler('sections').subscribe({
+    this.apiService.getDataHandler('sections',1).subscribe({
       next: (response) => {
         this.data = response;
       },

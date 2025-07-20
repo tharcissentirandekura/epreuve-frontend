@@ -1,14 +1,20 @@
 {
-  "name": "epreuves-types-website",
+  "name": "epreuves",
   "type": "module",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:prod": "ng build --configuration production",
+    "build:dev": "ng build --configuration development",
+    "build:ssr": "ng run epreuves:server",
+    "build:ssr:prod": "ng run epreuves:server:production",
+    "build:ssr:dev": "ng run epreuves:server:development",
+    "prerender": "ng run epreuves:prerender",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:EpreuvesTypes-website": "node dist/epreuves-types-website/server/server.mjs"
+    "serve:ssr:epreuves": "node dist/epreuves/server/server.mjs"
   },
   "private": true,
   "dependencies": {
@@ -36,12 +42,13 @@
     "localstorage-polyfill": "^1.0.1",
     "lucide-angular": "^0.511.0",
     "nvm": "^0.0.4",
+    "primeicons": "^7.0.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.3"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "^18.0.3",
+    "@angular-devkit/build-angular": "^18.2.20",
     "@angular/cli": "^18.0.3",
     "@angular/compiler-cli": "^18.0.0",
     "@types/bootstrap": "^5.2.10",

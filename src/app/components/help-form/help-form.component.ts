@@ -41,15 +41,16 @@ export class HelpFormComponent implements OnInit {
     this.searchTerms.pipe(
       debounceTime(300),
       distinctUntilChanged(),
-      switchMap(term => this.faqService.searchFaqs(term))
+      switchMap(term => 
+        this.faqService.searchFaqs(term))
     ).subscribe(results => {
       this.filteredFaqs = this.selectedCategory 
         ? results.filter(faq => faq.category === this.selectedCategory)
         : results;
     });
     
-    // Load Bootstrap JS for accordion functionality
-    this.loadBootstrapJs();
+    // // Load Bootstrap JS for accordion functionality
+    // this.loadBootstrapJs();
   }
 
   loadFaqs(): void {
@@ -84,7 +85,7 @@ export class HelpFormComponent implements OnInit {
   }
 
   search(): void {
-    this.searchTerms.next(this.searchTerm);
+    this.searchTerms.next(this.searchTerm.trim().toLowerCase()); 
   }
 
   resetFilters(): void {
@@ -93,13 +94,13 @@ export class HelpFormComponent implements OnInit {
     this.loadFaqs();
   }
 
-  loadBootstrapJs(): void {
-    // Dynamically load Bootstrap JS
-    // const script = document.createElement('script');
-    // script.src = 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js';
-    // script.integrity = 'sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz';
-    // script.crossOrigin = 'anonymous';
-    // document.body.appendChild(script);
-  }
+  // loadBootstrapJs(): void {
+  //   // Dynamically load Bootstrap JS
+  //   // const script = document.createElement('script');
+  //   // script.src = 'https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js';
+  //   // script.integrity = 'sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz';
+  //   // script.crossOrigin = 'anonymous';
+  //   // document.body.appendChild(script);
+  // }
 
 }

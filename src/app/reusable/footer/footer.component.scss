@@ -1,99 +1,5 @@
-// /* Apply the Inter font-family globally to the hero section */
-// h3,
-// li,
-// p {
-//   font-family: 'Inter', sans-serif;
-// }
-
-// .p-custom-font {
-//   font-family: 'Arial', sans-serif!important;
-// }
-
-// .brand-name{
-//   color: #005ea2;
-// }
-
-// .logo-icon {
-//   width: 2rem;
-//   height: 2rem;
-// }
-
-// .footer-links a {
-//   color: black;
-//   text-decoration: none;
-//   transition: color 0.2s;
-// }
-
-// .footer-links a:hover {
-//   color: #005ea2;
-// }
-
-// .contact-icon {
-//   width: 1rem;
-//   height: 1rem;
-// }
-
-// .newsletter-form .form-control {
-//   background-color: white;
-//   border: 1px solid #005ea2;
-//   color: grey;
-// }
-
-// .newsletter-form .form-control:focus {
-//   background-color: white;
-//   border-color: #005ea2;
-//   box-shadow: 0 0 0 0.15rem #005ea2;
-// }
-
-// .newsletter-form .form-control::placeholder {
-//   color: #6b7280;
-// }
-
-// .btn-primary {
-//   background-color: #005ea2;
-//   border-color: black;
-//   transition: background-color 0.2s;
-// }
-
-// .btn-primary:hover {
-//   background-color: rgb(55, 119, 221);
-//   border-color: black;
-// }
-
-// .social-links {
-//   gap: 1.5rem;
-// }
-
-// .social-icon {
-//   width: 1.25rem;
-//   height: 1.25rem;
-//   transition: color 0.2s;
-// }
-
-// .social-links a {
-//   color: black;
-// }
-
-// .social-links a:hover {
-//   color: #005ea2;
-// }
-
-// @media (max-width: 768px) {
-//   .footer-bottom {
-//       text-align: center;
-//   }
-  
-//   .social-links {
-//       justify-content: center;
-//       margin-top: 1rem;
-//   }
-// }
-
-
-
 
 /* Import Inter font */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 /* Apply Inter font globally */
 .p-custom-font {
@@ -139,7 +45,8 @@
 /* Social link hover effects */
 .social-link {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  
+  width: 45px;
+  height: 45px;
   &:hover {
     transform: translateY(-3px) scale(1.1);
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);

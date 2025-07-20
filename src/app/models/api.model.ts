@@ -1,10 +1,11 @@
 export interface Test{
-    id: number;
-    test: string;
-    course: string;
-    section: string;
-    link?: string;
-    year?: string;
+  id: number;
+  test: string;
+  link: string;
+  course: string;
+  section: string;
+  year: string;
+  metadata: any;
 }
 
 export interface Video {
@@ -12,4 +13,11 @@ export interface Video {
     title: string;
     thumbnailUrl: string;
     youtubeUrl: string;
+}
+
+export interface ApiResponse{
+    count: number;
+    next: string | null;
+    previous: string | null;
+    results: Test[] | Video[];
 }
