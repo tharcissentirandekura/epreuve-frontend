@@ -74,7 +74,7 @@
             <div *ngIf="isRegisterPage">
               <!-- First Name Field -->
               <div class="mb-3">
-                <label for="first_name" class="form-label fw-semibold">Prénom</label>
+                <label for="firstName" class="form-label fw-semibold">Prénom</label>
                 <div class="input-group">
                   <span class="input-group-text">
                     <i class="bi bi-person"></i>
@@ -82,21 +82,20 @@
                   <input
                     type="text"
                     class="form-control"
-                    id="first_name"
-                    formControlName="first_name"
+                    id="firstName"
+                    formControlName="firstName"
                     placeholder="Entrez votre prénom"
                     [class.is-invalid]="firstName?.invalid && firstName?.touched"
                     [class.is-valid]="firstName?.valid && firstName?.touched">
                 </div>
                 <div class="invalid-feedback" *ngIf="firstName?.invalid && firstName?.touched">
-                  <small *ngIf="firstName?.errors?.['required']">Le prénom est obligatoire</small>
-                  <small *ngIf="firstName?.errors?.['minlength']">Le prénom doit contenir au moins 2 caractères</small>
+                  <small>{{ getFieldError('firstName') }}</small>
                 </div>
               </div>
 
               <!-- Last Name Field -->
               <div class="mb-3">
-                <label for="last_name" class="form-label fw-semibold">Nom de famille</label>
+                <label for="lastName" class="form-label fw-semibold">Nom de famille</label>
                 <div class="input-group">
                   <span class="input-group-text">
                     <i class="bi bi-person-fill"></i>
@@ -104,15 +103,35 @@
                   <input
                     type="text"
                     class="form-control"
-                    id="last_name"
-                    formControlName="last_name"
+                    id="lastName"
+                    formControlName="lastName"
                     placeholder="Entrez votre nom de famille"
                     [class.is-invalid]="lastName?.invalid && lastName?.touched"
                     [class.is-valid]="lastName?.valid && lastName?.touched">
                 </div>
                 <div class="invalid-feedback" *ngIf="lastName?.invalid && lastName?.touched">
-                  <small *ngIf="lastName?.errors?.['required']">Le nom de famille est obligatoire</small>
-                  <small *ngIf="lastName?.errors?.['minlength']">Le nom de famille doit contenir au moins 2 caractères</small>
+                  <small>{{ getFieldError('lastName') }}</small>
+                </div>
+              </div>
+
+              <!-- Email Field -->
+              <div class="mb-3">
+                <label for="email" class="form-label fw-semibold">Adresse email</label>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="bi bi-envelope"></i>
+                  </span>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="email"
+                    formControlName="email"
+                    placeholder="Entrez votre adresse email"
+                    [class.is-invalid]="email?.invalid && email?.touched"
+                    [class.is-valid]="email?.valid && email?.touched">
+                </div>
+                <div class="invalid-feedback" *ngIf="email?.invalid && email?.touched">
+                  <small>{{ getFieldError('email') }}</small>
                 </div>
               </div>
             </div>
@@ -136,8 +155,7 @@
                   [class.is-valid]="username?.valid && username?.touched">
               </div>
               <div class="invalid-feedback" *ngIf="username?.invalid && username?.touched">
-                <small *ngIf="username?.errors?.['required']">Le nom d'utilisateur est obligatoire</small>
-                <small *ngIf="username?.errors?.['minlength'] && isRegisterPage">Le nom d'utilisateur doit contenir au moins 3 caractères</small>
+                <small>{{ getFieldError('username') }}</small>
               </div>
             </div>
 
@@ -166,8 +184,52 @@
                 </button>
               </div>
               <div class="invalid-feedback" *ngIf="password?.invalid && password?.touched">
-                <small *ngIf="password?.errors?.['required']">Le mot de passe est obligatoire</small>
-                <small *ngIf="password?.errors?.['minlength']">Le mot de passe doit contenir au moins 6 caractères</small>
+                <small>{{ getFieldError('password') }}</small>
+              </div>
+              
+              <!-- Password Strength Indicator (Registration only) -->
+              <div *ngIf="isRegisterPage && password?.value" class="mt-2">
+                <div class="password-strength">
+                  <div class="progress" style="height: 4px;">
+                    <div class="progress-bar" 
+                         [class]="'bg-' + (getPasswordStrength().score <= 2 ? 'danger' : getPasswordStrength().score <= 3 ? 'warning' : 'success')"
+                         [style.width]="(getPasswordStrength().score / 5 * 100) + '%'"></div>
+                  </div>
+                  <small class="text-muted mt-1 d-block">
+                    Force du mot de passe: 
+                    <span [class]="'text-' + (getPasswordStrength().score <= 2 ? 'danger' : getPasswordStrength().score <= 3 ? 'warning' : 'success')">
+                      {{ getPasswordStrength().score <= 2 ? 'Faible' : getPasswordStrength().score <= 3 ? 'Moyen' : 'Fort' }}
+                    </span>
+                  </small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Confirm Password Field (Registration only) -->
+            <div *ngIf="isRegisterPage" class="mb-3">
+              <label for="confirmPassword" class="form-label fw-semibold">Confirmer le mot de passe</label>
+              <div class="input-group">
+                <span class="input-group-text">
+                  <i class="bi bi-lock-fill"></i>
+                </span>
+                <input
+                  [type]="showConfirmPassword ? 'text' : 'password'"
+                  class="form-control"
+                  id="confirmPassword"
+                  formControlName="confirmPassword"
+                  placeholder="Confirmez votre mot de passe"
+                  [class.is-invalid]="(confirmPassword?.invalid && confirmPassword?.touched) || hasPasswordMismatch"
+                  [class.is-valid]="confirmPassword?.valid && confirmPassword?.touched && !hasPasswordMismatch">
+                <button
+                  type="button"
+                  class="btn btn-outline-secondary"
+                  (click)="toggleConfirmPasswordVisibility()">
+                  <i [class]="showConfirmPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                </button>
+              </div>
+              <div class="invalid-feedback" *ngIf="(confirmPassword?.invalid && confirmPassword?.touched) || hasPasswordMismatch">
+                <small *ngIf="confirmPassword?.errors?.['required']">La confirmation du mot de passe est obligatoire</small>
+                <small *ngIf="hasPasswordMismatch">Les mots de passe ne correspondent pas</small>
               </div>
             </div>
 
@@ -178,8 +240,7 @@
                   class="form-check-input"
                   type="checkbox"
                   id="rememberMe"
-                  [(ngModel)]="rememberMe"
-                  [ngModelOptions]="{standalone: true}">
+                  formControlName="rememberMe">
                 <label class="form-check-label" for="rememberMe">
                   Se souvenir de moi
                 </label>
