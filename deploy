@@ -1,0 +1,71 @@
+#!/bin/bash
+
+# Enhanced deployment script for Angular application
+# Usage: ./deploy [env] [options]
+#   env: 'prod', 'dev', 'staging' (default: 'dev')
+#   options: '--ssr', '--stats', '--analyze', '--no-progress'
+
+# Set default environment
+ENV=${1:-dev}
+ADDITIONAL_ARGS=""
+
+# Process additional arguments
+for arg in "${@:2}"; do
+  case $arg in
+    --ssr)
+      ADDITIONAL_ARGS="$ADDITIONAL_ARGS --ssr"
+      ;;
+    --stats)
+      ADDITIONAL_ARGS="$ADDITIONAL_ARGS --stats-json"
+      ;;
+    --analyze)
+      ADDITIONAL_ARGS="$ADDITIONAL_ARGS --source-map"
+      ;;
+    --no-progress)
+      ADDITIONAL_ARGS="$ADDITIONAL_ARGS --progress=false"
+      ;;
+    *)
+      echo "Warning: Unknown argument '$arg'"
+      ;;
+  esac
+done
+
+# Print build information
+echo "🚀 Starting build process..."
+echo "📋 Environment: $ENV"
+echo "🔧 Additional options: $ADDITIONAL_ARGS"
+
+# Build based on environment
+case $ENV in
+  prod|production)
+    echo "🏗️  Building for PRODUCTION..."
+    ng build --configuration production $ADDITIONAL_ARGS
+    BUILD_STATUS=$?
+    ;;
+  staging)
+    echo "🏗️  Building for STAGING..."
+    ng build --configuration staging $ADDITIONAL_ARGS
+    BUILD_STATUS=$?
+    ;;
+  dev|development|*)
+    echo "🏗️  Building for DEVELOPMENT..."
+    ng build --configuration development $ADDITIONAL_ARGS
+    BUILD_STATUS=$?
+    ;;
+esac
+
+# Check build status
+if [ $BUILD_STATUS -eq 0 ]; then
+  echo "✅ Build completed successfully!"
+  
+  # Optional post-build steps
+  if [[ "$ENV" == "prod" || "$ENV" == "production" ]]; then
+    echo "📦 Preparing for deployment..."
+    netlify deploy --prod
+  fi
+  
+  exit 0
+else
+  echo "❌ Build failed with status code $BUILD_STATUS"
+  exit $BUILD_STATUS
+fi

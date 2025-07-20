@@ -7,6 +7,7 @@ import { LanguesComponent } from './components/langues/langues.component';
 import { ConcoursComponent } from './components/concours/concours.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { LoginComponent } from './components/login/login.component';
+import { ProfileComponent } from './components/profile/profile.component';
 // import { RegisterComponent } from './components/register/register.component';
 import { NgModule } from '@angular/core';
 import { HelpFormComponent } from './components/help-form/help-form.component';
@@ -22,6 +23,7 @@ export const routes: Routes = [
   { path: 'contact', component: ContactComponent },
   {path: 'dashboard',component: DashboardComponent},
   {path: 'login',component: LoginComponent},
+  {path: 'profile',component: ProfileComponent},
   {path: 'Terms', component: TermsServiceComponent},
   {path: 'Privacy', component: TermsServiceComponent},
   // {path: 'Terms', component: TermsServiceComponent},

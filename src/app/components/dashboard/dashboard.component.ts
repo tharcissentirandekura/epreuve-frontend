@@ -53,7 +53,7 @@ export class DashboardComponent implements OnInit{
 
     this.authService.getUser().subscribe({
       next: (response) => {
-        this.users = response.length;
+        this.users = 0;
         console.log('Users successfully fetched:');
       },
       error: (err) => {
