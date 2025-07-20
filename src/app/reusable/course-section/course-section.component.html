@@ -3,10 +3,11 @@
     <!-- Header + reset button -->
     <div class="container-fluid px-4 mt-4 mb-5 flex-grow-1">
         <div class="row mb-4 page-header">
-            <div class="col-12 d-flex justify-content-center position-relative">
-                <h1 class="main-title mb-0">{{ sectionTitle }}</h1>
-                <button class="btn btn-refresh position-absolute end-0" (click)="resetFilters()">
+            <div class="col-12 d-flex justify-content-center position-relative flex-wrap">
+                <h1 class="main-title mb-0 text-center">{{ sectionTitle }}</h1>
+                <button class="btn btn-refresh d-flex align-items-center" (click)="resetFilters()">
                      <i class="pi pi-sync me-2"></i>
+                     <span class="d-none d-sm-inline">Réinitialiser</span>
                 </button>
             </div>
         </div>

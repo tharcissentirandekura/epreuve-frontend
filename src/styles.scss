@@ -2,12 +2,28 @@
 @import "primeicons/primeicons.css";
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
   min-height: 100dvh;
   overflow-x: hidden;
+  padding-top: 2%; // Account for fixed navbar
+}
+
+// Adjust body padding for different screen sizes
+//Tablet and large mobile optimizations 576px and belo
+@media (max-width: 768px) {
+  body {
+    padding-top: 6%; // Adjust for mobile navbar height
+  }
+}
+// Small mobile device optimizations
+@media (max-width: 576px) {
+  body {
+    padding-top: 12%; // Adjust for smaller mobile screens
+  }
 }
 
 .font-inter {
@@ -15,7 +31,7 @@ html, body {
 }
 
 .p-custom-font {
-  font-family: 'Arial', sans-serif!important;
+  font-family: 'Arial', sans-serif !important;
 }
 
 :root {
@@ -30,7 +46,7 @@ html, body {
   --sidebar-dark: #231a1a;
   --side-bg-color: #5e130c;
   --light-gb-color: #f8f9fc;
-  --light-color:#f8f9fc;
+  --light-color: #f8f9fc;
   //added the below
   --primary-hover: #005ea2;
   --light-gray: #f5f5f7;
@@ -43,12 +59,13 @@ html, body {
   --border-radius: 12px;
   --transition-speed: 0.25s;
 }
+
 .textfonts {
-    background-color: var(--light-color);
-    background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23d9d9d9' fill-opacity='0.1'%3E%3Ccircle cx='16' cy='16' r='8' /%3E%3Ccircle cx='12' cy='2' r='1' /%3E%3Ccircle cx='7' cy='7' r='1' opacity='0.8' /%3E%3Ccircle cx='17' cy='7' r='1' opacity='0.8' /%3E%3Ccircle cx='2' cy='12' r='1' opacity='0.6' /%3E%3Ccircle cx='12' cy='12' r='1' opacity='0.6' /%3E%3Ccircle cx='7' cy='17' r='1' opacity='0.4' /%3E%3Ccircle cx='17' cy='17' r='1' opacity='0.4' /%3E%3C/g%3E%3C/svg%3E");
-    background-repeat: repeat;
-    min-height: 100vh;
-  }
+  background-color: var(--light-color);
+  background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23d9d9d9' fill-opacity='0.1'%3E%3Ccircle cx='16' cy='16' r='8' /%3E%3Ccircle cx='12' cy='2' r='1' /%3E%3Ccircle cx='7' cy='7' r='1' opacity='0.8' /%3E%3Ccircle cx='17' cy='7' r='1' opacity='0.8' /%3E%3Ccircle cx='2' cy='12' r='1' opacity='0.6' /%3E%3Ccircle cx='12' cy='12' r='1' opacity='0.6' /%3E%3Ccircle cx='7' cy='17' r='1' opacity='0.4' /%3E%3Ccircle cx='17' cy='17' r='1' opacity='0.4' /%3E%3C/g%3E%3C/svg%3E");
+  background-repeat: repeat;
+  min-height: 100vh;
+}
 
 //styles for all filters for MPT BCT Langues and 9 grade
 // Main title styling
@@ -84,15 +101,15 @@ html, body {
   }
 
   /* ensure footer never shrinks */
-  app-footer {
-    flex-shrink: 0;
-  }
+  // app-footer {
+  //   flex-shrink: 0;
+  // }
 }
 
 // Search container
 .search-container {
   position: relative;
-  
+
   .search-icon {
     position: absolute;
     left: 15px;
@@ -101,7 +118,7 @@ html, body {
     color: #005ea2;
     z-index: 2;
   }
-  
+
   .search-input {
     padding-left: 45px;
     height: 50px;
@@ -109,13 +126,13 @@ html, body {
     border-radius: 25px;
     font-size: 14px;
     transition: all 0.3s ease;
-    
+
     &:focus {
       border-color: #005ea2;
       box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
       outline: none;
     }
-    
+
     &::placeholder {
       color: #005ea2;
     }
@@ -134,7 +151,7 @@ html, body {
   flex-wrap: wrap;
   gap: 8px;
   justify-content: center;
-  
+
   .filter-tab {
     background: darkgray;
     border: none;
@@ -145,12 +162,12 @@ html, body {
     font-weight: 500;
     transition: all 0.3s ease;
     cursor: pointer;
-    
+
     &:hover {
       background-color: #005ea2;
       color: white;
     }
-    
+
     &.active {
       background-color: #005ea2;
       color: white;
@@ -160,37 +177,171 @@ html, body {
 
 /*  Round the search input completely */
 .search-container .form-control {
-  border-radius: 40px;        
-  border: 1px solid #ccc;  
+  border-radius: 40px;
+  border: 1px solid #ccc;
 }
 
 /* Make the placeholder text blue */
 .search-container .form-control::placeholder {
-  color: #005ea2;         
+  color: #005ea2;
   opacity: 1;
 }
 
-// Responsive adjustments
+// Responsive adjustments for ipad and large devices
 @media (max-width: 768px) {
   .main-title {
     font-size: 1.5rem;
+    text-align: center;
+    padding: 0 1rem;
   }
-  
+
   .filter-tabs {
     justify-content: flex-start;
     overflow-x: auto;
     padding-bottom: 10px;
-    
+    -webkit-overflow-scrolling: touch;
+
     .filter-tab {
       flex-shrink: 0;
+      white-space: nowrap;
+      min-width: fit-content;
     }
   }
-  
+
   .search-input {
     font-size: 16px; // Prevents zoom on iOS
   }
+
+  .container-fluid {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
 }
 
-html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+@media (max-width: 576px) {
+  .main-title {
+    font-size: 1.25rem;
+  }
 
+  .filter-tabs .filter-tab {
+    font-size: 0.875rem;
+    padding: 6px 12px;
+  }
+
+  .search-container .search-input {
+    height: 45px;
+    font-size: 14px;
+  }
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+/* Mobile-First Utility Classes */
+.mobile-container {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.mobile-text-center {
+  text-align: center;
+}
+
+.mobile-full-width {
+  width: 100%;
+}
+
+.mobile-hidden {
+  display: none;
+}
+
+.touch-friendly {
+  min-height: 44px;
+  min-width: 44px;
+}
+
+.no-zoom {
+  font-size: 16px;
+  /* Prevents zoom on iOS */
+}
+
+/* Responsive utility classes */
+@media (max-width: 768px) {
+  .mobile-container {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .desktop-only {
+    display: none !important;
+  }
+
+  .mobile-only {
+    display: block !important;
+  }
+
+  .mobile-stack {
+    flex-direction: column !important;
+  }
+
+  // .mobile-center {
+  //   justify-content: center !important;
+  //   align-items: center !important;
+  // }
+
+  .mobile-spacing {
+    margin-bottom: 1rem !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .mobile-container {
+    padding-left: 0.25rem;
+    padding-right: 0.25rem;
+  }
+
+  .small-mobile-hidden {
+    display: none !important;
+  }
+
+  .small-mobile-text {
+    font-size: 0.9rem !important;
+  }
+
+  .small-mobile-spacing {
+    margin-bottom: 0.5rem !important;
+  }
+}
+
+/* Smooth scrolling for better mobile experience */
+* {
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Improve tap targets */
+button,
+.btn,
+a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Better focus states for accessibility */
+button:focus,
+.btn:focus,
+a:focus,
+input:focus,
+textarea:focus,
+select:focus {
+  outline: 2px solid #005ea2;
+  outline-offset: 2px;
+}
