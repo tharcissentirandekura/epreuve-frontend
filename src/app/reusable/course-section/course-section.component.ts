@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DatePipe,CommonModule } from '@angular/common';
+import { DatePipe, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api/api.service';
 import { NavbarComponent } from '../navbar/navbar.component';
@@ -12,7 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
   selector: 'app-course-section',
   templateUrl: './course-section.component.html',
   styleUrls: ['./course-section.component.scss'],
-  imports: [NavbarComponent, FooterComponent, DatePipe, CommonModule, FormsModule,MatIconModule,PaginatorComponent],
+  imports: [NavbarComponent, FooterComponent, DatePipe, CommonModule, FormsModule, MatIconModule, PaginatorComponent],
   standalone: true
 })
 export class CourseSectionComponent implements OnInit {
@@ -64,7 +64,7 @@ export class CourseSectionComponent implements OnInit {
   // shared dat
   pageSize = 5; // 
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService) { }
 
   ngOnInit(): void {
     /** 
@@ -101,26 +101,26 @@ export class CourseSectionComponent implements OnInit {
   }
 
   loadTests(): void {
-  this.api.getDataHandler(`tests`, this.currentPage).subscribe(response => {
-    this.allTests = response.results.filter((t:any) =>
-      t.section?.toLowerCase().includes(this.sectionId?.toLowerCase())
-    );
-    this.uniqueCourses = Array.from(new Set(this.allTests.map((t:any) => t.course)));
-    this.count = response.count;
-    this.next = response.next;
-    this.previous = response.previous;
-    this.totalPages = Math.ceil(this.count / this.pageSize); // Assuming 5 items per page
+    this.api.getDataHandler(`tests`, this.currentPage).subscribe(response => {
+      this.allTests = response.results.filter((t: any) =>
+        t.section?.toLowerCase().includes(this.sectionId?.toLowerCase())
+      );
+      this.uniqueCourses = Array.from(new Set(this.allTests.map((t: any) => t.course)));
+      this.count = response.count;
+      this.next = response.next;
+      this.previous = response.previous;
+      this.totalPages = Math.ceil(this.count / this.pageSize); // Assuming 5 items per page
 
-    this.applyFilters();
-    console.log('Total tests:', this.allTests);
-  });
+      this.applyFilters();
+      console.log('Total tests:', this.allTests);
+    });
 
   }
 
   loadVideos(): void {
     // handle pagination for videos
     this.api.getDataHandler(`videos`, this.videoCurrentPage).subscribe({
-      next: videos =>{
+      next: videos => {
         this.videoList = videos.results;
         this.videoCount = videos.count;
         this.videoNext = videos.next;
@@ -130,7 +130,7 @@ export class CourseSectionComponent implements OnInit {
         console.log('Total videos:', this.videoCount);
         this.applyFilters();
       },
-      error: err =>{
+      error: err => {
         if (err.status === 404) {
           console.warn(`No videos on page ${this.videoCurrentPage}`);
         }
@@ -161,7 +161,7 @@ export class CourseSectionComponent implements OnInit {
 
       return matchCourse && matchSearch;
     });
-    
+
   }
 
   resetFilters(): void {

@@ -86,3 +86,98 @@ span{
 .modal-blur-backdrop .modal-content {
   background-color: #fff; 
 }
+
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .info-panel {
+    padding: 2rem 1.5rem !important;
+    text-align: center;
+    margin-bottom: 2rem;
+  }
+  
+  .col-md-6 {
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  
+  h1, h2 {
+    font-size: 1.8rem !important;
+  }
+  
+  .fs-4 {
+    font-size: 1.1rem !important;
+  }
+  
+  .fs-5 {
+    font-size: 1rem !important;
+  }
+  
+  .fs-6 {
+    font-size: 0.9rem !important;
+  }
+  
+  .btn-send {
+    width: 100%;
+    padding: 0.8rem 2rem;
+    font-size: 1rem;
+  }
+  
+  .form-control {
+    font-size: 1rem;
+    padding: 0.75rem 0;
+  }
+  
+  textarea.form-control {
+    min-height: 120px;
+  }
+  
+  .modal-dialog {
+    margin: 1rem;
+  }
+  
+  .modal-content {
+    padding: 1.5rem !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .info-panel {
+    padding: 1.5rem 1rem !important;
+  }
+  
+  h1, h2 {
+    font-size: 1.5rem !important;
+  }
+  
+  .fs-4 {
+    font-size: 1rem !important;
+    line-height: 1.5;
+  }
+  
+  .btn-send {
+    padding: 0.7rem 1.5rem;
+    font-size: 0.9rem;
+  }
+  
+  .form-control {
+    font-size: 0.9rem;
+  }
+  
+  .modal-dialog {
+    margin: 0.5rem;
+  }
+  
+  .modal-content h4 {
+    font-size: 1.2rem !important;
+  }
+  
+  .w-25 {
+    width: 50% !important;
+  }
+}
