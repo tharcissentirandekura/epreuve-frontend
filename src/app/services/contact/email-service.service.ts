@@ -7,7 +7,7 @@ import emailjs from 'emailjs-com';
 
 export class EmailServiceService {
 
-  private readonly SERVICE_ID = 'service_g8ll9an';
+  private readonly SERVICE_ID = 'service_8oqmvqk';
   private readonly TEMPLATE_ID = 'template_b7huwvf';
   private readonly AUTO_RESPONSE_TEMPLATE_ID = 'template_h4o9nkj';
   private readonly PUBLIC_KEY = 'iaa1bXnaA4p_bzvfQ';
