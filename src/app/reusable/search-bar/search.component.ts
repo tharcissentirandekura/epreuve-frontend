@@ -3,7 +3,6 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
 import { ApiService } from '../../services/api/api.service';
-import { url } from 'inspector';
 
 @Component({
 	selector: 'app-search-bar',
@@ -120,6 +119,7 @@ export class SearchBarComponent implements OnInit {
                     this.searchResults = filteredResults.map((epreuve: any) => ({
                         name: epreuve.test,
                         url: epreuve.link,
+						metadata:epreuve.metadata
                     }));
 
 				},
