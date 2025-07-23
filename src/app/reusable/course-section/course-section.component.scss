@@ -55,6 +55,21 @@
   color: #005ea2;
 }
 
+.test-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  display: block;
+}
+
+.card-title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
 .btn {
   background-color: #d8effe;
   border: none;
@@ -106,6 +121,10 @@
   .test-name {
     font-size: 1rem;
     line-height: 1.3;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
   }
 
   .main-title {
@@ -170,6 +189,10 @@
 
   .test-name {
     font-size: 0.9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 120px;
   }
 
   .btn {
@@ -203,5 +226,12 @@
 
   .campaign-card {
     margin: 0 0.5rem;
+  }
+}
+
+@media (max-width: 400px) {
+  .test-name {
+    max-width: 100px !important;
+    font-size: 0.85rem;
   }
 }
