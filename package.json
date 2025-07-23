@@ -12,6 +12,7 @@
     "build:ssr:prod": "ng run epreuves:server:production",
     "build:ssr:dev": "ng run epreuves:server:development",
     "prerender": "ng run epreuves:prerender",
+    "deploy:preview": "netlify deploy",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:epreuves": "node dist/epreuves/server/server.mjs"
