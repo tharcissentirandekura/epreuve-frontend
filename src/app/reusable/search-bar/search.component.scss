@@ -32,7 +32,7 @@
 
 .search-bar-container {
   width: 90%;
-  max-width: 800px;
+  max-width: 90vh;
   border-radius: 50px;
   padding: 0.5rem;
 }
@@ -79,7 +79,8 @@
 
 .search-results {
   position: fixed;
-  top: 70px; /* adjust as needed to be below the search bar */
+  top: 70px;
+  /* adjust as needed to be below the search bar */
   left: 0;
   width: 100vw;
   max-width: none;
@@ -87,7 +88,7 @@
   background: white;
   border-radius: 12px;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  max-height: 50vh;
+  max-height: 10vh;
   overflow-y: auto;
   box-sizing: border-box;
   z-index: 1060;
@@ -149,55 +150,12 @@
   align-items: center;
 }
 
-@media (max-width: 768px) {
-  .search-bar-container {
-    width: 95%;
-    margin: 0 5px;
-  }
-
-  .search-input {
-    height: 50px;
-    font-size: 1rem;
-    padding: 0 50px 0 40px;
-  }
-
-  .search-icon {
-    left: 15px;
-    font-size: 1rem;
-  }
-
-  .btn-close {
-    right: 15px;
-    font-size: 1rem;
-  }
-
-  .floating-search-bar {
-    height: 15vh;
-  }
-
-  .search-results {
-    max-height: 35vh;
-    font-size: 0.95rem;
-  }
-
-  .list-group-item {
-    padding: 0.8rem 1rem;
-  }
-
-  .list-group-item a {
-    font-size: 0.9rem;
-  }
-
-  .list-group-item .small {
-    font-size: 0.8rem;
-  }
-}
 
 @media (max-width: 576px) {
   .search-bar-container {
     width: 98%;
     margin: 0 2px;
-    
+
   }
 
   .search-input {
@@ -252,5 +210,50 @@
   .result-name {
     font-size: 0.85rem;
     max-width: 200px;
+  }
+}
+
+@media (max-width: 768px) {
+  .search-bar-container {
+    width: 95%;
+    margin: 0 5px;
+  }
+
+  .search-input {
+    height: 50px;
+    font-size: 1rem;
+    padding: 0 50px 0 40px;
+  }
+
+  .search-icon {
+    left: 15px;
+    font-size: 1rem;
+  }
+
+  .btn-close {
+    right: 15px;
+    font-size: 1rem;
+  }
+
+  .floating-search-bar {
+    height: 15vh;
+  }
+
+  .search-results {
+    max-height: 100vh;
+    font-size: 0.95rem;
+    overflow-y: auto;
+  }
+
+  .list-group-item {
+    padding: 0.8rem 1rem;
+  }
+
+  .list-group-item a {
+    font-size: 0.9rem;
+  }
+
+  .list-group-item .small {
+    font-size: 0.8rem;
   }
 }
