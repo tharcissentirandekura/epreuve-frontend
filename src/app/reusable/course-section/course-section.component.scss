@@ -1,13 +1,11 @@
+// Search container
 .search-container {
-  background: #fff;
   border-radius: 32px;
   box-shadow: 0 2px 12px rgba(0, 94, 162, 0.06);
-  padding: 0.25rem 1rem;
 
   input.form-control {
     border: none;
     background: transparent;
-    font-size: 1.12rem;
     padding: 0.7rem 1.5rem 0.7rem 2.5rem;
     border-radius: 32px;
     box-shadow: none;
@@ -16,33 +14,24 @@
   .search-icon {
     left: 1rem;
     color: #b5d3ea;
-    font-size: 1.2em;
   }
 }
 
-.filter-tabs {
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
-
+// Filter tabs
 .filter-tab {
   background: #f0f6fa;
   border: 1px solid #e0e7ff;
   color: #005ea2;
-  padding: 0.4em 1.3em;
-  box-shadow: 0 1px 4px rgba(0, 94, 162, 0.03);
 
-  &.active,
-  &:hover {
+  &.active, &:hover {
     background: #005ea2;
     color: #fff;
     border-color: #005ea2;
-    box-shadow: 0 2px 8px rgba(0, 94, 162, 0.11);
   }
 }
 
+// List items and cards
 .tests-list .list-group-item {
-  box-shadow: 0 2px 8px rgba(1, 71, 120, 0.06);
   transition: box-shadow 0.2s;
 
   &:hover {
@@ -50,188 +39,54 @@
   }
 }
 
-.test-name,
-.card-title {
+.test-name, .card-title {
   color: #005ea2;
-}
-
-.test-name {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  max-width: 100%;
-  display: block;
 }
 
-.card-title {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-}
-
+// Custom button styling
 .btn {
   background-color: #d8effe;
   border: none;
   color: #005ea2;
-  font-size: 1.1rem;
-  padding: 7px 18px;
   border-radius: 25px;
-  font-weight: 600;
-  box-shadow: 0 2px 8px rgba(0, 94, 162, 0.06);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4em;
-  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+  transition: all 0.2s;
 
   &:hover {
     background-color: #005ea2;
     color: #fff;
-    box-shadow: 0 4px 16px rgba(0, 94, 162, 0.10);
   }
 }
 
-.campaign-card {
-  transition: box-shadow 0.2s;
-
-  &:hover {
-    box-shadow: 0 6px 20px rgba(0, 94, 162, 0.13);
-  }
+.campaign-card:hover {
+  box-shadow: 0 6px 20px rgba(0, 94, 162, 0.13);
 }
 
-.card-image-container img {
-  width: 100%;
-  object-fit: cover;
-}
-
-.card-actions .btn {
-  width: 100%;
-}
-
+// Responsive design
 @media (max-width: 768px) {
-  .container-fluid {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-
-  .tests-list .list-group-item {
-    padding: 1rem 0.5rem;
-  }
-
-  .test-name {
-    font-size: 1rem;
-    line-height: 1.3;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    max-width: 100%;
-  }
-
   .main-title {
-    position: relative;
-    display: flex;
-    justify-content: center;
-    align-items: center;
     font-size: 1.8rem;
-    text-align: center;
-    padding: 0 2rem;
-  }
-
-  .btn-refresh {
-    position: static !important;
-    margin-top: 1rem;
-    margin-left: auto;
-    margin-right: auto;
-  }
-
-  .page-header .col-12 {
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-  }
-
-  .page-header .col-12.d-flex.flex-wrap {
-    justify-content: center;
-  }
-
-  .search-container {
-    margin: 0 0.5rem;
   }
 
   .filter-tabs {
-    padding: 0 0.5rem;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
   }
 
-  .filter-tabs .filter-tab {
+  .filter-tab {
     flex-shrink: 0;
     white-space: nowrap;
-    font-size: 0.9rem;
-    padding: 0.5rem 1rem;
-  }
-
-  .btn {
-    font-size: 0.9rem;
-    padding: 6px 12px;
   }
 }
 
 @media (max-width: 576px) {
   .main-title {
     font-size: 1.5rem;
-    padding: 0 1rem;
-  }
-
-  .tests-list .list-group-item {
-    padding: 0.8rem 0.3rem;
   }
 
   .test-name {
-    font-size: 0.9rem;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
     max-width: 120px;
-  }
-
-  .btn {
-    font-size: 0.8rem;
-    padding: 5px 10px;
-  }
-
-  .btn i {
-    font-size: 1rem;
-  }
-
-  .filter-tab {
-    font-size: 0.8rem !important;
-    padding: 0.4rem 0.8rem !important;
-  }
-
-  .search-container input.form-control {
-    font-size: 1rem;
-    padding: 0.6rem 1rem 0.6rem 2rem;
-  }
-
-  .search-container .search-icon {
-    font-size: 1rem;
-  }
-
-  .col-lg-3.col-md-4.col-sm-6 {
-    flex: 0 0 100%;
-    max-width: 100%;
-    margin-bottom: 1rem;
-  }
-
-  .campaign-card {
-    margin: 0 0.5rem;
-  }
-}
-
-@media (max-width: 400px) {
-  .test-name {
-    max-width: 100px !important;
-    font-size: 0.85rem;
   }
 }
