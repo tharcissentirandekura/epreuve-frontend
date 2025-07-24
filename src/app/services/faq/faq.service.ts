@@ -7,67 +7,67 @@ import { Observable, of } from 'rxjs';
 })
 export class FaqService {
   private faqs: FAQ[] = [
-      {
-        id: 1,
-        question: 'Is my personal information secure?',
-        answer: 'Yes, we take data security very seriously. All personal information is encrypted and stored securely. We never share your information with third parties without your explicit consent. You can read our Privacy Policy for more details.',
-        category: 'À propos'
-      },
-      {
-        id: 2,
-        question: 'How can I contact customer support?',
-        answer: 'You can contact our customer support team via email at support@company.com, through the chat function on our website, or by calling our support line at +1-800-123-4567. Our support hours are Monday to Friday, 9 AM to 6 PM EST.',
-        category: 'Politique de confidentialité'
-      },
-      {
-        id: 3,
-        question: 'What data do you collect and why?',
-        answer: 'We collect only the data necessary to provide and improve our services, such as account details and usage data. This helps us personalize your experience and enhance system performance. Full details can be found in our Privacy Policy.',
-        category: 'À propos'
-      },
-      {
-        id: 4,
-        question: 'Can I delete my data permanently?',
-        answer: 'Yes, you can request permanent deletion of your data at any time by contacting our privacy team at privacy@company.com. Once verified, all your personal information will be removed from our systems.',
-        category: 'À propos'
-      },
-      {
-        id: 5,
-        question: 'Do you share my data with third parties?',
-        answer: 'We do not sell or rent your data. Your information is shared with third parties only when necessary to provide our services, and always in compliance with our Privacy Policy.',
-        category: 'À propos'
-      },
-      {
-        id: 6,
-        question: 'Can I update or correct my personal information?',
-        answer: 'Yes, you can update your account information at any time from your profile settings. For corrections that require assistance, contact our support team for help.',
-        category: 'À propos'
-      },
-      {
-        id: 7,
-        question: 'What security measures are in place to protect my data?',
-        answer: 'We use industry-standard encryption, secure servers, and access controls to safeguard your personal data. Regular audits and security assessments are conducted to maintain compliance and safety.',
-        category: 'À propos'
-      },
-      {
-        id: 8,
-        question: 'What should I do if I encounter a technical issue?',
-        answer: 'If you experience a technical issue, try refreshing your browser or restarting the app. If the issue persists, contact our support team with a description and screenshots, if possible, so we can assist you promptly.',
-        category: 'Politique de confidentialité'
-      },
-      {
-        id: 9,
-        question: 'Do you offer support on weekends?',
-        answer: 'Currently, our support team is available Monday through Friday. However, we monitor urgent issues submitted through the support portal and aim to address them as quickly as possible.',
-        category: 'Politique de confidentialité'
-      },
-      {
-        id: 10,
-        question: 'How long does it take to get a response from support?',
-        answer: 'Our average response time is within 24 hours during business days. For urgent issues, we recommend using the live chat feature or calling our support line for faster assistance.',
-        category: 'Politique de confidentialité'
-      }
-  ];
+  {
+    id: 1,
+    question: 'Mes informations personnelles sont-elles sécurisées ?',
+    answer: 'Oui, nous prenons la sécurité des données très au sérieux. Toutes les informations personnelles sont cryptées et stockées en toute sécurité. Nous ne partageons jamais vos informations avec des tiers sans votre consentement explicite. Vous pouvez consulter notre Politique de confidentialité pour plus de détails.',
+    category: 'À propos'
+  },
+  {
+    id: 2,
+    question: 'Comment puis-je contacter le support client ?',
+    answer: 'Vous pouvez contacter notre équipe de support client par e-mail à support@company.com, via la fonction de chat sur notre site web, ou en appelant notre ligne d’assistance au +1 800 123 4567. Nos horaires d’assistance sont du lundi au vendredi, de 9 h à 18 h (EST).',
+    category: 'Politique de confidentialité'
+  },
+  {
+    id: 3,
+    question: 'Quelles données collectez-vous et pourquoi ?',
+    answer: 'Nous recueillons uniquement les données nécessaires pour fournir et améliorer nos services, telles que les informations de compte et les données d’utilisation. Cela nous aide à personnaliser votre expérience et à optimiser les performances du système. Vous trouverez tous les détails dans notre Politique de confidentialité.',
+    category: 'À propos'
+  },
+  {
+    id: 4,
+    question: 'Puis-je supprimer définitivement mes données ?',
+    answer: 'Oui, vous pouvez demander la suppression définitive de vos données à tout moment en contactant notre équipe en charge de la confidentialité à privacy@company.com. Une fois votre demande vérifiée, toutes vos informations personnelles seront supprimées de nos systèmes.',
+    category: 'À propos'
+  },
+  {
+    id: 5,
+    question: 'Partagez-vous mes données avec des tiers ?',
+    answer: 'Nous ne vendons ni ne louons vos données. Vos informations ne sont partagées avec des tiers que lorsqu’elles sont nécessaires à la fourniture de nos services, et toujours conformément à notre Politique de confidentialité.',
+    category: 'À propos'
+  },
+  {
+    id: 6,
+    question: 'Puis-je mettre à jour ou corriger mes informations personnelles ?',
+    answer: 'Oui, vous pouvez mettre à jour les informations de votre compte à tout moment depuis les paramètres de votre profil. Pour les corrections nécessitant une assistance, contactez notre équipe de support.',
+    category: 'À propos'
+  },
+  {
+    id: 7,
+    question: 'Quelles mesures de sécurité sont en place pour protéger mes données ?',
+    answer: 'Nous utilisons un chiffrement conforme aux normes de l’industrie, des serveurs sécurisés et des contrôles d’accès pour protéger vos données personnelles. Des audits réguliers et des évaluations de sécurité sont effectués pour garantir conformité et fiabilité.',
+    category: 'À propos'
+  },
+  {
+    id: 8,
+    question: 'Que dois-je faire si je rencontre un problème technique ?',
+    answer: 'Si vous rencontrez un problème technique, essayez de rafraîchir votre navigateur ou de redémarrer l’application. Si le problème persiste, contactez notre équipe de support en fournissant une description et des captures d’écran, si possible, afin que nous puissions vous aider rapidement.',
+    category: 'Politique de confidentialité'
+  },
+  {
+    id: 9,
+    question: 'Proposez-vous un support le week-end ?',
+    answer: 'Actuellement, notre équipe d’assistance est disponible du lundi au vendredi. Cependant, nous surveillons les problèmes urgents soumis via le portail d’assistance et faisons de notre mieux pour y répondre le plus rapidement possible.',
+    category: 'Politique de confidentialité'
+  },
+  {
+    id: 10,
+    question: 'Combien de temps faut-il pour obtenir une réponse de votre équipe de support ?',
+    answer: 'Notre délai de réponse moyen est de 24 h pendant les jours ouvrés. Pour les problèmes urgents, nous vous recommandons d’utiliser le chat en direct ou d’appeler notre ligne d’assistance pour recevoir une aide plus rapide.',
+    category: 'Politique de confidentialité'
+  }
+];
 
   constructor() { }
 

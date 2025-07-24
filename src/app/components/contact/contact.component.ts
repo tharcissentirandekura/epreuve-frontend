@@ -9,7 +9,6 @@ import { CommonModule } from '@angular/common';
   selector: 'app-contact',
   standalone: true,
   imports: [FooterComponent, NavbarComponent, FormsModule, CommonModule],
-  providers: [EmailServiceService],
   templateUrl: './contact.component.html',
   styleUrl: './contact.component.scss'
 })
@@ -21,23 +20,23 @@ export class ContactComponent {
     email: '',
     message: ''
   };
-  
+
   isSubmitting = false;
   popupMessage: string | null = null;
   popupSuccess = false;
-  
-  constructor(private emailService: EmailServiceService) {}
-  
+
+  constructor(private emailService: EmailServiceService) { }
+
   async onSubmit() {
     if (this.isSubmitting) return;
-  
+
     this.isSubmitting = true;
-  
+
     try {
       await this.emailService.sendEmail(this.formData);
       this.popupSuccess = true;
       this.popupMessage = 'The message was successfully sent!';
-  
+
       this.formData = {
         firstName: '',
         lastName: '',
@@ -51,6 +50,6 @@ export class ContactComponent {
       this.isSubmitting = false;
       setTimeout(() => this.popupMessage = null, 3000);
     }
-  }  
-
   }
+
+}
