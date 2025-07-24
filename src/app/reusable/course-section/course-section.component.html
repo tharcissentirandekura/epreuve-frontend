@@ -15,10 +15,10 @@
 
     <!-- Search Bar -->
     <div class="row mb-4">
-        <div class="col-md-8 col-lg-6 mx-auto">
-            <div class="search-container position-relative">
+        <div class="col-md-8 col-lg-6 mx-auto border border-secondary-subtle rounded-5">
+            <div class="search-container position-relative ">
                 <i class="pi pi-search search-icon position-absolute top-50 translate-middle-y ms-3 fs-4"></i>
-                <input type="text" class="form-control ps-5" placeholder="Rechercher par titre ou cours"
+                <input type="text" class="form-control ms-3" placeholder="Rechercher par titre ou cours"
                     [(ngModel)]="searchTerm" (input)="onSearchInput($event)" />
             </div>
         </div>
@@ -82,7 +82,7 @@
         </div>
         <div *ngIf="filteredTests.length === 0" class="row">
             <div class="col-12 text-center py-5">
-                <i class="pi pi-search  fs-3 mb-3 text-secondary"></i>
+                <i class="pi pi-search  fs-3 mb-3 me-2 text-secondary"></i>
                 <p>Aucun test ne correspond à vos critères de recherche.</p>
                 <button class="btn btn-outline-primary" (click)="resetFilters()">
                     Réinitialiser
