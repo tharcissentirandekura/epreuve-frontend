@@ -1,29 +1,29 @@
-<div class="login-container">
+<div class="min-vh-100">
   <div class="container-fluid h-100">
     <div class="row h-100">
       <!-- Left Side - Hero Section -->
-      <div class="col-lg-6 d-none d-lg-flex hero-section">
-        <div class="hero-content">
-          <div class="hero-overlay"></div>
+      <div class="col-lg-6 d-none d-lg-flex hero-section position-relative overflow-hidden">
+        <div class="position-relative z-2 d-flex flex-column justify-content-center align-items-center text-center p-4 w-100">
+          <div class="position-absolute top-0 start-0 w-100 h-100" style="z-index: -1;"></div>
           <div class="hero-text">
             <h1 class="display-4 fw-bold text-primary mb-4">
-              {{ loginpageInfo.subtitle }}
+              {{ pageInfo.subtitle }}
             </h1>
             <p class="lead text-dark mb-4 fs-6">
-              {{ loginpageInfo.description }}
+              {{ pageInfo.description }}
             </p>
             <div class="platforme-icon">
             </div>
-            <div class="feature-list">
-              <div class="feature-item">
+            <div class="d-flex flex-column gap-3 mt-4">
+              <div class="feature-item d-flex align-items-center gap-3 fw-medium">
                 <i class="bi bi-shield-check text-success"></i>
                 <span class="text-dark">Plateforme avec confidentialité</span>
               </div>
-              <div class="feature-item">
+              <div class="feature-item d-flex align-items-center gap-3 fw-medium">
                 <i class="bi bi-lightning text-primary"></i>
                 <span class="text-dark">Gratuitement pour tous</span>
               </div>
-              <div class="feature-item">
+              <div class="feature-item d-flex align-items-center gap-3 fw-medium">
                 <i class="bi bi-people text-primary"></i>
                 <span class="text-dark">Succès garanti</span>
               </div>
@@ -34,213 +34,69 @@
 
       <!-- Right Side - Form -->
       <div class="col-lg-6 d-flex align-items-center justify-content-center">
-        <div class="login-form-container">
+        <div class="login-form-container w-100 p-4 bg-white m-4">
           <!-- Success/Error Message -->
-          <div *ngIf="popupMessage" class="alert mb-4" 
-               [class.alert-success]="popupSuccess" 
-               [class.alert-danger]="!popupSuccess">
+          <div *ngIf="popupMessage" class="alert mb-4" [class.alert-success]="popupSuccess"
+            [class.alert-danger]="!popupSuccess">
             {{ popupMessage }}
           </div>
 
           <div class="text-center mb-5">
-            <div class="logo-container mb-4">
-              <div class="logo-circle">
-                <i [class]="isLoginPage ? 'bi bi-person-circle' : 'bi bi-person-plus'"></i>
+            <div class="d-flex justify-content-center mb-4">
+              <div class="logo-circle rounded-circle d-flex align-items-center justify-content-center text-white">
+                <i class="bi bi-person-circle"></i>
               </div>
             </div>
-            <h2 class="fw-bold text-dark mb-2">{{ loginpageInfo.title }}</h2>
-            <p class="text-muted" *ngIf="isRegisterPage">Créez votre compte pour commencer</p>
+            <h2 class="fw-bold text-dark mb-2">{{ pageInfo.title }}</h2>
+            <p class="text-muted">Connectez-vous à votre compte</p>
           </div>
 
-          <!-- Social Login/Register Buttons -->
-          <div class="social-login mb-4">
-            <button 
-              type="button" 
-              class="btn btn-outline-primary w-100 mb-3 social-btn"
-              (click)="socialLogin('facebook')">
-              <i class="bi bi-facebook me-2"></i>
-              {{ loginpageInfo.socialText }}
-            </button>
-          </div>
 
-          <div class="divider mb-4">
-            <span class="">{{ loginpageInfo.dividerText }}</span>
-          </div>
 
-          <!-- Dynamic Form -->
+          <!-- Login Form -->
           <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
-            
-            <!-- Registration Fields -->
-            <div *ngIf="isRegisterPage">
-              <!-- First Name Field -->
-              <div class="mb-3">
-                <label for="firstName" class="form-label fw-semibold">Prénom</label>
-                <div class="input-group">
-                  <span class="input-group-text">
-                    <i class="bi bi-person"></i>
-                  </span>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="firstName"
-                    formControlName="firstName"
-                    placeholder="Entrez votre prénom"
-                    [class.is-invalid]="firstName?.invalid && firstName?.touched"
-                    [class.is-valid]="firstName?.valid && firstName?.touched">
-                </div>
-                <div class="invalid-feedback" *ngIf="firstName?.invalid && firstName?.touched">
-                  <small>{{ getFieldError('firstName') }}</small>
-                </div>
-              </div>
-
-              <!-- Last Name Field -->
-              <div class="mb-3">
-                <label for="lastName" class="form-label fw-semibold">Nom de famille</label>
-                <div class="input-group">
-                  <span class="input-group-text">
-                    <i class="bi bi-person-fill"></i>
-                  </span>
-                  <input
-                    type="text"
-                    class="form-control"
-                    id="lastName"
-                    formControlName="lastName"
-                    placeholder="Entrez votre nom de famille"
-                    [class.is-invalid]="lastName?.invalid && lastName?.touched"
-                    [class.is-valid]="lastName?.valid && lastName?.touched">
-                </div>
-                <div class="invalid-feedback" *ngIf="lastName?.invalid && lastName?.touched">
-                  <small>{{ getFieldError('lastName') }}</small>
-                </div>
-              </div>
-
-              <!-- Email Field -->
-              <div class="mb-3">
-                <label for="email" class="form-label fw-semibold">Adresse email</label>
-                <div class="input-group">
-                  <span class="input-group-text">
-                    <i class="bi bi-envelope"></i>
-                  </span>
-                  <input
-                    type="email"
-                    class="form-control"
-                    id="email"
-                    formControlName="email"
-                    placeholder="Entrez votre adresse email"
-                    [class.is-invalid]="email?.invalid && email?.touched"
-                    [class.is-valid]="email?.valid && email?.touched">
-                </div>
-                <div class="invalid-feedback" *ngIf="email?.invalid && email?.touched">
-                  <small>{{ getFieldError('email') }}</small>
-                </div>
-              </div>
-            </div>
 
             <!-- Username Field -->
             <div class="mb-3">
-              <label for="username" class="form-label fw-semibold">
-                {{ isLoginPage ? 'Entrez votre nom d\'utilisateur' : 'Nom d\'utilisateur' }}
-              </label>
+              <label for="username" class="form-label fw-semibold text-secondary">Nom d'utilisateur</label>
               <div class="input-group">
-                <span class="input-group-text">
-                  <i [class]="isLoginPage ? 'bi bi-envelope' : 'bi bi-at'"></i>
+                <span class="input-group-text text-muted fw-medium">
+                  <i class="bi bi-person"></i>
                 </span>
-                <input
-                  type="text"
-                  class="form-control"
-                  id="username"
-                  formControlName="username"
-                  [placeholder]="isLoginPage ? 'Entrez votre nom d\'utilisateur' : 'Choisissez un nom d\'utilisateur'"
+                <input type="text" class="form-control py-3 px-3" id="username" formControlName="username"
+                  placeholder="Entrez votre nom d'utilisateur"
                   [class.is-invalid]="username?.invalid && username?.touched"
                   [class.is-valid]="username?.valid && username?.touched">
               </div>
-              <div class="invalid-feedback" *ngIf="username?.invalid && username?.touched">
+              <div class="invalid-feedback d-block mt-1" *ngIf="username?.invalid && username?.touched">
                 <small>{{ getFieldError('username') }}</small>
               </div>
             </div>
 
             <!-- Password Field -->
             <div class="mb-3">
-              <label for="password" class="form-label fw-semibold">
-                {{ isLoginPage ? 'Mot de passe' : 'Créer un mot de passe' }}
-              </label>
+              <label for="password" class="form-label fw-semibold text-secondary">Mot de passe</label>
               <div class="input-group">
-                <span class="input-group-text">
+                <span class="input-group-text text-muted fw-medium">
                   <i class="bi bi-lock"></i>
                 </span>
-                <input
-                  [type]="showPassword ? 'text' : 'password'"
-                  class="form-control"
-                  id="password"
-                  formControlName="password"
-                  [placeholder]="isLoginPage ? 'Entrez votre mot de passe' : 'Créez un mot de passe sécurisé'"
+                <input [type]="showPassword ? 'text' : 'password'" class="form-control py-3 px-3" id="password"
+                  formControlName="password" placeholder="Entrez votre mot de passe"
                   [class.is-invalid]="password?.invalid && password?.touched"
                   [class.is-valid]="password?.valid && password?.touched">
-                <button
-                  type="button"
-                  class="btn btn-outline-secondary"
-                  (click)="togglePasswordVisibility()">
+                <button type="button" class="btn btn-outline-secondary text-muted" (click)="togglePasswordVisibility()">
                   <i [class]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
                 </button>
               </div>
-              <div class="invalid-feedback" *ngIf="password?.invalid && password?.touched">
+              <div class="invalid-feedback d-block mt-1" *ngIf="password?.invalid && password?.touched">
                 <small>{{ getFieldError('password') }}</small>
               </div>
-              
-              <!-- Password Strength Indicator (Registration only) -->
-              <div *ngIf="isRegisterPage && password?.value" class="mt-2">
-                <div class="password-strength">
-                  <div class="progress" style="height: 4px;">
-                    <div class="progress-bar" 
-                         [class]="'bg-' + (getPasswordStrength().score <= 2 ? 'danger' : getPasswordStrength().score <= 3 ? 'warning' : 'success')"
-                         [style.width]="(getPasswordStrength().score / 5 * 100) + '%'"></div>
-                  </div>
-                  <small class="text-muted mt-1 d-block">
-                    Force du mot de passe: 
-                    <span [class]="'text-' + (getPasswordStrength().score <= 2 ? 'danger' : getPasswordStrength().score <= 3 ? 'warning' : 'success')">
-                      {{ getPasswordStrength().score <= 2 ? 'Faible' : getPasswordStrength().score <= 3 ? 'Moyen' : 'Fort' }}
-                    </span>
-                  </small>
-                </div>
-              </div>
             </div>
 
-            <!-- Confirm Password Field (Registration only) -->
-            <div *ngIf="isRegisterPage" class="mb-3">
-              <label for="confirmPassword" class="form-label fw-semibold">Confirmer le mot de passe</label>
-              <div class="input-group">
-                <span class="input-group-text">
-                  <i class="bi bi-lock-fill"></i>
-                </span>
-                <input
-                  [type]="showConfirmPassword ? 'text' : 'password'"
-                  class="form-control"
-                  id="confirmPassword"
-                  formControlName="confirmPassword"
-                  placeholder="Confirmez votre mot de passe"
-                  [class.is-invalid]="(confirmPassword?.invalid && confirmPassword?.touched) || hasPasswordMismatch"
-                  [class.is-valid]="confirmPassword?.valid && confirmPassword?.touched && !hasPasswordMismatch">
-                <button
-                  type="button"
-                  class="btn btn-outline-secondary"
-                  (click)="toggleConfirmPasswordVisibility()">
-                  <i [class]="showConfirmPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
-                </button>
-              </div>
-              <div class="invalid-feedback" *ngIf="(confirmPassword?.invalid && confirmPassword?.touched) || hasPasswordMismatch">
-                <small *ngIf="confirmPassword?.errors?.['required']">La confirmation du mot de passe est obligatoire</small>
-                <small *ngIf="hasPasswordMismatch">Les mots de passe ne correspondent pas</small>
-              </div>
-            </div>
-
-            <!-- Remember Me & Forgot Password (Login only) -->
-            <div *ngIf="isLoginPage" class="d-flex justify-content-between align-items-center mb-4">
+            <!-- Remember Me & Forgot Password -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
               <div class="form-check">
-                <input
-                  class="form-check-input"
-                  type="checkbox"
-                  id="rememberMe"
-                  formControlName="rememberMe">
+                <input class="form-check-input" type="checkbox" id="rememberMe" formControlName="rememberMe">
                 <label class="form-check-label" for="rememberMe">
                   Se souvenir de moi
                 </label>
@@ -251,26 +107,20 @@
             </div>
 
             <!-- Submit Button -->
-            <button
-              type="submit"
-              class="btn btn-primary w-100 mb-3 login-btn"
-              [disabled]="isSubmitting">
+            <button type="submit" class="btn btn-primary w-100 mb-3 login-btn fw-semibold" [disabled]="isSubmitting">
               <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2"></span>
-              <span *ngIf="!isSubmitting">{{ loginpageInfo.title }}</span>
-              <span *ngIf="isSubmitting">{{ isLoginPage ? 'Connexion...' : 'Inscription...' }}</span>
+              <span *ngIf="!isSubmitting">{{ pageInfo.title }}</span>
+              <span *ngIf="isSubmitting">Connexion...</span>
             </button>
           </form>
 
-          <!-- Switch Mode Link -->
+          <!-- Switch to Register Link -->
           <div class="text-center">
             <p class="text-muted mb-0">
-              <span *ngIf="isLoginPage">Pas de compte?</span>
-              <span *ngIf="isRegisterPage">Vous avez déjà un compte?</span>
-              <button 
-                type="button"
-                class="btn btn-link text-primary text-decoration-none fw-semibold p-0"
-                (click)="isLoginPage ? switchToRegister() : switchToLogin()">
-                {{ isLoginPage ? 'S\'inscrire' : 'Se connecter' }}
+              Pas de compte?
+              <button type="button" class="btn btn-link text-primary text-decoration-none fw-semibold p-0"
+                (click)="goToRegister()">
+                S'inscrire
               </button>
             </p>
           </div>

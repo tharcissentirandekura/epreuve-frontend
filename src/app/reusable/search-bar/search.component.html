@@ -1,14 +1,14 @@
 <div class="search-bar d-flex align-items-center">
-    <a *ngIf="!isSearchBarVisible" class="nav-link text-white me-3" href="#" (click)="toggleSearchBar($event)">
+    <a *ngIf="!isSearchBarVisible" class="nav-link text-white me-3 search-toggle-button bg-transparent text-white px-3 py-2" href="#" (click)="toggleSearchBar($event)">
         <i class="bi bi-search fa-lg"></i>
     </a>
 
     <!-- Floating Search Bar -->
-    <div *ngIf="isSearchBarVisible" class="floating-search-bar">
-        <div class="search-bar-container">
-            <div class="search-input-wrapper">
+    <div *ngIf="isSearchBarVisible" class="floating-search-bar d-flex justify-content-center align-items-start">
+        <div class="search-bar-container p-2">
+            <div class="search-input-wrapper position-relative d-flex align-items-center">
                 <i class="pi pi-search search-icon"></i>
-                <input type="text" class="form-control form-control-lg search-input"
+                <input type="text" class="form-control form-control-lg search-input w-100 bg-white"
                     placeholder="Rechercher les cours, sections, épreuves..." aria-label="Search"
                     [(ngModel)]="searchQuery" (input)="onSearch()" />
                 <button type="button" class="btn-close text-white fw-bold" (click)="toggleSearchBar($event)">
@@ -17,13 +17,13 @@
             </div>
 
             <!-- Search results -->
-            <div *ngIf="searchResults.length > 0" class="search-results">
-                <ul class="list-group ">
+            <div *ngIf="searchResults.length > 0" class="search-results bg-white overflow-auto">
+                <ul class="list-group list-unstyled m-0 p-0">
                     <li *ngFor="let result of searchResults"
-                        class="list-group-item d-flex justify-content-between align-items-start">
-                        <div class="ms-2 me-auto">
-                            <a [href]="result.url" class="text-decoration-none text-dark">
-                                <i class="pi pi-file-check me-2 text-primary"></i>
+                        class="list-group-item d-flex justify-content-between align-items-start p-3 px-4">
+                        <div class="ms-2 me-auto min-width-0 flex-fill overflow-hidden">
+                            <a [href]="result.url" class="text-decoration-none text-dark d-flex align-items-center min-width-0">
+                                <i class="pi pi-file-check me-2 text-primary flex-shrink-0"></i>
                                 <span class="result-name" [title]="result.name">{{ result.name }}</span>
                             </a>
                             <div class="test-category d-flex align-items-center mt-1">
@@ -34,7 +34,7 @@
                             </div>
 
                         </div>
-                        <div *ngIf="isFeatureOn" class="action-buttons">
+                        <div *ngIf="isFeatureOn" class="d-flex gap-2 align-items-center flex-shrink-0">
                             <button class="btn btn-link text-primary me-2" (click)="useChatBot(result)">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="black"
                                     class="bi bi-openai" viewBox="0 0 16 16">
