@@ -470,7 +470,7 @@ export class UserService {
   private handleError(error: HttpErrorResponse): any {
     let errorMessage = 'An unexpected error occurred';
     
-    if (error.error instanceof ErrorEvent) {
+    if (typeof ErrorEvent !== 'undefined' && error.error instanceof ErrorEvent) {
       // Client-side error
       errorMessage = `Error: ${error.error.message}`;
     } else {
@@ -1021,6 +1021,8 @@ export class UserService {
   }
 
   private applyTheme(theme: string): void {
+    if (typeof document === 'undefined') return;
+    
     document.documentElement.setAttribute('data-theme', theme);
 
     // Handle auto theme
@@ -1031,19 +1033,27 @@ export class UserService {
   }
 
   private applyLanguage(language: string): void {
+    if (typeof document === 'undefined') return;
     document.documentElement.setAttribute('lang', language);
   }
 
   private applyFontSize(fontSize: string): void {
+    if (typeof document === 'undefined') return;
     document.documentElement.setAttribute('data-font-size', fontSize);
   }
 
   private applyColorScheme(colorScheme: string): void {
+    if (typeof document === 'undefined') return;
     document.documentElement.setAttribute('data-color-scheme', colorScheme);
   }
 
   // Private helper methods for activity tracking
   private startActivityTracking(): void {
+    // Only run in browser environment (not during SSR)
+    if (typeof document === 'undefined') {
+      return;
+    }
+
     // Track page visibility changes
     document.addEventListener('visibilitychange', () => {
       if (!document.hidden && this.isTrackingEnabled) {
@@ -1078,6 +1088,11 @@ export class UserService {
   }
 
   private trackUserInteractions(): void {
+    // Only run in browser environment (not during SSR)
+    if (typeof document === 'undefined') {
+      return;
+    }
+
     // Track significant user actions
     const significantEvents = ['click', 'keydown', 'scroll'];
     
