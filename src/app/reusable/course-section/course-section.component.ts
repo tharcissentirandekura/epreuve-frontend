@@ -54,12 +54,7 @@ export class CourseSectionComponent implements OnInit {
   currentPage = 1;
   totalPages = 0;
 
-  // Pagination for videos
-  videoCount = 0;
-  videoNext: string | null = null;
-  videoPrevious: string | null = null;
-  videoCurrentPage = 1;
-  videoTotalPages = 0;
+  // No pagination for videos - load all at once
 
   // shared dat
   pageSize = 5; // 
@@ -118,34 +113,22 @@ export class CourseSectionComponent implements OnInit {
   }
 
   loadVideos(): void {
-    // handle pagination for videos
-    this.api.getDataHandler(`videos`, this.videoCurrentPage).subscribe({
+    // Load all videos from page 1 only (no pagination)
+    this.api.getDataHandler(`videos`, 1).subscribe({
       next: videos => {
-        this.videoList = videos.results;
-        this.videoCount = videos.count;
-        this.videoNext = videos.next;
-        this.videoPrevious = videos.previous;
-        this.videoTotalPages = Math.ceil(this.videoCount / this.pageSize); // Assuming 5 items per page
-        // this.uniqueCourses = Array.from(new Set(this.videoList.map((v:any) => v.course)));
-        console.log('Total videos:', this.videoCount);
-        this.applyFilters();
+        this.videoList = videos.results || [];
+        console.log('Total videos loaded:', this.videoList.length);
       },
       error: err => {
-        if (err.status === 404) {
-          console.warn(`No videos on page ${this.videoCurrentPage}`);
-        }
+        console.warn('No videos available or error loading videos:', err.message);
         this.videoList = [];
       }
     });
-
   }
 
   goToPage(page: number): void {
-    if (this.showVideos) {
-      if (page < 1 || page > this.videoTotalPages) return;
-      this.videoCurrentPage = page;
-      this.loadVideos();
-    } else {
+    // Only handle pagination for tests, videos don't have pagination
+    if (!this.showVideos) {
       if (page < 1 || page > this.totalPages) return;
       this.currentPage = page;
       this.loadTests();

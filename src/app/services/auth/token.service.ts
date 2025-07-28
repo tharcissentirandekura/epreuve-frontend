@@ -14,63 +14,66 @@ interface DecodedToken {
   providedIn: 'root'
 })
 export class TokenService {
-  private readonly ACCESS_TOKEN_KEY = 'access_token';
-  private readonly REFRESH_TOKEN_KEY = 'refresh_token';
-  private readonly USER_KEY = 'current_user';
-  private readonly REMEMBER_ME_KEY = 'remember_me';
+  private readonly KEYS = {
+    ACCESS_TOKEN: 'access_token',
+    REFRESH_TOKEN: 'refresh_token',
+    USER: 'current_user',
+    REMEMBER_ME: 'remember_me'
+  } as const;
 
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
 
+  private get isBrowser(): boolean {
+    return isPlatformBrowser(this.platformId);
+  }
+
+  private get rememberMe(): boolean {
+    return this.isBrowser && localStorage.getItem(this.KEYS.REMEMBER_ME) === 'true';
+  }
+
+  private get storage(): Storage | null {
+    if (!this.isBrowser) return null;
+    return this.rememberMe ? localStorage : sessionStorage;
+  }
+
   // Token operations
-  setTokens(accessToken: string, refreshToken: string, rememberMe: boolean = false): void {
-    if (!isPlatformBrowser(this.platformId)) return;
+  setTokens(accessToken: string, refreshToken: string, rememberMe = false): void {
+    if (!this.isBrowser) return;
 
     const storage = rememberMe ? localStorage : sessionStorage;
     
-    storage.setItem(this.ACCESS_TOKEN_KEY, accessToken);
-    storage.setItem(this.REFRESH_TOKEN_KEY, refreshToken);
-    localStorage.setItem(this.REMEMBER_ME_KEY, rememberMe.toString());
+    storage.setItem(this.KEYS.ACCESS_TOKEN, accessToken);
+    storage.setItem(this.KEYS.REFRESH_TOKEN, refreshToken);
+    localStorage.setItem(this.KEYS.REMEMBER_ME, rememberMe.toString());
 
-    // If remember me is false, also clear localStorage tokens
-    if (!rememberMe) {
-      localStorage.removeItem(this.ACCESS_TOKEN_KEY);
-      localStorage.removeItem(this.REFRESH_TOKEN_KEY);
-    }
+    // Clear opposite storage
+    const oppositeStorage = rememberMe ? sessionStorage : localStorage;
+    oppositeStorage.removeItem(this.KEYS.ACCESS_TOKEN);
+    oppositeStorage.removeItem(this.KEYS.REFRESH_TOKEN);
   }
 
   getAccessToken(): string | null {
-    if (!isPlatformBrowser(this.platformId)) return null;
-
-    // Check sessionStorage first, then localStorage
-    return sessionStorage.getItem(this.ACCESS_TOKEN_KEY) || 
-           localStorage.getItem(this.ACCESS_TOKEN_KEY);
+    if (!this.isBrowser) return null;
+    return sessionStorage.getItem(this.KEYS.ACCESS_TOKEN) || 
+           localStorage.getItem(this.KEYS.ACCESS_TOKEN);
   }
 
   getRefreshToken(): string | null {
-    if (!isPlatformBrowser(this.platformId)) return null;
-
-    return sessionStorage.getItem(this.REFRESH_TOKEN_KEY) || 
-           localStorage.getItem(this.REFRESH_TOKEN_KEY);
+    if (!this.isBrowser) return null;
+    return sessionStorage.getItem(this.KEYS.REFRESH_TOKEN) || 
+           localStorage.getItem(this.KEYS.REFRESH_TOKEN);
   }
 
   updateAccessToken(accessToken: string): void {
-    if (!isPlatformBrowser(this.platformId)) return;
-
-    const rememberMe = this.getRememberMeStatus();
-    const storage = rememberMe ? localStorage : sessionStorage;
-    storage.setItem(this.ACCESS_TOKEN_KEY, accessToken);
+    this.storage?.setItem(this.KEYS.ACCESS_TOKEN, accessToken);
   }
 
   removeTokens(): void {
-    if (!isPlatformBrowser(this.platformId)) return;
+    if (!this.isBrowser) return;
 
-    // Clear from both storages
-    sessionStorage.removeItem(this.ACCESS_TOKEN_KEY);
-    sessionStorage.removeItem(this.REFRESH_TOKEN_KEY);
-    localStorage.removeItem(this.ACCESS_TOKEN_KEY);
-    localStorage.removeItem(this.REFRESH_TOKEN_KEY);
-    localStorage.removeItem(this.REMEMBER_ME_KEY);
-    this.removeUser();
+    [sessionStorage, localStorage].forEach(storage => {
+      Object.values(this.KEYS).forEach(key => storage.removeItem(key));
+    });
   }
 
   // Token validation
@@ -79,11 +82,9 @@ export class TokenService {
     if (!tokenToCheck) return false;
 
     try {
-      const decodedToken = jwtDecode<DecodedToken>(tokenToCheck);
-      const currentTime = Math.floor(Date.now() / 1000);
-      return decodedToken.exp > currentTime;
-    } catch (error) {
-      console.error('Token validation error:', error);
+      const decoded = jwtDecode<DecodedToken>(tokenToCheck);
+      return decoded.exp > Math.floor(Date.now() / 1000);
+    } catch {
       return false;
     }
   }
@@ -97,10 +98,9 @@ export class TokenService {
     if (!tokenToCheck) return null;
 
     try {
-      const decodedToken = jwtDecode<DecodedToken>(tokenToCheck);
-      return decodedToken.exp ? new Date(decodedToken.exp * 1000) : null;
-    } catch (error) {
-      console.error('Token expiration date error:', error);
+      const decoded = jwtDecode<DecodedToken>(tokenToCheck);
+      return decoded.exp ? new Date(decoded.exp * 1000) : null;
+    } catch {
       return null;
     }
   }
@@ -111,86 +111,62 @@ export class TokenService {
 
     try {
       return jwtDecode<DecodedToken>(tokenToCheck);
-    } catch (error) {
-      console.error('Token payload decode error:', error);
+    } catch {
       return null;
     }
   }
 
   // User data management
   setUser(user: User): void {
-    if (!isPlatformBrowser(this.platformId)) return;
-
-    const rememberMe = this.getRememberMeStatus();
-    const storage = rememberMe ? localStorage : sessionStorage;
-    storage.setItem(this.USER_KEY, JSON.stringify(user));
+    if (!this.storage) return;
+    this.storage.setItem(this.KEYS.USER, JSON.stringify(user));
   }
 
   getUser(): User | null {
-    if (!isPlatformBrowser(this.platformId)) return null;
+    if (!this.isBrowser) return null;
 
-    const userData = sessionStorage.getItem(this.USER_KEY) || 
-                    localStorage.getItem(this.USER_KEY);
+    const userData = sessionStorage.getItem(this.KEYS.USER) || 
+                    localStorage.getItem(this.KEYS.USER);
     
     if (!userData) return null;
 
     try {
       return JSON.parse(userData);
-    } catch (error) {
-      console.error('User data parse error:', error);
+    } catch {
       return null;
     }
   }
 
-  removeUser(): void {
-    if (!isPlatformBrowser(this.platformId)) return;
-
-    sessionStorage.removeItem(this.USER_KEY);
-    localStorage.removeItem(this.USER_KEY);
+  clearUser(): void {
+    if (!this.isBrowser) return;
+    [sessionStorage, localStorage].forEach(storage => 
+      storage.removeItem(this.KEYS.USER)
+    );
   }
 
-  // Remember me functionality
-  private getRememberMeStatus(): boolean {
-    if (!isPlatformBrowser(this.platformId)) return false;
-
-    const rememberMe = localStorage.getItem(this.REMEMBER_ME_KEY);
-    return rememberMe === 'true';
-  }
-
-  // Security utilities
+  // Session management
   hasValidSession(): boolean {
     const accessToken = this.getAccessToken();
     const refreshToken = this.getRefreshToken();
     
     if (!accessToken || !refreshToken) return false;
     
-    // If access token is valid, session is good
-    if (this.isTokenValid(accessToken)) return true;
-    
-    // If access token is expired but refresh token exists, session can be refreshed
-    return !!refreshToken;
+    return this.isTokenValid(accessToken) || !!refreshToken;
   }
 
   shouldRefreshToken(): boolean {
-    const accessToken = this.getAccessToken();
-    const refreshToken = this.getRefreshToken();
+    const accessToken:string = this.getAccessToken() || '';
+    const refreshToken = this.getRefreshToken() || '';
     
-    if (!accessToken || !refreshToken) return false;
-    
-    // Check if access token is expired but refresh token exists
-    return this.isTokenExpired(accessToken) && !!refreshToken;
+    return !!refreshToken && this.isTokenExpired(accessToken);
   }
 
-  // Clean up expired tokens
   cleanupExpiredTokens(): void {
     const accessToken = this.getAccessToken();
     const refreshToken = this.getRefreshToken();
     
-    if (accessToken && this.isTokenExpired(accessToken)) {
-      if (!refreshToken) {
-        // No refresh token available, clear everything
-        this.removeTokens();
-      }
+    if (accessToken && this.isTokenExpired(accessToken) && !refreshToken) {
+      this.removeTokens();
     }
   }
 }
