@@ -1,19 +1,15 @@
 <div class="min-vh-100">
+  <app-toast></app-toast>
   <div class="container-fluid h-100">
     <div class="row h-100">
       <!-- Left Side - Hero Section -->
       <div class="col-lg-6 d-none d-lg-flex hero-section position-relative overflow-hidden">
         <div class="position-relative z-2 d-flex flex-column justify-content-center align-items-center text-center p-4 w-100">
-          <div class="position-absolute top-0 start-0 w-100 h-100" style="z-index: -1;"></div>
           <div class="hero-text">
-            <h1 class="display-4 fw-bold text-primary mb-4">
-              {{ pageInfo.subtitle }}
-            </h1>
+            <h1 class="display-4 fw-bold text-primary mb-4">Bienvenue</h1>
             <p class="lead text-dark mb-4 fs-6">
-              {{ pageInfo.description }}
+              Connectez-vous pour accéder à votre compte et profiter de nos services.
             </p>
-            <div class="platforme-icon">
-            </div>
             <div class="d-flex flex-column gap-3 mt-4">
               <div class="feature-item d-flex align-items-center gap-3 fw-medium">
                 <i class="bi bi-shield-check text-success"></i>
@@ -35,10 +31,15 @@
       <!-- Right Side - Form -->
       <div class="col-lg-6 d-flex align-items-center justify-content-center">
         <div class="login-form-container w-100 p-4 bg-white m-4">
-          <!-- Success/Error Message -->
-          <div *ngIf="popupMessage" class="alert mb-4" [class.alert-success]="popupSuccess"
-            [class.alert-danger]="!popupSuccess">
-            {{ popupMessage }}
+          
+          <!-- Success Message -->
+          <div *ngIf="successMessage" class="alert alert-success mb-4">
+            {{ successMessage }}
+          </div>
+
+          <!-- Error Message -->
+          <div *ngIf="errorMessage" class="alert alert-danger mb-4">
+            {{ errorMessage }}
           </div>
 
           <div class="text-center mb-5">
@@ -47,28 +48,23 @@
                 <i class="bi bi-person-circle"></i>
               </div>
             </div>
-            <h2 class="fw-bold text-dark mb-2">{{ pageInfo.title }}</h2>
+            <h2 class="fw-bold text-dark mb-2">Se connecter</h2>
             <p class="text-muted">Connectez-vous à votre compte</p>
           </div>
 
-
-
           <!-- Login Form -->
           <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" novalidate>
-
+            
             <!-- Username Field -->
             <div class="mb-3">
               <label for="username" class="form-label fw-semibold text-secondary">Nom d'utilisateur</label>
               <div class="input-group">
-                <span class="input-group-text text-muted fw-medium">
-                  <i class="bi bi-person"></i>
-                </span>
                 <input type="text" class="form-control py-3 px-3" id="username" formControlName="username"
                   placeholder="Entrez votre nom d'utilisateur"
-                  [class.is-invalid]="username?.invalid && username?.touched"
-                  [class.is-valid]="username?.valid && username?.touched">
+                  [class.is-invalid]="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
               </div>
-              <div class="invalid-feedback d-block mt-1" *ngIf="username?.invalid && username?.touched">
+              <div class="invalid-feedback d-block mt-1" 
+                   *ngIf="loginForm.get('username')?.invalid && loginForm.get('username')?.touched">
                 <small>{{ getFieldError('username') }}</small>
               </div>
             </div>
@@ -77,18 +73,18 @@
             <div class="mb-3">
               <label for="password" class="form-label fw-semibold text-secondary">Mot de passe</label>
               <div class="input-group">
-                <span class="input-group-text text-muted fw-medium">
+                <!-- <span class="input-group-text text-muted fw-medium">
                   <i class="bi bi-lock"></i>
-                </span>
+                </span> -->
                 <input [type]="showPassword ? 'text' : 'password'" class="form-control py-3 px-3" id="password"
                   formControlName="password" placeholder="Entrez votre mot de passe"
-                  [class.is-invalid]="password?.invalid && password?.touched"
-                  [class.is-valid]="password?.valid && password?.touched">
+                  [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
                 <button type="button" class="btn btn-outline-secondary text-muted" (click)="togglePasswordVisibility()">
                   <i [class]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
                 </button>
               </div>
-              <div class="invalid-feedback d-block mt-1" *ngIf="password?.invalid && password?.touched">
+              <div class="invalid-feedback d-block mt-1" 
+                   *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched">
                 <small>{{ getFieldError('password') }}</small>
               </div>
             </div>
@@ -97,20 +93,16 @@
             <div class="d-flex justify-content-between align-items-center mb-4">
               <div class="form-check">
                 <input class="form-check-input" type="checkbox" id="rememberMe" formControlName="rememberMe">
-                <label class="form-check-label" for="rememberMe">
-                  Se souvenir de moi
-                </label>
+                <label class="form-check-label" for="rememberMe">Se souvenir de moi</label>
               </div>
-              <a href="#" class="text-primary text-decoration-none">
-                Mot de passe oublié?
-              </a>
+              <a href="#" class="text-primary text-decoration-none">Mot de passe oublié?</a>
             </div>
 
             <!-- Submit Button -->
             <button type="submit" class="btn btn-primary w-100 mb-3 login-btn fw-semibold" [disabled]="isSubmitting">
-              <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2"></span>
-              <span *ngIf="!isSubmitting">{{ pageInfo.title }}</span>
-              <span *ngIf="isSubmitting">Connexion...</span>
+              <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              <span *ngIf="isSubmitting">Connexion en cours...</span>
+              <span *ngIf="!isSubmitting">Se connecter</span>
             </button>
           </form>
 
@@ -119,9 +111,7 @@
             <p class="text-muted mb-0">
               Pas de compte?
               <button type="button" class="btn btn-link text-primary text-decoration-none fw-semibold p-0"
-                (click)="goToRegister()">
-                S'inscrire
-              </button>
+                (click)="goToRegister()">S'inscrire</button>
             </p>
           </div>
         </div>

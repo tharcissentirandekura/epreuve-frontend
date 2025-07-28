@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import {SearchBarComponent} from '../search-bar/search.component';
+import { SearchBarComponent } from '../search-bar/search.component';
 import { AuthService } from '../../services/auth/auth.service';
 import { MatIconModule } from '@angular/material/icon';
 
@@ -10,14 +10,12 @@ import { MatIconModule } from '@angular/material/icon';
 @Component({
 	selector: 'app-navbar',
 	standalone: true,
-	imports: [RouterLink, RouterLinkActive, CommonModule, FormsModule,SearchBarComponent,MatIconModule],
+	imports: [RouterLink, RouterLinkActive, CommonModule, FormsModule, SearchBarComponent, MatIconModule],
 	templateUrl: './navbar.component.html',
 	styleUrl: './navbar.component.scss',
 
 })
 export class NavbarComponent implements OnInit {
-	// Using a Subject to manage the unsubscribe logic
-	isLoggedIn: boolean = false;
 	isSearchBarVisible: boolean = false;
 	searchQuery: string = '';
 	searchResults: any[] = [];
@@ -25,14 +23,14 @@ export class NavbarComponent implements OnInit {
 
 	constructor(
 		private authservice: AuthService,
-	) {}
+	) { }
 
 	ngOnInit(): void {
-		// Subscribe to the login state
-		this.authservice.isLoggedIn$.subscribe((state) => {
-			this.isLoggedIn = state;
-		});
+		// No subscription needed - we'll check authentication status directly
+	}
 
+	get isLoggedIn(): boolean {
+		return this.authservice.isAuthenticated();
 	}
 	logout() {
 		// Clear the token from local storage

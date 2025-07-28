@@ -94,16 +94,7 @@
     <!-- VIDEO CARDS -->
     <ng-container *ngIf="showVideos">
         <div class="row justify-content-center">
-            <div class="row mb-3" *ngIf="videoCount > pageSize && showVideos">
-                <app-paginator
-                    [totalPages]="videoTotalPages"
-                    [count]="videoCount"
-                    [currentPage]="videoCurrentPage"
-                    [previous]="videoPrevious"
-                    [next]="videoNext"
-                    (pageChange)="goToPage($event)">
-                </app-paginator>
-            </div>
+            <!-- No pagination for videos -->
 
             <div *ngFor="let v of videoList; trackBy: trackByVideo" class="col-lg-3 col-md-4 col-sm-6 mb-4">
                 <div class="d-flex flex-column h-100 campaign-card h-100 d-flex flex-column bg-white rounded-4 shadow-sm">

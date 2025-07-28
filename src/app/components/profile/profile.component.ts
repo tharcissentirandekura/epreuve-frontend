@@ -1,12 +1,11 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { Subject, takeUntil, forkJoin } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 import { AuthService } from '../../services/auth/auth.service';
 import { UserService } from '../../services/user/user.service';
-import { AvatarUploadService, AvatarValidationResult } from '../../services/user/avatar-upload.service';
-import { UserPreferencesService, ExtendedUserPreferences } from '../../services/user/user-preferences.service';
-import { User, PasswordChangeData, ValidationMessages } from '../../models/user.model';
+import { AvatarUploadService } from '../../services/user/avatar-upload.service';
+import { User, PasswordChangeData } from '../../models/user.model';
 import { AuthValidators } from '../../validators/auth.validators';
 import { ErrorHandlingService } from '../../interceptors/error.interceptor';
 
@@ -15,37 +14,33 @@ import { ErrorHandlingService } from '../../interceptors/error.interceptor';
   standalone: true,
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.scss'],
-  imports: [
-    CommonModule,
-    ReactiveFormsModule
-  ]
+  imports: [CommonModule, ReactiveFormsModule]
 })
 export class ProfileComponent implements OnInit, OnDestroy {
   profileForm!: FormGroup;
   passwordForm!: FormGroup;
   currentUser: User | null = null;
+
+  // Simplified state management
+  loading = {
+    profile: false,
+    updating: false,
+    password: false,
+    avatar: false
+  };
+
+  ui = {
+    showPasswordForm: false,
+    showPasswords: { current: false, new: false, confirm: false }
+  };
+
+  messages = { success: '', error: '' };
   
-  // Loading states
-  isLoadingProfile = false;
-  isUpdatingProfile = false;
-  isChangingPassword = false;
-  isUploadingAvatar = false;
-  
-  // UI states
-  showPasswordForm = false;
-  showCurrentPassword = false;
-  showNewPassword = false;
-  showConfirmPassword = false;
-  
-  // Messages
-  successMessage = '';
-  errorMessage = '';
-  validationMessages = ValidationMessages;
-  
-  // Avatar
-  selectedAvatarFile: File | null = null;
-  avatarPreview: string | null = null;
-  
+  avatar = {
+    file: null as File | null,
+    preview: null as string | null
+  };
+
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -53,7 +48,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private userService: UserService,
     private avatarUploadService: AvatarUploadService,
-    private userPreferencesService: UserPreferencesService,
     private errorHandlingService: ErrorHandlingService
   ) {
     this.initializeForms();
@@ -61,16 +55,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.loadUserProfile();
-    
-    // Subscribe to authentication state changes
-    this.authService.currentUser$
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(user => {
-        this.currentUser = user;
-        if (user) {
-          this.populateProfileForm(user);
-        }
-      });
   }
 
   ngOnDestroy(): void {
@@ -79,46 +63,22 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   private initializeForms(): void {
-    // Profile form
     this.profileForm = this.fb.group({
-      firstName: ['', [
-        Validators.required,
-        AuthValidators.nameValidator
-      ]],
-      lastName: ['', [
-        Validators.required,
-        AuthValidators.nameValidator
-      ]],
-      username: ['', [
-        Validators.required,
-        AuthValidators.username
-      ]],
-      email: ['', [
-        Validators.required,
-        AuthValidators.email
-      ]]
+      firstName: ['', [Validators.required, AuthValidators.nameValidator]],
+      lastName: ['', [Validators.required, AuthValidators.nameValidator]],
+      username: ['', [Validators.required, AuthValidators.username]],
+      email: ['', [Validators.required, AuthValidators.email]]
     });
 
-    // Password change form
     this.passwordForm = this.fb.group({
-      currentPassword: ['', [
-        Validators.required
-      ]],
-      newPassword: ['', [
-        Validators.required,
-        AuthValidators.strongPassword,
-        AuthValidators.notCommonPassword
-      ]],
-      confirmPassword: ['', [
-        Validators.required
-      ]]
-    }, {
-      validators: [AuthValidators.passwordMatch]
-    });
+      currentPassword: ['', Validators.required],
+      newPassword: ['', [Validators.required, AuthValidators.strongPassword]],
+      confirmPassword: ['', Validators.required]
+    }, { validators: [AuthValidators.passwordMatch] });
   }
 
   private loadUserProfile(): void {
-    this.isLoadingProfile = true;
+    this.loading.profile = true;
     this.clearMessages();
 
     this.userService.getProfile()
@@ -126,249 +86,178 @@ export class ProfileComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (user) => {
           this.currentUser = user;
-          this.populateProfileForm(user);
-          this.isLoadingProfile = false;
+          this.profileForm.patchValue(user);
+          this.loading.profile = false;
         },
         error: (error) => {
-          console.error('Failed to load profile:', error);
-          this.errorMessage = this.errorHandlingService.handleAuthError(error);
-          this.isLoadingProfile = false;
+          this.handleError('Failed to load profile', error);
+          this.loading.profile = false;
         }
       });
   }
 
-  private populateProfileForm(user: User): void {
-    this.profileForm.patchValue({
-      firstName: user.firstName,
-      lastName: user.lastName,
-      username: user.username,
-      email: user.email
-    });
-  }
-
-  // Profile update methods
   updateProfile(): void {
-    if (this.profileForm.invalid || this.isUpdatingProfile) {
+    if (this.profileForm.invalid || this.loading.updating) {
       this.profileForm.markAllAsTouched();
       return;
     }
 
-    this.isUpdatingProfile = true;
+    this.loading.updating = true;
     this.clearMessages();
 
-    const updateData = {
-      firstName: this.profileForm.value.firstName,
-      lastName: this.profileForm.value.lastName,
-      username: this.profileForm.value.username,
-      email: this.profileForm.value.email
-    };
-
-    this.userService.updateProfile(updateData)
+    this.userService.updateProfile(this.profileForm.value)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
-        next: (updatedUser) => {
-          this.currentUser = updatedUser;
-          this.successMessage = 'Profil mis à jour avec succès!';
-          this.isUpdatingProfile = false;
-          
-          // Clear success message after 3 seconds
-          setTimeout(() => this.successMessage = '', 3000);
+        next: (user) => {
+          this.currentUser = user;
+          this.showSuccessMessage('Profil mis à jour avec succès!');
+          this.loading.updating = false;
         },
         error: (error) => {
-          console.error('Profile update failed:', error);
-          this.errorMessage = this.errorHandlingService.handleAuthError(error);
-          this.isUpdatingProfile = false;
+          this.handleError('Profile update failed', error);
+          this.loading.updating = false;
         }
       });
   }
 
-  // Password change methods
   togglePasswordForm(): void {
-    this.showPasswordForm = !this.showPasswordForm;
-    if (!this.showPasswordForm) {
+    this.ui.showPasswordForm = !this.ui.showPasswordForm;
+    if (!this.ui.showPasswordForm) {
       this.passwordForm.reset();
       this.clearMessages();
     }
   }
 
   changePassword(): void {
-    if (this.passwordForm.invalid || this.isChangingPassword) {
+    if (this.passwordForm.invalid || this.loading.password) {
       this.passwordForm.markAllAsTouched();
       return;
     }
 
-    this.isChangingPassword = true;
+    this.loading.password = true;
     this.clearMessages();
 
-    const passwordData: PasswordChangeData = {
-      currentPassword: this.passwordForm.value.currentPassword,
-      newPassword: this.passwordForm.value.newPassword,
-      confirmPassword: this.passwordForm.value.confirmPassword
-    };
+    const passwordData: PasswordChangeData = this.passwordForm.value;
 
     this.userService.changePassword(passwordData)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          this.successMessage = 'Mot de passe changé avec succès!';
+          this.showSuccessMessage('Mot de passe changé avec succès!');
           this.passwordForm.reset();
-          this.showPasswordForm = false;
-          this.isChangingPassword = false;
-          
-          // Clear success message after 3 seconds
-          setTimeout(() => this.successMessage = '', 3000);
+          this.ui.showPasswordForm = false;
+          this.loading.password = false;
         },
         error: (error) => {
-          console.error('Password change failed:', error);
-          this.errorMessage = this.errorHandlingService.handleAuthError(error);
-          this.isChangingPassword = false;
+          this.handleError('Password change failed', error);
+          this.loading.password = false;
         }
       });
   }
 
-  // Enhanced avatar upload methods
   onAvatarSelected(event: Event): void {
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      const file = input.files[0];
-      
-      // Use the avatar upload service for validation
-      const validation = this.avatarUploadService.validateAvatarFile(file);
-      
-      if (!validation.isValid) {
-        this.errorMessage = validation.errors.join(', ');
-        return;
-      }
-      
-      this.selectedAvatarFile = file;
-      
-      // Create preview using the service
-      this.avatarUploadService.createImagePreview(file)
-        .pipe(takeUntil(this.destroy$))
-        .subscribe({
-          next: (preview) => {
-            this.avatarPreview = preview;
-            this.clearMessages();
-          },
-          error: (error) => {
-            console.error('Failed to create preview:', error);
-            this.errorMessage = 'Impossible de créer un aperçu de l\'image.';
-          }
-        });
-    }
-  }
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
 
-  uploadAvatar(): void {
-    if (!this.selectedAvatarFile || this.isUploadingAvatar) {
+    const validation = this.avatarUploadService.validateAvatarFile(file);
+    if (!validation.isValid) {
+      this.messages.error = validation.errors.join(', ');
       return;
     }
 
-    this.isUploadingAvatar = true;
+    this.avatar.file = file;
+    this.avatarUploadService.createImagePreview(file)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (preview) => {
+          this.avatar.preview = preview;
+          this.clearMessages();
+        },
+        error: () => this.messages.error = 'Impossible de créer un aperçu de l\'image.'
+      });
+  }
+
+  uploadAvatar(): void {
+    if (!this.avatar.file || this.loading.avatar) return;
+
+    this.loading.avatar = true;
     this.clearMessages();
 
-    this.userService.uploadAvatar(this.selectedAvatarFile)
+    this.userService.uploadAvatar(this.avatar.file)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (avatarUrl) => {
-          if (this.currentUser) {
-            this.currentUser.avatar = avatarUrl;
-          }
-          this.successMessage = 'Photo de profil mise à jour avec succès!';
-          this.selectedAvatarFile = null;
-          this.avatarPreview = null;
-          this.isUploadingAvatar = false;
-          
-          // Clear success message after 3 seconds
-          setTimeout(() => this.successMessage = '', 3000);
+          if (this.currentUser) this.currentUser.avatar = avatarUrl;
+          this.showSuccessMessage('Photo de profil mise à jour avec succès!');
+          this.resetAvatar();
+          this.loading.avatar = false;
         },
         error: (error) => {
-          console.error('Avatar upload failed:', error);
-          this.errorMessage = this.errorHandlingService.handleAuthError(error);
-          this.isUploadingAvatar = false;
+          this.handleError('Avatar upload failed', error);
+          this.loading.avatar = false;
         }
       });
   }
 
   cancelAvatarUpload(): void {
-    this.selectedAvatarFile = null;
-    this.avatarPreview = null;
+    this.resetAvatar();
     this.clearMessages();
   }
 
-  // Password visibility toggles
-  toggleCurrentPasswordVisibility(): void {
-    this.showCurrentPassword = !this.showCurrentPassword;
+  togglePasswordVisibility(field: 'current' | 'new' | 'confirm'): void {
+    this.ui.showPasswords[field] = !this.ui.showPasswords[field];
   }
 
-  toggleNewPasswordVisibility(): void {
-    this.showNewPassword = !this.showNewPassword;
-  }
-
-  toggleConfirmPasswordVisibility(): void {
-    this.showConfirmPassword = !this.showConfirmPassword;
-  }
-
-  // Form validation helpers
   getFieldError(formName: 'profile' | 'password', fieldName: string): string {
     const form = formName === 'profile' ? this.profileForm : this.passwordForm;
     const field = form.get(fieldName);
     
-    if (!field || !field.errors || !field.touched) {
-      return '';
-    }
+    if (!field?.errors || !field.touched) return '';
 
-    const errors = field.errors;
-    
-    if (errors['required']) {
-      return this.validationMessages.required;
-    }
-    if (errors['email']) {
-      return this.validationMessages.email;
-    }
-    if (errors['username']) {
-      return this.validationMessages.username;
-    }
-    if (errors['name']) {
-      return this.validationMessages.name;
-    }
-    if (errors['strongPassword']) {
-      return this.validationMessages.password;
-    }
-    if (errors['commonPassword']) {
-      return 'Veuillez choisir un mot de passe plus sécurisé.';
-    }
-    if (errors['minlength']) {
-      return `Minimum ${errors['minlength'].requiredLength} caractères requis.`;
-    }
-    
-    return 'Champ invalide.';
+    // Simplified error mapping
+    const errorMap: Record<string, string> = {
+      required: 'Ce champ est requis',
+      email: 'Email invalide',
+      username: 'Nom d\'utilisateur invalide',
+      name: 'Nom invalide',
+      strongPassword: 'Mot de passe trop faible',
+      commonPassword: 'Mot de passe trop commun'
+    };
+
+    const errorKey = Object.keys(field.errors)[0];
+    return errorMap[errorKey] || 'Champ invalide';
   }
 
   get hasPasswordMismatch(): boolean {
     return this.passwordForm.hasError('passwordMismatch') && 
-           (this.passwordForm.get('confirmPassword')?.touched || false);
+           !!this.passwordForm.get('confirmPassword')?.touched;
   }
 
-  getPasswordStrength(): { score: number; feedback: string[]; isStrong: boolean } {
+  getPasswordStrength() {
     const password = this.passwordForm.get('newPassword')?.value;
-    if (!password) {
-      return { score: 0, feedback: [], isStrong: false };
-    }
-    return AuthValidators.getPasswordStrength(password);
+    return password ? AuthValidators.getPasswordStrength(password) : 
+           { score: 0, feedback: [], isStrong: false };
   }
 
-  // Utility methods
+  private handleError(context: string, error: any): void {
+    console.error(context, error);
+    this.messages.error = this.errorHandlingService.handleAuthError(error);
+  }
+
+  private showSuccessMessage(message: string): void {
+    this.messages.success = message;
+    setTimeout(() => this.messages.success = '', 3000);
+  }
+
   private clearMessages(): void {
-    this.successMessage = '';
-    this.errorMessage = '';
+    this.messages = { success: '', error: '' };
   }
 
-  // Form control getters
-  get firstName() { return this.profileForm.get('firstName'); }
-  get lastName() { return this.profileForm.get('lastName'); }
-  get username() { return this.profileForm.get('username'); }
-  get email() { return this.profileForm.get('email'); }
-  get currentPassword() { return this.passwordForm.get('currentPassword'); }
-  get newPassword() { return this.passwordForm.get('newPassword'); }
-  get confirmPassword() { return this.passwordForm.get('confirmPassword'); }
+  private resetAvatar(): void {
+    this.avatar = { file: null, preview: null };
+  }
+
+  // Simplified getters
+  get f() { return this.profileForm.controls; }
+  get pf() { return this.passwordForm.controls; }
 }

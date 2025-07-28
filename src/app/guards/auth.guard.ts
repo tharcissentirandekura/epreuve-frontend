@@ -10,6 +10,7 @@ import { Observable, of } from 'rxjs';
 import { map, take, switchMap } from 'rxjs/operators';
 import { AuthService } from '../services/auth/auth.service';
 import { TokenService } from '../services/auth/token.service';
+import { UserService } from '../services/user/user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,7 @@ export class AuthGuard implements CanActivate, CanActivateChild {
   
   constructor(
     private authService: AuthService,
+    private userService: UserService,
     private tokenService: TokenService,
     private router: Router
   ) {}
@@ -36,32 +38,26 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     return this.canActivate(childRoute, state);
   }
 
-  private checkAuthentication(url: string, route?: ActivatedRouteSnapshot): Observable<boolean> {
-    return this.authService.isAuthenticated$.pipe(
-      take(1),
-      switchMap(isAuthenticated => {
-        if (isAuthenticated && this.tokenService.hasValidSession()) {
-          // User is authenticated, check role-based access if required
-          return this.checkRoleAccess(route);
-        } else if (this.tokenService.shouldRefreshToken()) {
-          // Token expired but refresh token exists, attempt refresh
-          return this.authService.refreshToken().pipe(
-            map(() => {
-              return this.checkRoleAccess(route);
-            }),
-            switchMap(result => of(result))
-          );
-        } else {
-          // Not authenticated, redirect to login
-          console.log('User not authenticated, redirecting to login');
-          this.router.navigate(['/login'], { 
-            queryParams: { returnUrl: url } 
-          });
-          return of(false);
-        }
-      })
-    );
+  private checkAuthentication(url:string, route?: ActivatedRouteSnapshot): Observable<boolean>{
+    const isAuthenticated = this.authService.isAuthenticated();
+    if (isAuthenticated && this.tokenService.hasValidSession()) {
+      return of(this.checkRoleAccess(route));
+    }
+    else if (this.tokenService.shouldRefreshToken()){
+      return this.authService.refreshToken().pipe(
+        map(() => this.checkRoleAccess(route)),
+        switchMap(result => of(result))
+      );
+    }
+    else{
+      console.log('User is not authenticated, redirecting to login');
+      this.router.navigate(['/login'], { 
+        queryParams: { returnUrl: url } 
+      });
+      return of(false);
+    }
   }
+
 
   private checkRoleAccess(route?: ActivatedRouteSnapshot): boolean {
     if (!route || !route.data || !route.data['roles']) {
@@ -70,7 +66,8 @@ export class AuthGuard implements CanActivate, CanActivateChild {
     }
 
     const requiredRoles: string[] = route.data['roles'];
-    const currentUser = this.authService.getCurrentUser();
+    const currentUser = this.userService.getCurrentUser();
+    console.log('Current user:', currentUser);
     
     if (!currentUser || !currentUser.role) {
       console.warn('User role not found, denying access');

@@ -44,9 +44,7 @@ export class LoadingInterceptor implements HttpInterceptor {
   private shouldSkipLoading(req: HttpRequest<any>): boolean {
     // Skip loading for certain URLs or request types
     const skipUrls = [
-      '/token/refresh/',
-      '/validate-username/',
-      '/validate-email/'
+      '/token/refresh/'
     ];
     
     return skipUrls.some(url => req.url.includes(url)) ||

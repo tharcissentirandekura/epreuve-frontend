@@ -1,7 +1,4 @@
-import { AbstractControl, ValidationErrors, ValidatorFn, AsyncValidatorFn } from '@angular/forms';
-import { Observable, of, timer } from 'rxjs';
-import { map, switchMap, catchError } from 'rxjs/operators';
-import { UserService } from '../services/user/user.service';
+import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import { ValidationPatterns } from '../models/user.model';
 
 export class AuthValidators {
@@ -79,35 +76,7 @@ export class AuthValidators {
     return isValid ? null : { name: true };
   }
 
-  // Async username availability validator
-  static usernameAvailable(userService: UserService): AsyncValidatorFn {
-    return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      if (!control.value) {
-        return of(null);
-      }
 
-      return timer(500).pipe(
-        switchMap(() => userService.validateUsername(control.value)),
-        map(isAvailable => isAvailable ? null : { usernameUnavailable: true }),
-        catchError(() => of(null))
-      );
-    };
-  }
-
-  // Async email availability validator
-  static emailAvailable(userService: UserService): AsyncValidatorFn {
-    return (control: AbstractControl): Observable<ValidationErrors | null> => {
-      if (!control.value) {
-        return of(null);
-      }
-
-      return timer(500).pipe(
-        switchMap(() => userService.validateEmail(control.value)),
-        map(isAvailable => isAvailable ? null : { emailUnavailable: true }),
-        catchError(() => of(null))
-      );
-    };
-  }
 
   // Password strength indicator
   static getPasswordStrength(password: string): {
