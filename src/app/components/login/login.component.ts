@@ -4,10 +4,10 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { CommonModule } from '@angular/common';
 import { FooterComponent } from '../../reusable/footer/footer.component';
 import { AuthService } from '../../services/auth/auth.service';
-import { LoginCredentials } from '../../models/user.model';
+import { LoginCredentials, User } from '../../models/user.model';
 import { ToastService } from '../../services/toast/toast.service';
 import { ToastComponent } from '../toast/toast.component';
-
+import { UserService } from '../../services/auth/user/user.service';
 
 @Component({
   selector: 'app-login',
@@ -26,13 +26,28 @@ export class LoginComponent implements OnInit {
   successMessage: string = '';
 
 
+
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute,
-    private toastService: ToastService
-  ) { }
+    private toastService: ToastService,
+    private userService: UserService
+  ) { 
+
+    /**
+     * Validate the login form for username and password
+     * Initialize the form with default values
+     */
+    this.loginForm = this.fb.group({
+      username: ['', [Validators.required, Validators.minLength(3)]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
+    });
+
+
+
+  }
 
   ngOnInit(): void {
     // check for registration success message
@@ -49,14 +64,6 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    /**
-     * Validate the login form for username and password
-     */
-    this.loginForm = this.fb.group({
-      username: ['', [Validators.required, Validators.minLength(3)]],
-      password: ['', [Validators.required, Validators.minLength(6)]],
-      rememberMe: [false]
-    });
   }
 
   //toggle password visibility
@@ -80,9 +87,7 @@ export class LoginComponent implements OnInit {
      */
     const credentials: LoginCredentials = {
       username: this.loginForm.value.username,
-      password: this.loginForm.value.password,
-      rememberMe: this.loginForm.value.rememberMe || false
-
+      password: this.loginForm.value.password
     }
 
     /**
@@ -116,6 +121,14 @@ export class LoginComponent implements OnInit {
       error: (error) => {
         this.isSubmitting = false;
         this.handleError(error);
+      },
+      complete: () =>{
+        console.log('Login process completed')
+        this.userService.getCurrentUser().subscribe(
+          user => {
+            console.log('Current user:', user);
+          }
+        )
       }
 
     });

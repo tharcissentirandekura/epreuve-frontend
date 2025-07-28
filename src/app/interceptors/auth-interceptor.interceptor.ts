@@ -27,15 +27,15 @@ export class AuthInterceptor implements HttpInterceptor {
       return next.handle(req);
     }
 
-    const token = this.tokenService.getAccessToken();
+    const token = this.tokenService.getToken();
     
-    if (token && this.tokenService.isTokenValid(token)) {
+    if (token && this.tokenService.isTokenValid(token.access)) {
       // Add valid token to request
-      const authReq = this.addTokenToRequest(req, token);
+      const authReq = this.addTokenToRequest(req, token.access);
       return next.handle(authReq).pipe(
         catchError((error: HttpErrorResponse) => this.handleAuthError(error, req, next))
       );
-    } else if (this.tokenService.shouldRefreshToken() && !this.isRefreshing) {
+    } else if (this.tokenService.isTokenValid() && !this.isRefreshing) {
       // Token is expired but refresh token exists, attempt refresh
       return this.handleTokenRefresh(req, next);
     }
@@ -92,12 +92,12 @@ export class AuthInterceptor implements HttpInterceptor {
 
     this.isRefreshing = true;
 
-    return this.authService.refreshToken().pipe(
+    return this.tokenService.refreshToken().pipe(
       switchMap((response) => {
         // Token refreshed successfully, retry original request
-        const newToken = this.tokenService.getAccessToken();
+        const newToken = this.tokenService.getToken();
         if (newToken) {
-          const authReq = this.addTokenToRequest(req, newToken);
+          const authReq = this.addTokenToRequest(req, newToken.access);
           return next.handle(authReq);
         }
         throw new Error('No token after refresh');
