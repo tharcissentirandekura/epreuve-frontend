@@ -35,6 +35,7 @@ export class LoadingInterceptor implements HttpInterceptor {
         // Stop loading
         this.activeRequests--;
         if (this.activeRequests === 0) {
+          console.log('All requests completed', this.activeRequests);
           this.updateLoadingState(false);
         }
       })

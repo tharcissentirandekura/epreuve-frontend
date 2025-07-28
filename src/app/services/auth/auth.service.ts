@@ -6,7 +6,8 @@ import { isPlatformBrowser } from '@angular/common';
 import { environment } from '../../../environments/environment'
 import { RegisterData, LoginCredentials } from "../../models/user.model";
 import { Token } from '../../models/auth.model';
-
+import { TokenService } from "./token.service";
+import { UserService } from "./user/user.service";
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private apiUrl = environment.apiBaseUrl;
@@ -15,7 +16,10 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
+    private tokenService: TokenService,
+    private userService: UserService,
     @Inject(PLATFORM_ID) private platformId: Object
+    
   ) { }
 
   login(credentials: LoginCredentials): Observable<{ token: Token }> {
@@ -30,7 +34,6 @@ export class AuthService {
   }
 
   register(user: RegisterData): Observable<RegisterData> {
-    // Transform camelCase to snake_case for Django backend
     const backendData = {
       first_name: user.firstName,
       last_name: user.lastName,
@@ -50,32 +53,8 @@ export class AuthService {
     this.router.navigate(['/login']);
   }
 
-  getToken(): Token | null {
-    if (!isPlatformBrowser(this.platformId)) {
-      return null;
-    }
-    const token = localStorage.getItem(this.tokenKey);
-    return token ? JSON.parse(token) : null;
-  }
-  refreshToken(): Observable<{ token: Token }> {
-    const currentToken = this.getToken();
-    if (!currentToken || !currentToken.refresh) {
-      return throwError(() => new Error('No refresh token available'));
-    }
-
-    return this.http.post<{ token: Token }>(`${this.apiUrl}/token/refresh`, { refresh: currentToken.refresh })
-      .pipe(
-        tap(response => {
-          if (isPlatformBrowser(this.platformId)) {
-            localStorage.setItem(this.tokenKey, JSON.stringify(response.token));
-          }
-        })
-      );
-  }
-
-
   isAuthenticated(): boolean {
-    const token = this.getToken();
+    const token = this.tokenService.getToken();
     return !!token && !!token.access;
   }
 }

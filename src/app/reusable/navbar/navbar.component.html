@@ -15,7 +15,7 @@
 				<a class="nav-link text-white dropdown-toggle" href="#" id="userMenu" data-bs-toggle="dropdown"
 					aria-expanded="false">
 					<i class="pi pi-user bg-white text-primary p-2 rounded-5"></i>
-					<!-- {{ isLoggedIn ? 'Bienvenue, ' + "name" : '' }} -->
+					{{ isLoggedIn ? 'Bienvenue, ' + currentUser?.username : '' }}
 				</a>
 
 				<ul class="dropdown-menu dropdown-menu-end user-panel" aria-labelledby="userMenu">
