@@ -29,12 +29,20 @@ export class NavbarComponent implements OnInit {
 	 */
 
 	constructor( private authservice: AuthService, private userService: UserService,) {
-		this.userService.getCurrentUser().subscribe(
-			user => {
-				console.log('Current user:', user);
-				this.currentUser = user;
-			}
-		)
+		// add more erros handling
+		if (this.authservice.isAuthenticated()) {
+			this.userService.getCurrentUser().subscribe({
+				next: (user: User) => {
+					this.currentUser = user;
+				},
+				error: (error) => {
+					console.error("Failed to get current user", error);
+					this.currentUser = null; // Reset currentUser on error
+				}
+			});
+		}else{
+			this.currentUser = null; // Reset currentUser if not authenticated
+		}
 	}
 
 	ngOnInit(): void {

@@ -6,15 +6,15 @@ import {
   HttpRequest,
   HttpErrorResponse
 } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, switchMap, finalize } from 'rxjs/operators';
+import { Observable, throwError, BehaviorSubject } from 'rxjs';
+import { catchError, switchMap, finalize, filter, take } from 'rxjs/operators';
 import { AuthService } from '../services/auth/auth.service';
 import { TokenService } from '../services/auth/token.service';
-
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
   private isRefreshing = false;
+  private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(null);
 
   constructor(
     private authService: AuthService,
@@ -35,17 +35,18 @@ export class AuthInterceptor implements HttpInterceptor {
       return next.handle(authReq).pipe(
         catchError((error: HttpErrorResponse) => this.handleAuthError(error, req, next))
       );
-    } else if (this.tokenService.isTokenValid() && !this.isRefreshing) {
+    } else if (token?.refresh && this.tokenService.isRefreshTokenValid(token.refresh)) {
       // Token is expired but refresh token exists, attempt refresh
       return this.handleTokenRefresh(req, next);
+    } else {
+      // No valid tokens, force logout
+      console.warn('No valid tokens available, logging out user');
+      this.authService.logout();
+      return throwError(() => new Error('No valid authentication tokens'));
     }
-
-    // No valid token, proceed without authentication
-    return next.handle(req);
   }
 
   private shouldSkipAuth(req: HttpRequest<any>): boolean {
-    // Skip auth for login, register, password reset, and external URLs
     const skipUrls = [
       '/login/',
       '/register/',
@@ -73,9 +74,24 @@ export class AuthInterceptor implements HttpInterceptor {
     req: HttpRequest<any>, 
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    if (error.status === 401 && !this.isRefreshing) {
-      // Unauthorized - attempt token refresh
-      return this.handleTokenRefresh(req, next);
+    if (error.status === 401) {
+      const token = this.tokenService.getToken();
+      
+      // Check if we have a refresh token to try
+      if (token?.refresh && this.tokenService.isRefreshTokenValid(token.refresh)) {
+        return this.handleTokenRefresh(req, next);
+      } else {
+        // No refresh token or refresh token is also expired
+        console.warn('401 error and no valid refresh token, logging out user');
+        this.authService.logout();
+        return throwError(() => new Error('Session expired. Please log in again.'));
+      }
+    }
+    
+    if (error.status === 403) {
+      console.warn('403 Forbidden - User may not have required permissions');
+      // Optionally logout on 403 depending on your app's requirements
+      // this.authService.logout();
     }
     
     return throwError(() => error);
@@ -86,25 +102,38 @@ export class AuthInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     if (this.isRefreshing) {
-      // If already refreshing, wait and retry with new token
-      return throwError(() => new Error('Token refresh in progress'));
+      // If already refreshing, wait for the result
+      return this.refreshTokenSubject.pipe(
+        filter(token => token !== null),
+        take(1),
+        switchMap(() => {
+          const newToken = this.tokenService.getToken();
+          if (newToken?.access) {
+            return next.handle(this.addTokenToRequest(req, newToken.access));
+          }
+          throw new Error('No token available after refresh');
+        })
+      );
     }
 
     this.isRefreshing = true;
+    this.refreshTokenSubject.next(null);
 
     return this.tokenService.refreshToken().pipe(
       switchMap((response) => {
-        // Token refreshed successfully, retry original request
+        // Token refreshed successfully
         const newToken = this.tokenService.getToken();
-        if (newToken) {
+        if (newToken?.access) {
+          this.refreshTokenSubject.next(newToken.access);
           const authReq = this.addTokenToRequest(req, newToken.access);
           return next.handle(authReq);
         }
-        throw new Error('No token after refresh');
+        throw new Error('No token received after refresh');
       }),
       catchError((refreshError) => {
-        // Refresh failed, logout user
+        // Refresh failed, force logout
         console.error('Token refresh failed:', refreshError);
+        this.refreshTokenSubject.next(null);
         this.authService.logout();
         return throwError(() => new Error('Session expired. Please log in again.'));
       }),
