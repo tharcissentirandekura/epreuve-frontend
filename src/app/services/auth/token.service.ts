@@ -85,7 +85,25 @@ export class TokenService {
       return false;
     }
   }
-
+  isRefreshTokenValid(refreshToken?: string): boolean {
+    const token = refreshToken || this.getToken()?.refresh;
+    if (!token) return false;
+    
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const expiry = payload.exp * 1000;
+      const isValid = Date.now() < expiry;
+      
+      if (!isValid) {
+        console.warn('Refresh token is expired');
+      }
+      
+      return isValid;
+    } catch (error) {
+      console.error('Error checking refresh token validity:', error);
+      return false;
+    }
+  }
 
   // User data management
   setUser(user: User): void {
