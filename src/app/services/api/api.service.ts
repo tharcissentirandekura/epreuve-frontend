@@ -73,16 +73,4 @@ export class ApiService {
    * 
    */
 
-  getAdminDataHandler(endpoint: string): Observable<any> {
-    let apiUrl = this.apiUrl.split('/api')[0];
-    // console.log('API URL:', apiUrl);
-    return this.http.get<any>(`${apiUrl}/${endpoint}`, { headers: this.headers })
-    .pipe(
-      catchError((error) => {
-        console.error('Error fetching data in admin panel:', error);
-        return throwError(() => error);
-      })
-    );
-  }
-
 }
