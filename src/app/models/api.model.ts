@@ -12,7 +12,7 @@ export interface Video {
     id: number;
     title: string;
     thumbnailUrl: string;
-    youtubeUrl: string;
+    youtubeLink: string;
 }
 
 export interface ApiResponse{
