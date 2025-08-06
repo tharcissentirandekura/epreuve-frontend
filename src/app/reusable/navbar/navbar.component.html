@@ -1,28 +1,30 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom p-custom-font fixed-top shadow-sm compact-navbar">
+<nav
+	class="navbar navbar-expand-lg navbar-light bg-white border-bottom p-custom-font fixed-top shadow-sm compact-navbar">
 	<div class="container-fluid">
 		<!-- Brand -->
 		<a class="navbar-brand d-flex align-items-center text-decoration-none fw-bold" routerLink="/home">
 			<i class="pi pi-graduation-cap text-primary fs-4 me-2"></i>
-			<span class="fw-bold">Epreuves.com</span>
+			<span class="fw-bold text-primary">Epreuves.com</span>
 		</a>
 
-		<!-- Mobile toggle button -->
-		<button class="navbar-toggler border-0 custom-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
-			aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
+		<!-- Mobile search and toggle -->
+		<div class="d-flex align-items-center d-lg-none">
+			<app-search-bar></app-search-bar>
+			<button class="navbar-toggler border-0 custom-toggler ms-2" type="button" data-bs-toggle="collapse"
+				data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+		</div>
 
 		<div class="collapse navbar-collapse" id="mainNav">
-			<!-- Navigation Links -->
 			<ul class="navbar-nav mx-auto justify-content-center mb-3 mb-lg-0">
 				<li class="nav-item">
-					<a class="nav-link fw-medium px-3 py-2 text-dark" routerLink="/home" routerLinkActive="active">Accueil</a>
+					<a class="nav-link fw-medium px-3 py-2 text-dark" routerLink="/home"
+						routerLinkActive="active">Accueil</a>
 				</li>
-
-				<!-- Courses Dropdown Menu -->
 				<li class="nav-item dropdown courses-dropdown">
-					<a class="nav-link dropdown-toggle fw-medium px-3 py-2 text-dark" href="#" id="coursesMenu" role="button"
-						data-bs-toggle="dropdown" aria-expanded="false">
+					<a class="nav-link dropdown-toggle fw-medium px-3 py-2 text-dark" href="#" id="coursesMenu"
+						role="button" data-bs-toggle="dropdown" aria-expanded="false">
 						Cours
 					</a>
 					<ul class="dropdown-menu border rounded shadow courses-menu" aria-labelledby="coursesMenu">
@@ -32,43 +34,55 @@
 						<li><a class="dropdown-item px-3 py-2 text-dark" routerLink="/concours">9ème Année</a></li>
 					</ul>
 				</li>
-
 				<li class="nav-item">
-					<a class="nav-link fw-medium px-3 py-2 text-dark" routerLink="/help" routerLinkActive="active">Aide</a>
+					<a class="nav-link fw-medium px-3 py-2 text-dark" routerLink="/help"
+						routerLinkActive="active">Aide</a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link fw-medium px-3 py-2 text-dark" routerLink="/contact" routerLinkActive="active">Contact</a>
+					<a class="nav-link fw-medium px-3 py-2 text-dark" routerLink="/contact"
+						routerLinkActive="active">Contact</a>
 				</li>
 			</ul>
 
-			<!-- Right side actions -->
-			<div class="navbar-actions d-flex align-items-center gap-3 flex-column flex-lg-row">
-				<div class="search-bar me-lg-3 order-lg-0 order-first mb-3 mb-lg-0">
-					<app-search-bar></app-search-bar>
-				</div>
-
-				<!-- User Account Section -->
-				<div class="user-account d-flex align-items-center">
-					<!-- If logged in: show username with dropdown -->
-					<div *ngIf="isLoggedIn" class="dropdown">
-						<a class="nav-link dropdown-toggle d-flex align-items-center text-decoration-none fw-medium text-dark user-link" href="#" id="userMenu"
-							data-bs-toggle="dropdown" aria-expanded="false">
-							<i class="pi pi-user bg-primary text-white p-2 rounded-circle me-2"></i>
-							<span class="small">{{ currentUser?.username }}</span>
-						</a>
-
-						<ul class="dropdown-menu dropdown-menu-end border rounded shadow user-panel" aria-labelledby="userMenu">
-							<li><a class="dropdown-item px-3 py-2 text-dark" href="/profile">Profile</a></li>
-							<li><hr class="dropdown-divider my-2"></li>
-							<li><a class="dropdown-item px-3 py-2 text-dark" (click)="logout()">Déconnectez-vous</a></li>
-						</ul>
-					</div>
-
-					<!-- If not logged in: show "S'inscrire" button -->
-					<a *ngIf="!isLoggedIn" class="btn btn-primary px-3 py-2 fw-medium rounded text-decoration-none small signup-btn" href="/register">
-						S'inscrire
+			<!-- Mobile login section -->
+			<div class="d-lg-none mt-3 pt-3 border-top">
+				<div *ngIf="isLoggedIn" class="dropdown">
+					<a class="nav-link dropdown-toggle fw-medium text-dark" href="#" data-bs-toggle="dropdown">
+						<i class="pi pi-user me-2"></i>{{ currentUser?.username }}
 					</a>
+					<ul class="dropdown-menu">
+						<li><a class="dropdown-item" href="/profile">Profile</a></li>
+						<li>
+							<hr class="dropdown-divider">
+						</li>
+						<li><a class="dropdown-item" (click)="logout()">Déconnectez-vous</a></li>
+					</ul>
 				</div>
+				<a *ngIf="!isLoggedIn" class="btn btn-primary w-100 mt-2" href="/login">Se connecter</a>
+			</div>
+
+			<!-- Desktop actions -->
+			<div class="d-none d-lg-flex align-items-center">
+				<app-search-bar></app-search-bar>
+				<div *ngIf="isLoggedIn" class="dropdown ms-3">
+					<a class="nav-link dropdown-toggle d-flex align-items-center text-decoration-none fw-medium text-dark"
+						href="#" data-bs-toggle="dropdown">
+						<i class="pi pi-user custom-bg-primary text-white p-2 rounded-circle me-2"></i>
+						<span class="small">{{ currentUser?.username }}</span>
+					</a>
+					<ul class="dropdown-menu dropdown-menu-end border rounded shadow">
+						<li><a class="dropdown-item px-3 py-2 text-dark" href="/profile">Profile</a></li>
+						<li>
+							<hr class="dropdown-divider my-2">
+						</li>
+						<li><a class="dropdown-item px-3 py-2 text-dark" (click)="logout()">Déconnectez-vous</a></li>
+					</ul>
+				</div>
+				<a *ngIf="!isLoggedIn"
+					class="btn btn-primary px-3 py-2 fw-medium rounded text-decoration-none small ms-3"
+					href="/register">
+					S'inscrire
+				</a>
 			</div>
 		</div>
 	</div>
