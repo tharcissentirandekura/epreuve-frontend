@@ -73,9 +73,9 @@ body {
 }
 
 /* Tests list */
-.tests-list {
-  background-color: #fff;
-}
+// .tests-list {
+//   background-color: #fff;
+// }
 
 .tests-list .list-group-item {
   border: none;
@@ -87,80 +87,9 @@ body {
   font-weight: 500;
 }
 
-/* Search container */
-.search-container {
-  position: relative;
-}
+/* Search container - now using app-search-container class */
 
-.search-container .search-icon {
-  position: absolute;
-  left: 15px;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #005ea2;
-  z-index: 2;
-}
-
-.search-container .search-input {
-  padding-left: 45px;
-  height: 50px;
-  border: 2px solid #e9ecef;
-  border-radius: 25px;
-  font-size: 14px;
-  transition: all 0.3s ease;
-}
-
-.search-container .search-input:focus {
-  border-color: #005ea2;
-  box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.25);
-  outline: none;
-}
-
-.search-container .search-input::placeholder {
-  color: #005ea2;
-}
-
-.search-container .form-control {
-  border-radius: 40px;
-  border: 1px solid #ccc;
-}
-
-.search-container .form-control::placeholder {
-  color: #005ea2;
-  opacity: 1;
-}
-
-/* Filter tabs */
-.filter-tabs-container {
-  display: flex;
-  justify-content: center;
-  margin-bottom: 2rem;
-}
-
-.filter-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  justify-content: center;
-}
-
-.filter-tabs .filter-tab {
-  background: darkgray;
-  border: none;
-  color: #ffffff;
-  padding: 8px 20px;
-  border-radius: 20px;
-  font-size: 14px;
-  font-weight: 500;
-  transition: all 0.3s ease;
-  cursor: pointer;
-}
-
-.filter-tabs .filter-tab:hover,
-.filter-tabs .filter-tab.active {
-  background-color: #005ea2;
-  color: white;
-}
+/* Filter tabs - now using app-filter-tabs class */
 
 /* Button customizations */
 
@@ -190,33 +119,15 @@ body {
   }
 }
 
+
+
 /* Text utilities */
 body .text-primary,
 html .text-primary {
   color: var(--primary-color) !important;
 }
 
-/* Card hover effects */
-.card,
-.modern-course-card {
-  transition: all 0.3s ease;
-
-  &:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-  }
-}
-
-.mission-card,
-.propos-info,
-.vision-card {
-  transition: all 0.3s ease;
-
-  &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
-  }
-}
+/* Card hover effects - now using app-card-hover and app-card-hover-subtle classes */
 
 /* Hero section styling */
 .hero-section {
@@ -232,6 +143,186 @@ html .text-primary {
 /* Smooth scrolling for better mobile experience */
 * {
   -webkit-overflow-scrolling: touch;
+}
+
+/* App-specific utility classes for Bootstrap optimization */
+.app-card-hover {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.app-card-hover-subtle {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+  }
+}
+
+.app-section-spacing {
+  padding-top: 3rem;
+  padding-bottom: 3rem;
+  
+  @media (min-width: 768px) {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+}
+
+.app-container-responsive {
+  padding-left: 1rem;
+  padding-right: 1rem;
+  
+  @media (min-width: 576px) {
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+  
+  @media (min-width: 768px) {
+    padding-left: 3rem;
+    padding-right: 3rem;
+  }
+}
+
+.app-text-responsive {
+  @media (max-width: 768px) {
+    font-size: 1.5rem !important;
+  }
+  
+  @media (max-width: 576px) {
+    font-size: 1.25rem !important;
+  }
+}
+
+.app-btn-primary-custom {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+  color: white;
+  border-radius: 50px;
+  padding: 0.75rem 2rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  border: none;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  
+  &:hover {
+    background-color: #03528b;
+    border-color: #03528b;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(0, 94, 162, 0.25);
+  }
+}
+
+.app-search-container {
+  position: relative;
+  
+  .search-icon {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 1rem;
+    color: var(--primary-color);
+    z-index: 2;
+  }
+  
+  .search-input {
+    padding-left: 3rem;
+    border: 2px solid #e5ecf3;
+    border-radius: 25px;
+    height: 50px;
+    transition: all 0.3s ease;
+    width: 100%;
+    
+    &:focus {
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 0.2rem rgba(0, 94, 162, 0.25);
+      outline: none;
+    }
+    
+    &::placeholder {
+      color: var(--primary-color);
+      opacity: 0.7;
+    }
+  }
+}
+
+.app-filter-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: center;
+  
+  .filter-tab {
+    background: #f0f6fa;
+    border: 1px solid #e0e7ff;
+    color: var(--primary-color);
+    padding: 0.5rem 1.5rem;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    
+    &.active,
+    &:hover {
+      background: var(--primary-color);
+      color: white;
+      border-color: var(--primary-color);
+    }
+  }
+}
+
+.app-list-item-hover {
+  transition: all 0.3s ease;
+  
+  &:hover {
+    box-shadow: 0 6px 20px rgba(0, 94, 162, 0.16);
+    transform: translateY(-2px);
+  }
+}
+
+.app-social-link {
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  
+  &:hover {
+    transform: translateY(-3px) scale(1.1);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  }
+}
+
+.app-text-truncate {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.app-text-truncate-2-lines {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.4;
+  max-height: 2.8em; /* 2 lines * 1.4 line-height */
 }
 
 /* Utility classes */

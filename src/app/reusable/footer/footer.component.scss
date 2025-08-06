@@ -38,16 +38,7 @@
   }
 }
 
-/* Social link hover effects */
-.social-link {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  width: 45px;
-  height: 45px;
-  &:hover {
-    transform: translateY(-3px) scale(1.1);
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-  }
-}
+/* Social links now use global app-social-link class */
 
 /* Badge enhancements */
 .badge {
