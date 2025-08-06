@@ -8,13 +8,13 @@ import { LoginCredentials, User } from '../../models/user.model';
 import { ToastService } from '../../services/toast/toast.service';
 import { ToastComponent } from '../toast/toast.component';
 import { UserService } from '../../services/auth/user/user.service';
-
+import { NavbarComponent } from '../../reusable/navbar/navbar.component';
 @Component({
   selector: 'app-login',
   standalone: true,
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  imports: [CommonModule, ReactiveFormsModule, FooterComponent, ToastComponent],
+  imports: [CommonModule, ReactiveFormsModule, FooterComponent, ToastComponent,NavbarComponent],
 })
 
 

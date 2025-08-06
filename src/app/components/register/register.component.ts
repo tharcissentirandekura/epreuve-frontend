@@ -6,13 +6,14 @@ import { FooterComponent } from '../../reusable/footer/footer.component';
 import { AuthService } from '../../services/auth/auth.service';
 import { RegisterData } from '../../models/user.model';
 import { AuthValidators } from '../../validators/auth.validators';
+import { NavbarComponent } from '../../reusable/navbar/navbar.component';
 
 @Component({
     selector: 'app-register',
     standalone: true,
     templateUrl: './register.component.html',
     styleUrls: ['./register.component.scss'],
-    imports: [CommonModule, ReactiveFormsModule, FooterComponent],
+    imports: [CommonModule, ReactiveFormsModule, FooterComponent,NavbarComponent],
 })
 export class RegisterComponent implements OnInit {
     registerForm!: FormGroup;
