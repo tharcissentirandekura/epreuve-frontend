@@ -111,7 +111,21 @@ export class CourseSectionComponent implements OnInit {
     });
 
   }
+  normalizeCourseName(test: Test): string {
+    const type = test.metadata.type ? test.metadata.type : '';
+    // const section = test.section ? test.section : '';
+    const course = test.course ? test.course : '';
+    const year = test.year ? ` ${new Date(test.year).getFullYear()}` : '';
+    return `${type} de  ${course} année ${year}`.trim();
+  }
+  convertFIleSize = (bytes:number) =>{
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 
+  }
   loadVideos(): void {
     // Load all videos from page 1 only (no pagination)
     this.api.getDataHandler(`videos`, 1).subscribe({
