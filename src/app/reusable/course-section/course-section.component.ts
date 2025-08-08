@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { DatePipe,CommonModule } from '@angular/common';
+import { DatePipe, CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api/api.service';
 import { NavbarComponent } from '../navbar/navbar.component';
@@ -12,7 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
   selector: 'app-course-section',
   templateUrl: './course-section.component.html',
   styleUrls: ['./course-section.component.scss'],
-  imports: [NavbarComponent, FooterComponent, DatePipe, CommonModule, FormsModule,MatIconModule,PaginatorComponent],
+  imports: [NavbarComponent, FooterComponent, DatePipe, CommonModule, FormsModule, MatIconModule, PaginatorComponent],
   standalone: true
 })
 export class CourseSectionComponent implements OnInit {
@@ -54,17 +54,12 @@ export class CourseSectionComponent implements OnInit {
   currentPage = 1;
   totalPages = 0;
 
-  // Pagination for videos
-  videoCount = 0;
-  videoNext: string | null = null;
-  videoPrevious: string | null = null;
-  videoCurrentPage = 1;
-  videoTotalPages = 0;
+  // No pagination for videos - load all at once
 
   // shared dat
   pageSize = 5; // 
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService) { }
 
   ngOnInit(): void {
     /** 
@@ -101,57 +96,64 @@ export class CourseSectionComponent implements OnInit {
   }
 
   loadTests(): void {
-  this.api.getDataHandler(`tests`, this.currentPage).subscribe(response => {
-    this.allTests = response.results.filter((t:any) =>
-      t.section?.toLowerCase().includes(this.sectionId?.toLowerCase())
-    );
-    this.uniqueCourses = Array.from(new Set(this.allTests.map((t:any) => t.course)));
-    this.count = response.count;
-    this.next = response.next;
-    this.previous = response.previous;
-    this.totalPages = Math.ceil(this.count / this.pageSize); // Assuming 5 items per page
+    this.api.getDataHandler(`tests`, this.currentPage).subscribe(response => {
+      this.allTests = response.results.filter((t: any) =>
+        t.section?.toLowerCase().includes(this.sectionId?.toLowerCase())
+      );
+      this.uniqueCourses = Array.from(new Set(this.allTests.map((t: any) => t.course)));
+      this.count = response.count;
+      this.next = response.next;
+      this.previous = response.previous;
+      this.totalPages = Math.ceil(this.count / this.pageSize); // Assuming 5 items per page
 
-    this.applyFilters();
-    console.log('Total tests:', this.allTests);
-  });
-
-  }
-
-  loadVideos(): void {
-    // handle pagination for videos
-    this.api.getDataHandler(`videos`, this.videoCurrentPage).subscribe({
-      next: videos =>{
-        this.videoList = videos.results;
-        this.videoCount = videos.count;
-        this.videoNext = videos.next;
-        this.videoPrevious = videos.previous;
-        this.videoTotalPages = Math.ceil(this.videoCount / this.pageSize); // Assuming 5 items per page
-        // this.uniqueCourses = Array.from(new Set(this.videoList.map((v:any) => v.course)));
-        console.log('Total videos:', this.videoCount);
-        this.applyFilters();
-      },
-      error: err =>{
-        if (err.status === 404) {
-          console.warn(`No videos on page ${this.videoCurrentPage}`);
-        }
-        this.videoList = [];
-      }
+      this.applyFilters();
+      console.log('Total tests:', this.allTests.length);
     });
 
   }
+  normalizeCourseName(test: Test): string {
+    const type = test.metadata.type ? test.metadata.type : '';
+    // const section = test.section ? test.section : '';
+    const course = test.course ? test.course : '';
+    const year = test.year ? ` ${new Date(test.year).getFullYear()}` : '';
+    return `${type} de  ${course} année ${year}`.trim();
+  }
+  convertFIleSize = (bytes: number) => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+
+  }
+  loadVideos(): void {
+    // Load all videos from page 1 only (no pagination)
+    this.api.getDataHandler(`videos`, 1).subscribe({
+      next: videos => {
+        this.videoList = videos.results || [];
+        console.log('Total videos loaded:', this.videoList.length
+        );
+      },
+      error: err => {
+        console.warn('No videos available or error loading videos:', err.message);
+        this.videoList = [];
+      }
+    });
+  }
 
   goToPage(page: number): void {
-    if (this.showVideos) {
-      if (page < 1 || page > this.videoTotalPages) return;
-      this.videoCurrentPage = page;
-      this.loadVideos();
-    } else {
+    // Only handle pagination for tests, videos don't have pagination
+    if (!this.showVideos) {
       if (page < 1 || page > this.totalPages) return;
       this.currentPage = page;
       this.loadTests();
     }
   }
-
+  onPageSizeChange(newPageSize: number): void {
+    this.pageSize = newPageSize;
+    this.currentPage = 1; // Reset to first page
+    this.loadTests(); // Reload data with new page size
+  }
   applyFilters(): void {
     const term = this.searchTerm.toLowerCase();
     this.filteredTests = this.allTests.filter(t => {
@@ -161,7 +163,7 @@ export class CourseSectionComponent implements OnInit {
 
       return matchCourse && matchSearch;
     });
-    
+
   }
 
   resetFilters(): void {

@@ -1,146 +1,128 @@
 .search-toggle-button {
-  background-color: transparent;
-  color: white;
-  padding: 0.5rem 1rem;
   border-radius: 20px;
-  transition: transform 0.2s ease-in-out;
-}
+  transition: transform .2s;
 
-.search-toggle-button:hover {
-  background-color: rgba(255, 255, 255, 0.15);
-}
+  &:hover {
+    background: rgba(255, 255, 255, .15);
+  }
 
-.search-toggle-button.search-bar-active {
-  transform: scale(1.2);
+  &.search-bar-active {
+    transform: scale(1.2);
+  }
 }
 
 .floating-search-bar {
   position: fixed;
-  top: 0;
+  top: 5%;
   left: 0;
-  width: 100%;
-  // height: 50vh;
-  //background-color: rgba(0, 94, 162, 0.95);
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
+  width: 100vw;
+  height: 230vh;
   padding-top: 5px;
   z-index: 1050;
 }
 
 .search-bar-container {
-  width: 90%;
-  max-width: 800px;
-  // background: white;
+  width: 100%;
+  max-width: 90vh;
   border-radius: 50px;
-  padding: 0.5rem;
-  // box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
-.search-input-wrapper {
-  position: relative;
-  display: flex;
-  align-items: center;
+.search-icon,
+.btn-close {
+  position: absolute;
+  color: #666;
+  font-size: 1rem;
 }
 
 .search-icon {
-  position: absolute;
   left: 20px;
-  color: #666;
-  font-size: 1.25rem;
 }
 
 .search-input {
-  width: 100%;
-  height: 60px;
   padding: 0 60px 0 50px;
-  font-size: 1.25rem;
-  border: none;
+  font-size: 1rem;
   border-radius: 50px;
-  background-color: white;
-  transition: all 0.3s ease;
-}
+  transition: all .3s;
 
-.search-input:focus {
-  outline: none;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  &:focus {
+    outline: 0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .1);
+  }
 }
 
 .btn-close {
-  position: absolute;
   right: 2rem;
-  color: #666;
-  font-size: 1.25rem;
-}
 
-.btn-close:hover {
-  color: #000;
+  &:hover {
+    color: #000;
+  }
 }
 
 .search-results {
-  width: 90%;
-  max-width: 800px;
-  margin: 1rem auto;
-  background: white;
+  position: fixed;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80vw;
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  max-height: 400px;
+  // box-shadow: 0 4px 20px rgba(0, 0, 0, .15);
+  height: 80vh;
+  max-height: 90vh;
   overflow-y: auto;
+  z-index: 1060;
+  backdrop-filter: blur(20px);
+
 }
 
-.list-group {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+// Reusing course section styling
+.tests-list .list-group-item {
+  transition: box-shadow 0.2s;
+  background: transparent;
+  box-shadow: 0 1px 0 rgba(18, 18, 18, 0.1);
+
+  &:hover {
+    box-shadow: 0 6px 40px rgba(0, 94, 162, 0.16);
+  }
 }
 
-.list-group-item {
-  padding: 1rem 1.5rem;
-  border-bottom: 1px solid #eee;
-  transition: background-color 0.2s ease;
-}
-
-.list-group-item:last-child {
-  border-bottom: none;
-}
-
-.list-group-item:hover {
-  background-color: #f8f9fa;
-}
-
-.list-group-item a {
-  display: flex;
-  align-items: center;
-  color: #333;
-  text-decoration: none;
-}
-
-.list-group-item i {
-  margin-right: 12px;
+.test-name {
   color: #005ea2;
-  font-size: 1.1rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Custom button styling matching course section
+.btn {
+  background-color: #d8effe;
+  border: none;
+  color: #005ea2;
+  border-radius: 25px;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: #005ea2;
+    color: #fff;
+  }
+}
+
+.result-name {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  display: inline-block;
 }
 
 
 @media (max-width: 768px) {
   .search-bar-container {
-    width: 90%;
-    margin: 0 10px;
+    max-width: 100%;
   }
 
-  .search-input {
-    height: 50px;
-    font-size: 1rem;
-    padding: 0 50px 0 40px;
-  }
-
-  .search-icon {
-    left: 15px;
-    font-size: 1rem;
-  }
-
-  .btn-close {
-    right: 15px;
-    font-size: 1rem;
+  .search-results {
+    width: 100%;
+    height: 70%;
+    bottom: 8;
   }
 }

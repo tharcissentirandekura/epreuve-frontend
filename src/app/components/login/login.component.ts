@@ -1,214 +1,175 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FooterComponent } from '../../reusable/footer/footer.component';
 import { AuthService } from '../../services/auth/auth.service';
-import { Credentials, User } from '../../models/user.model';
-
+import { LoginCredentials, User } from '../../models/user.model';
+import { ToastService } from '../../services/toast/toast.service';
+import { ToastComponent } from '../toast/toast.component';
+import { UserService } from '../../services/auth/user/user.service';
+import { NavbarComponent } from '../../reusable/navbar/navbar.component';
 @Component({
   selector: 'app-login',
   standalone: true,
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  imports: [
-    CommonModule,
-    FormsModule,
-    ReactiveFormsModule,
-    FooterComponent,
-  ],
+  imports: [CommonModule, ReactiveFormsModule, FooterComponent, ToastComponent,NavbarComponent],
 })
-export class LoginComponent {
+
+
+export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
-  isSubmitting = false;
-  showPassword = false;
-  rememberMe = false;
-  isLoginPage = true;
-  isRegisterPage = false;
+  errorMessage: string = '';
+  isSubmitting: boolean = false;
+  showPassword: boolean = false;
+  successMessage: string = '';
 
-  errorMessage = '';
-  popupMessage: string | null = null;
-  popupSuccess = false;
 
-  // Login/register info
-  loginpageInfo = {
-    title: 'Se connecter',
-    subtitle: 'Bienvenue',
-    description: 'Connectez-vous pour accéder à votre compte et profiter de nos services.',
-    registerLink: 'S\'inscrire',
-    socialText: 'Continuer avec Facebook',
-    dividerText: 'Ou utiliser votre nom d\'utilisateur'
-  };
-
-  // User registration info
-  user: User = { username: '', password: '', first_name: '', last_name: '' };
 
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
-    private router: Router
-  ) {
-    this.initializeForm();
+    private router: Router,
+    private route: ActivatedRoute,
+    private toastService: ToastService,
+    private userService: UserService
+  ) { 
+
+    /**
+     * Validate the login form for username and password
+     * Initialize the form with default values
+     */
+    this.loginForm = this.fb.group({
+      username: ['', [Validators.required, Validators.minLength(3)]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
+    });
+
+
+
   }
 
-  initializeForm() {
-    if (this.isLoginPage) {
-      this.loginForm = this.fb.group({
-        username: ['', Validators.required],
-        password: ['', [Validators.required, Validators.minLength(6)]],
-      });
-    } else if (this.isRegisterPage) {
-      this.loginForm = this.fb.group({
-        username: ['', [Validators.required, Validators.minLength(3)]],
-        first_name: ['', [Validators.required, Validators.minLength(2)]],
-        last_name: ['', [Validators.required, Validators.minLength(2)]],
-        password: ['', [Validators.required, Validators.minLength(6)]],
-      });
+  ngOnInit(): void {
+    // check for registration success message
+    //Using snapshot.queryParams (One-time, Static)
+    //I only care about the query params at the time the component is loaded, and don't expect them to change
+    if (this.route.snapshot.queryParams['message'] === 'registration-success') {
+      this.successMessage = 'Inscription réussie! Vous pouvez maintenant vous connecter.';
     }
+
+    // Redirect if already authenticated
+    if (this.authService.isAuthenticated()) {
+      const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/profile';
+      this.router.navigate([returnUrl]);
+      return;
+    }
+
   }
 
-  get username() {
-    return this.loginForm.get('username');
-  }
-
-  get password() {
-    return this.loginForm.get('password');
-  }
-
-  get firstName() {
-    return this.loginForm.get('first_name');
-  }
-
-  get lastName() {
-    return this.loginForm.get('last_name');
-  }
-
+  //toggle password visibility
   togglePasswordVisibility() {
     this.showPassword = !this.showPassword;
   }
 
-  login() {
+  /**
+   * Submit the login form
+   * @returns nothing
+   */
+  onSubmit() {
     if (this.loginForm.invalid || this.isSubmitting) {
       this.loginForm.markAllAsTouched();
       return;
     }
+    /**
+     * populate the user's credentials
+     * @param credentials the  user's credentials
+     * 
+     */
+    const credentials: LoginCredentials = {
+      username: this.loginForm.value.username,
+      password: this.loginForm.value.password
+    }
 
-    const credentials: Credentials = this.loginForm.value;
+    /**
+     * Now is the time to update the instance variables 
+     * like isSubmitting and errorMessage
+     */
 
     this.isSubmitting = true;
     this.errorMessage = '';
-    this.popupMessage = null;
-
+    this.successMessage = '';
+    /**
+     * Login the user
+     * @param credentials the user's credentials
+     * @returns an observable of the user's credentials
+     * We use subscribe to handle the response from the server
+     * next: the response from the server
+     * error: the error from the server
+     * complete: the server has finished processing the request
+     */
     this.authService.login(credentials).subscribe({
       next: (response) => {
-        console.log('Login successful', response);
-        this.authService.setIsLoggedInState(true);
-        this.router.navigate(['/home']);
-      },
-      error: (error) => {
-        this.errorMessage = 'Échec de la connexion';
-        this.popupSuccess = false;
-        this.popupMessage = 'Échec de la connexion. Veuillez réessayer.';
-        console.error('Login error:', error);
-      },
-      complete: () => {
         this.isSubmitting = false;
-        setTimeout(() => (this.popupMessage = null), 3000);
-      },
-    });
-  }
-
-  register() {
-    if (this.loginForm.invalid || this.isSubmitting) {
-      this.loginForm.markAllAsTouched();
-      return;
-    }
-
-    const user: User = this.loginForm.value;
-
-    this.isSubmitting = true;
-    this.errorMessage = '';
-    this.popupMessage = null;
-
-    this.authService.register(user).subscribe({
-      next: (response) => {
-        console.log('Registration successful', response);
-        this.popupSuccess = true;
-        this.popupMessage = 'Inscription réussie! Vous pouvez maintenant vous connecter.';
+        this.toastService.success('Connexion réussie! Redirection en cours...', 2000);
         
-        // Switch back to login after successful registration
+        // Small delay to show the success toast before navigation
         setTimeout(() => {
-          this.switchToLogin();
-        }, 2000);
+          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/profile';
+          this.router.navigate([returnUrl]);
+        }, 500);
       },
       error: (error) => {
-        this.errorMessage = 'Échec de l\'inscription';
-        this.popupSuccess = false;
-        this.popupMessage = 'Échec de l\'inscription. Veuillez réessayer.';
-        console.error('Registration error:', error);
-      },
-      complete: () => {
         this.isSubmitting = false;
-        setTimeout(() => (this.popupMessage = null), 3000);
+        this.handleError(error);
+      },
+      complete: () =>{
+        console.log('Login process completed')
+        this.userService.getCurrentUser().subscribe(
+          user => {
+            console.log('Current user:', user);
+          }
+        )
       }
+
     });
   }
 
-  switchToRegister() {
-    this.isLoginPage = false;
-    this.isRegisterPage = true;
-    
-    // Update page info
-    this.loginpageInfo = {
-      title: 'S\'inscrire',
-      subtitle: 'Rejoignez-nous',
-      description: 'Créez votre compte pour accéder à toutes les fonctionnalités de notre plateforme.',
-      registerLink: 'Se connecter',
-      socialText: 'S\'inscrire avec Facebook',
-      dividerText: 'Ou créer un compte avec vos informations'
-    };
-    
-    // Reinitialize form for registration
-    this.initializeForm();
-    this.resetMessages();
+  /**
+   * Redirection handler for register
+   */
+  goToRegister() {
+    this.router.navigate(['/register']);
   }
 
-  switchToLogin() {
-    this.isLoginPage = true;
-    this.isRegisterPage = false;
-    
-    // Reset page info
-    this.loginpageInfo = {
-      title: 'Se connecter',
-      subtitle: 'Bienvenue',
-      description: 'Connectez-vous pour accéder à votre compte et profiter de nos services.',
-      registerLink: 'S\'inscrire',
-      socialText: 'Continuer avec Facebook',
-      dividerText: 'Ou utiliser votre nom d\'utilisateur'
-    };
-    
-    // Reinitialize form for login
-    this.initializeForm();
-    this.resetMessages();
-  }
-
-  resetMessages() {
-    this.errorMessage = '';
-    this.popupMessage = null;
-    this.popupSuccess = false;
-  }
-
-  socialLogin(provider: string) {
-    console.log(`${this.isLoginPage ? 'Login' : 'Register'} with ${provider}`);
-    // Implement social login/register logic
-  }
-
-  // Method to handle form submission based on current mode
-  onSubmit() {
-    if (this.isLoginPage) {
-      this.login();
-    } else if (this.isRegisterPage) {
-      this.register();
+  /**
+   * An Error handler method
+   * @param error the error returned when logging the user
+   */
+  private handleError(error: any): void {
+    if (error.status === 401) {
+      this.errorMessage = 'Nom d\'utilisateur ou mot de passe incorrect.';
+    } else if (error.status === 429) {
+      this.errorMessage = 'Trop de tentatives. Veuillez réessayer plus tard.';
+    } else if (error.status === 0) {
+      this.errorMessage = 'Problème de connexion. Vérifiez votre connexion internet.';
+    } else {
+      this.errorMessage = 'Une erreur s\'est produite. Veuillez réessayer.';
     }
+  }
+  /**
+   * There is a possibility to get errors when completing the form 
+   * So, we need field error handler
+   * @param fieldName 
+   * @returns 
+   */
+  getFieldError(fieldName: string): string {
+    const field = this.loginForm.get(fieldName);
+    if (!field?.errors || !field.touched) return '';
+
+    if (field.errors['required']) return 'Espace est requis';
+    if (field.errors['minlength']) {
+      return `Minimum ${field.errors['minlength'].requiredLength} caractères requis`;
+    }
+    return 'Espace invalide';
   }
 }

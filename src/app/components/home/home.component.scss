@@ -1,148 +1,42 @@
-.hero-section {
-  width: 100%;
-  background: linear-gradient(135deg, #f0f6fa, #d8effe);
-  background-size: cover;
-  background-position: center;
-}
 
-.btn-primary{
-  background-color: #0776c6;
-  border-color: #005ea2;
-  transition: background-color var(--transition-speed),
-  box-shadow var(--transition-speed);
-}
-.btn-primary:hover {
-  background-color: #03528b;
-  box-shadow: 0 4px 16px rgba(0,94,162,0.10);
-}
-
-.btn-outline-primary:hover {
-  color: #f5f7f8;
-  background-color: #0776c6;
-  border-color: #005ea2;
-  transition: color var(--transition-speed), border-color var(--transition-speed);
-}
-
-.text-primary {
-  color: #137eca !important;
-}
-
-.hero-section{
-  background: linear-gradient(135deg, #f0f6fa, #d8effe);
-  padding: 2rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 16px rgba(0,94,162,0.1);
-}
-
-
-/* Animations */
-.animate__animated {
-  animation-duration: 1s;
-  animation-fill-mode: both;
-}
-
-.animate__delay-1s { animation-delay: 0.3s; }
-.animate__delay-2s { animation-delay: 0.6s; }
-.animate__delay-3s { animation-delay: 0.9s; }
-.animate__delay-4s { animation-delay: 1.2s; }
-
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes fadeInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes fadeInRight {
-  from {
-    opacity: 0;
-    transform: translateX(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-.animate__fadeInUp { animation-name: fadeInUp; }
-.animate__fadeInLeft { animation-name: fadeInLeft; }
-.animate__fadeInRight { animation-name: fadeInRight; }
-.animate__fadeIn { animation-name: fadeIn; }
-
-
-/* Modern Course Cards */
-.modern-course-card,.card {
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  
-  &:hover {
-    transform: translateY(-15px) scale(1.02);
-    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
-    border-color: transparent;
-  }
-  
-  .progress-bar {
-    transition: width 0.6s ease-in-out;
-  }
-}
-
-// /* Mission and Vision Cards */
-.mission-card,
-.propos-info,
-.vision-card {
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  
-  &:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.12);
-  }
-}
-
-// /* Accessibility Improvements */
-.btn:focus,
-.card:focus-within {
-  outline: 2px solid #005ea2;
-  outline-offset: 2px;
-}
-
-// /* Print Styles */
-@media print {
-  .btn,
-  .shadow-lg,
-  .animate__animated {
-    display: none !important;
-  }
-}
-
-@media (max-width: 575.98px) {
+// .hero-section{
+//   background-color: ;
+// }
+@media (max-width: 768px) {
   .hero-section {
-    padding-top: 2rem !important;
-    padding-bottom: 2rem !important;
+    padding: 1.5rem 1rem !important;
+    padding-top: 0;
+    margin-top: 0;
   }
+
   .hero-section h1 {
+    font-size: 2rem !important;
     line-height: 1.2;
+    padding: 1rem !important;
   }
+
   .hero-section .lead {
+    font-size: 1.1rem !important;
     line-height: 1.4;
+    padding: 1rem !important;
+  }
+
+  .d-flex.flex-column.flex-sm-row {
+    flex-direction: column !important;
+    gap: 1rem;
+  }
+
+  .btn-lg {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+  }
+  .card-body {
+    padding: 1.5rem !important;
+  }
+
+  .mission-card,
+  .vision-card {
+    margin-bottom: 2rem;
   }
 }
+

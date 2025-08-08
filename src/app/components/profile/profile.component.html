@@ -1,0 +1,153 @@
+<app-navbar></app-navbar>
+
+<div class="container my-5">
+  <div class="card shadow-sm">
+    <div class="card-header d-flex justify-content-between align-items-center">
+      <h2 class="mb-0">My Profile</h2>
+      <button 
+        type="button" 
+        class="btn btn-primary btn-sm" 
+        (click)="toggleEdit()"
+        [disabled]="isLoading || isSaving">
+        {{ isEditing ? 'Cancel' : 'Edit Profile' }}
+      </button>
+    </div>
+
+    <div class="card-body">
+      <!-- Loading State -->
+      <div *ngIf="isLoading" class="text-center py-5">
+        <div class="spinner-border text-primary mb-3" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+        <p class="text-muted">Loading profile...</p>
+      </div>
+
+      <!-- Error Message -->
+      <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Success Message -->
+      <div *ngIf="successMessage" class="alert alert-success" role="alert">
+        {{ successMessage }}
+      </div>
+
+      <!-- Profile Content -->
+      <div *ngIf="!isLoading && user">
+        <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+          
+          <!-- Avatar Section -->
+          <div class="text-center mb-4">
+            <div class="avatar-placeholder">
+              {{ user.first_name.charAt(0) }}{{ user.last_name.charAt(0) }}
+            </div>
+          </div>
+
+          <!-- Form Fields -->
+          <div class="row g-3">
+            
+            <!-- First Name -->
+            <div class="col-md-6">
+              <label for="first_name" class="form-label">First Name</label>
+              <input
+                id="first_name"
+                type="text"
+                formControlName="first_name"
+                [readonly]="!isEditing"
+                [class]="'form-control' + (isFieldInvalid('first_name') ? ' is-invalid' : '')">
+              <div *ngIf="isFieldInvalid('first_name')" class="invalid-feedback">
+                {{ getFieldError('first_name') }}
+              </div>
+            </div>
+
+            <!-- Last Name -->
+            <div class="col-md-6">
+              <label for="last_name" class="form-label">Last Name</label>
+              <input
+                id="last_name"
+                type="text"
+                formControlName="last_name"
+                [readonly]="!isEditing"
+                [class]="'form-control' + (isFieldInvalid('last_name') ? ' is-invalid' : '')">
+              <div *ngIf="isFieldInvalid('last_name')" class="invalid-feedback">
+                {{ getFieldError('last_name') }}
+              </div>
+            </div>
+
+            <!-- Username -->
+            <div class="col-md-6">
+              <label for="username" class="form-label">Username</label>
+              <input
+                id="username"
+                type="text"
+                formControlName="username"
+                [readonly]="!isEditing"
+                [class]="'form-control' + (isFieldInvalid('username') ? ' is-invalid' : '')">
+              <div *ngIf="isFieldInvalid('username')" class="invalid-feedback">
+                {{ getFieldError('username') }}
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="col-md-6">
+              <label for="email" class="form-label">Email</label>
+              <input
+                id="email"
+                type="email"
+                formControlName="email"
+                [readonly]="!isEditing"
+                [class]="'form-control' + (isFieldInvalid('email') ? ' is-invalid' : '')">
+              <div *ngIf="isFieldInvalid('email')" class="invalid-feedback">
+                {{ getFieldError('email') }}
+              </div>
+            </div>
+
+            <!-- Role (Read-only) -->
+            <div class="col-md-6">
+              <label for="role" class="form-label">Role</label>
+              <input
+                id="role"
+                type="text"
+                [value]="user.role"
+                readonly
+                class="form-control-plaintext">
+            </div>
+
+            <!-- Account Status (Read-only) -->
+            <div class="col-md-6">
+              <label for="status" class="form-label">Account Status</label>
+              <input
+                id="status"
+                type="text"
+                [value]="user.isActive ? 'Active' : 'Inactive'"
+                readonly
+                class="form-control-plaintext">
+            </div>
+
+          </div>
+
+          <!-- Action Buttons -->
+          <div *ngIf="isEditing" class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+            <button 
+              type="submit" 
+              class="btn btn-primary"
+              [disabled]="profileForm.invalid || isSaving">
+              <span *ngIf="isSaving" class="spinner-border spinner-border-sm me-2" role="status"></span>
+              {{ isSaving ? 'Saving...' : 'Save Changes' }}
+            </button>
+            <button 
+              type="button" 
+              class="btn btn-secondary"
+              (click)="toggleEdit()"
+              [disabled]="isSaving">
+              Cancel
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-footer></app-footer>

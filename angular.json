@@ -81,7 +81,7 @@
               "sourceMap": false
             }
           },
-    
+  
           "defaultConfiguration": "production"
         },
         "serve": {

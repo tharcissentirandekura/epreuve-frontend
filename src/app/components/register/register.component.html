@@ -1,0 +1,214 @@
+<div class="min-vh-100">
+  <app-navbar></app-navbar>
+  <!-- <app-toast></app-toast> -->
+  <div class="container-fluid h-100">
+    <div class="row h-100">
+      <!-- Left Side - Hero Section -->
+      <div class="col-lg-6 d-none d-lg-flex hero-section position-relative overflow-hidden">
+        <div
+          class="position-relative z-2 d-flex flex-column justify-content-center align-items-center text-center p-4 w-100">
+          <div class="position-absolute top-0 start-0 w-100 h-100" style="z-index: -1;"></div>
+          <div class="hero-text">
+            <h1 class="display-4 fw-bold text-primary mb-4">Rejoignez-nous</h1>
+            <p class="lead text-dark mb-4 fs-6">
+              Créez votre compte pour accéder à toutes les fonctionnalités de notre plateforme.
+            </p>
+            <div class="platforme-icon">
+            </div>
+            <div class="d-flex flex-column gap-3 mt-4">
+              <div class="feature-item d-flex align-items-center gap-3 fw-medium">
+                <i class="bi bi-shield-check text-success"></i>
+                <span class="text-dark">Plateforme avec confidentialité</span>
+              </div>
+              <div class="feature-item d-flex align-items-center gap-3 fw-medium">
+                <i class="bi bi-lightning text-primary"></i>
+                <span class="text-dark">Gratuitement pour tous</span>
+              </div>
+              <div class="feature-item d-flex align-items-center gap-3 fw-medium">
+                <i class="bi bi-people text-primary"></i>
+                <span class="text-dark">Succès garanti</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Side - Form -->
+      <div class="col-lg-6 d-flex align-items-center justify-content-center">
+        <div class="register-form-container w-100 p-4 bg-white m-4">
+          <!-- Success Message -->
+          <div *ngIf="successMessage" class="alert alert-success mb-4">
+            {{ successMessage }}
+          </div>
+
+          <!-- Error Message -->
+          <div *ngIf="errorMessage" class="alert alert-danger mb-4">
+            {{ errorMessage }}
+          </div>
+
+          <div class="text-center mb-5">
+            <div class="d-flex justify-content-center mb-4">
+              <div class="logo-circle rounded-circle d-flex align-items-center justify-content-center text-white">
+                <i class="bi bi-person-plus"></i>
+              </div>
+            </div>
+            <h2 class="fw-bold text-dark mb-2">S'inscrire</h2>
+            <p class="text-muted">Créez votre compte pour commencer</p>
+          </div>
+
+
+
+          <!-- Registration Form -->
+          <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" novalidate>
+
+            <!-- Name Fields Row -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="firstName" class="form-label fw-semibold">Prénom</label>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="bi bi-person"></i>
+                  </span>
+                  <input type="text" class="form-control" id="firstName" formControlName="firstName"
+                    placeholder="Prénom"
+                    [class.is-invalid]="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched">
+                </div>
+                <div class="invalid-feedback"
+                  *ngIf="registerForm.get('firstName')?.invalid && registerForm.get('firstName')?.touched">
+                  <small>{{ getFieldError('firstName') }}</small>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="lastName" class="form-label fw-semibold">Nom</label>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="bi bi-person-fill"></i>
+                  </span>
+                  <input type="text" class="form-control" id="lastName" formControlName="lastName"
+                    placeholder="Nom de famille"
+                    [class.is-invalid]="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched">
+                </div>
+                <div class="invalid-feedback"
+                  *ngIf="registerForm.get('lastName')?.invalid && registerForm.get('lastName')?.touched">
+                  <small>{{ getFieldError('lastName') }}</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Email and Username Row -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="email" class="form-label fw-semibold">Email</label>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="bi bi-envelope"></i>
+                  </span>
+                  <input type="email" class="form-control" id="email" formControlName="email"
+                    placeholder="votre@email.com"
+                    [class.is-invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+                </div>
+                <div class="invalid-feedback"
+                  *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+                  <small>{{ getFieldError('email') }}</small>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="username" class="form-label fw-semibold">Nom d'utilisateur</label>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="bi bi-at"></i>
+                  </span>
+                  <input type="text" class="form-control" id="username" formControlName="username"
+                    placeholder="nom_utilisateur"
+                    [class.is-invalid]="registerForm.get('username')?.invalid && registerForm.get('username')?.touched">
+                </div>
+                <div class="invalid-feedback"
+                  *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched">
+                  <small>{{ getFieldError('username') }}</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Password Fields Row -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <label for="password" class="form-label fw-semibold">Mot de passe</label>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="bi bi-lock"></i>
+                  </span>
+                  <input [type]="showPassword ? 'text' : 'password'" class="form-control" id="password"
+                    formControlName="password" placeholder="Mot de passe"
+                    [class.is-invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+                  <button type="button" class="btn btn-outline-secondary" (click)="togglePasswordVisibility()">
+                    <i [class]="showPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                  </button>
+                </div>
+                <div class="invalid-feedback"
+                  *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+                  <small>{{ getFieldError('password') }}</small>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <label for="confirmPassword" class="form-label fw-semibold">Confirmer</label>
+                <div class="input-group">
+                  <span class="input-group-text">
+                    <i class="bi bi-lock-fill"></i>
+                  </span>
+                  <input [type]="showConfirmPassword ? 'text' : 'password'" class="form-control" id="confirmPassword"
+                    formControlName="confirmPassword" placeholder="Confirmer mot de passe"
+                    [class.is-invalid]="(registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched) || hasPasswordMismatch">
+                  <button type="button" class="btn btn-outline-secondary" (click)="toggleConfirmPasswordVisibility()">
+                    <i [class]="showConfirmPassword ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+                  </button>
+                </div>
+                <div class="invalid-feedback"
+                  *ngIf="(registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched) || hasPasswordMismatch">
+                  <small *ngIf="registerForm.get('confirmPassword')?.errors?.['required']">Confirmation requise</small>
+                  <small *ngIf="hasPasswordMismatch">Mots de passe différents</small>
+                </div>
+              </div>
+            </div>
+
+            <!-- Password Strength Indicator -->
+            <div *ngIf="registerForm.get('password')?.value" class="mb-3">
+              <div class="password-strength">
+                <div class="progress" style="height: 4px;">
+                  <div class="progress-bar"
+                    [class]="'bg-' + (getPasswordStrength().score <= 2 ? 'danger' : getPasswordStrength().score <= 3 ? 'warning' : 'success')"
+                    [style.width]="(getPasswordStrength().score / 5 * 100) + '%'"></div>
+                </div>
+                <small class="text-muted mt-1 d-block">
+                  Force:
+                  <span
+                    [class]="'text-' + (getPasswordStrength().score <= 2 ? 'danger' : getPasswordStrength().score <= 3 ? 'warning' : 'success')">
+                    {{ getPasswordStrength().score <= 2 ? 'Faible' : getPasswordStrength().score <=3 ? 'Moyen' : 'Fort'
+                      }} </span>
+                </small>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button type="submit" class="btn btn-primary w-100 mb-3 register-btn" [disabled]="isSubmitting">
+              <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2"></span>
+              <span *ngIf="!isSubmitting">S'inscrire</span>
+              <span *ngIf="isSubmitting">Inscription...</span>
+            </button>
+          </form>
+
+          <!-- Switch to Login Link -->
+          <div class="text-center">
+            <p class="text-muted mb-0">
+              Vous avez déjà un compte?
+              <button type="button" class="btn btn-link text-primary text-decoration-none fw-semibold p-0"
+                (click)="goToLogin()">
+                Se connecter
+              </button>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <app-footer></app-footer>
+</div>

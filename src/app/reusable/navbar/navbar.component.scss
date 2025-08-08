@@ -1,31 +1,26 @@
-.navbar-top {
-  background-color: #005ea2;
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  z-index: 1000;
-  padding: 1.2rem 2rem;
+.compact-navbar {
+  background-color: hwb(187 95% 2%) !important;
 }
 
-ul li a:hover {
-  color: #005ea2;
+.custom-toggler:focus {
+  box-shadow: none !important;
 }
 
-.nav-item .active {
-  color: #005ea2 !important;
+@media (max-width: 991.98px) {
+  .courses-dropdown .dropdown-menu {
+    position: static !important;
+    background: #f8f9fa !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin-left: 1rem !important;
+  }
 }
 
-@media (max-width: 768px) {
-  .navbar {
-    padding: 0.5rem 0;
-
-    .nav-item {
-      margin: 0.2rem 0;
-
-      .nav-link {
-        padding: 0.7rem 1rem;
-      }
-    }
+@media (max-width: 576px) {
+  .navbar-brand span {
+    display: none;
+  }
+  .navbar-brand::after {
+    content: "Epreuves";
   }
 }

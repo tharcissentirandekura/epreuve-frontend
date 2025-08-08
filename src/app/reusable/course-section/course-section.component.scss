@@ -1,116 +1,30 @@
+// Most styles moved to global classes for better reusability
+// Text truncation now handled by global app-text-truncate classes
 
-/* Search Bar */
-.search-container {
-  background: #fff;
-  border-radius: 32px;
-  box-shadow: 0 2px 12px rgba(0,94,162,0.06);
-  padding: 0.25rem 1rem;
-}
-.search-container input.form-control {
-  border: none;
-  background: transparent;
-  font-size: 1.12rem;
-  padding: 0.7rem 1.5rem 0.7rem 2.5rem;
-  border-radius: 32px;
-  box-shadow: none;
-}
-.search-container .search-icon {
-  left: 1rem;
-  color: #b5d3ea;
-  font-size: 1.2em;
-}
-
-/* Filter Tabs */
-.filter-tabs {
-  gap: 0.5rem;
-  margin-bottom: 1rem;
-}
-.filter-tab {
-  background: #f0f6fa;
-  border: 1px solid #e0e7ff;
-  color: #005ea2;
-  padding: 0.4em 1.3em;
-  box-shadow: 0 1px 4px rgba(0,94,162,0.03);
-}
-.filter-tab.active,
-.filter-tab:hover {
-  background: #005ea2;
-  color: #fff;
-  border-color: #005ea2;
-  box-shadow: 0 2px 8px rgba(0,94,162,0.11);
-}
-
-/* Test List */
-.tests-list .list-group-item {
-  box-shadow: 0 2px 8px rgba(1, 71, 120, 0.06);
-  transition: box-shadow 0.2s;
-}
-.tests-list .list-group-item:hover {
-  box-shadow: 0 6px 20px rgba(0,94,162,0.16);
-}
-.test-name {
-  color: #005ea2;
-}
-
-/* Download Button */
-.btn {
-  background-color: #d8effe;
-  border: none;
-  color: #005ea2;
-  font-size: 1.1rem;
-  padding: 7px 18px;
-  border-radius: 25px;
-  font-weight: 600;
-  box-shadow: 0 2px 8px rgba(0,94,162,0.06);
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4em;
-  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-}
-
-.btn:hover {
-  background-color: #005ea2;
-  color: #fff;
-  box-shadow: 0 4px 16px rgba(0,94,162,0.10);
-}
-
-
-
-/* Video Cards */
-.campaign-card {
-  transition: box-shadow 0.2s;
-}
-
-.campaign-card:hover {
-  box-shadow: 0 6px 20px rgba(0,94,162,0.13);
-}
-.card-image-container img {
-  width: 100%;
-  object-fit: cover;
-}
-.card-title {
-  color: #005ea2;
-}
-.card-actions .btn {
-  width: 100%;
-}
-
-/* Responsive tweaks */
+// Responsive design
 @media (max-width: 768px) {
-  .tests-list .list-group-item {
-    padding: 1rem;
-  }
-  .test-name {
-    font-size: 1rem;
-  }
-
-
   .main-title {
-    position: relative;
-    // transform: translateX(2%);
-    display: flex;
-    justify-content: center;
-    align-items: center;
     font-size: 1.8rem;
-    }
+    line-height: 2rem;
+  }
+
+  .filter-tabs {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .filter-tab {
+    flex-shrink: 0;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 576px) {
+  .main-title {
+    font-size: 1.5rem;
+  }
+
+  .test-name {
+    max-width: 120px;
+  }
 }
