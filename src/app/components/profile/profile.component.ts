@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { isPlatformBrowser } from '@angular/common';
 import { NavbarComponent } from '../../reusable/navbar/navbar.component';
 import { FooterComponent } from '../../reusable/footer/footer.component';
 import { UserService } from '../../services/auth/user/user.service';
@@ -25,7 +26,8 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private userService: UserService
+    private userService: UserService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.profileForm = this.fb.group({
       first_name: ['', [Validators.required, Validators.pattern(ValidationPatterns.name)]],
@@ -36,10 +38,17 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadUserProfile();
+    // Only load user profile in the browser, not during SSR
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadUserProfile();
+    }
   }
 
   loadUserProfile(): void {
+    // Additional safety check - only proceed if in browser
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
     this.isLoading = true;
     this.errorMessage = '';
 
@@ -84,14 +93,14 @@ export class ProfileComponent implements OnInit {
       this.successMessage = '';
 
       const formData = this.profileForm.value;
-      
+
       this.userService.updateUser(formData).subscribe({
         next: (updatedUser) => {
           this.user = updatedUser;
           this.isEditing = false;
           this.isSaving = false;
           this.successMessage = 'Profile updated successfully!';
-          
+
           // Clear success message after 3 seconds
           setTimeout(() => {
             this.successMessage = '';
