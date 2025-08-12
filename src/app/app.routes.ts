@@ -11,6 +11,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { NgModule } from '@angular/core';
 import { HelpFormComponent } from './components/help-form/help-form.component';
 import { TermsServiceComponent } from './components/terms/terms-service/terms-service.component';
+import { AuthGuard } from './guards/auth.guard';
 export const routes: Routes = [
   // { path: '',  component: HomeComponent },
   { path: 'home', component: HomeComponent },
@@ -21,7 +22,7 @@ export const routes: Routes = [
   { path: 'help', component: HelpFormComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'profile', component: ProfileComponent },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   { path: 'Terms', component: TermsServiceComponent },
   { path: 'Privacy', component: TermsServiceComponent },
   // {path: 'Terms', component: TermsServiceComponent},
