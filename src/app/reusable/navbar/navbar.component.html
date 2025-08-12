@@ -1,95 +1,88 @@
-<nav class="navbar navbar-dark py-4 p-custom-font">
-	<!--  -->
-	<div class="container-fluid navbar-top">
-		<a class="navbar-brand d-flex flex-column lh-sm" routerLink="/home">
-			 <i class="pi pi-graduation-cap text-white fs-2"></i>
-			Epreuves.com
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom p-custom-font fixed-top shadow-sm compact-navbar">
+	<div class="container-fluid">
+		<!-- Brand -->
+		<a class="navbar-brand d-flex align-items-center text-decoration-none fw-bold" routerLink="/home">
+			<i class="pi pi-graduation-cap text-primary fs-4 me-2"></i>
+			<span class="fw-bold text-primary">Epreuves.com</span>
 		</a>
 
-		<div class="navbar-actions d-flex align-items-center">
-			<div class="search-bar me-3">
-				<app-search-bar></app-search-bar>
-			</div>
-			
-			<div class="dropdown">
-				<a class="nav-link text-white dropdown-toggle" href="#" id="userMenu" data-bs-toggle="dropdown"
-					aria-expanded="false">
-					<i class="pi pi-user bg-white text-primary p-2 rounded-5"></i>
-					{{ isLoggedIn && currentUser?.username ? 'Bienvenue, ' + currentUser?.username : 'Déconnecté' }}
-				</a>
-
-				<ul class="dropdown-menu dropdown-menu-end user-panel" aria-labelledby="userMenu">
-					<h6 class="dropdown-header">Menu d'utilisateur</h6>
-					<li *ngIf="!isLoggedIn">
-						<a class="dropdown-item" href="/login">Connectez-vous</a>
-					</li>
-					<li *ngIf="!isLoggedIn">
-						<a class="dropdown-item" href="/register">Inscrivez-vous</a>
-					</li>
-					<li *ngIf="isLoggedIn">
-						<a class="dropdown-item" href="/profile">Profile</a>
-					</li>
-					<li *ngIf="isLoggedIn">
-						<a class="dropdown-item" (click)="logout()">Déconnectez-vous</a>
-					</li>
-				</ul>
-			</div>
+		<!-- Mobile search and toggle -->
+		<div class="d-flex align-items-center d-lg-none">
+			<app-search-bar></app-search-bar>
+			<button class="navbar-toggler border-0 custom-toggler ms-2" type="button" data-bs-toggle="collapse"
+				data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
 		</div>
-	</div>
-</nav>
-
-<!-- BOTTOM BAR -->
-<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom p-custom-font fw-bold fs-5 bottom-navbar">
-	<div class="container-fluid">
-		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
-			aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
 
 		<div class="collapse navbar-collapse" id="mainNav">
-			<ul class="navbar-nav ms-auto">
-				<li class="nav-item px-2">
-					<a class="nav-link" routerLink="/home" routerLinkActive="active">
-						<i class="me-1"></i> Accueil
-					</a>
+			<ul class="navbar-nav mx-auto justify-content-center mb-3 mb-lg-0">
+				<li class="nav-item">
+					<a class="nav-link fw-medium px-3 py-2 text-dark" routerLink="/home"
+						routerLinkActive="active">Accueil</a>
 				</li>
-
-				<li class="nav-item px-2">
-					<a class="nav-link" routerLink="/mathphys" routerLinkActive="active">
-						<i class=" me-1"></i> Math-phy..
+				<li class="nav-item dropdown courses-dropdown">
+					<a class="nav-link dropdown-toggle fw-medium px-3 py-2 text-dark" href="#" id="coursesMenu"
+						role="button" data-bs-toggle="dropdown" aria-expanded="false">
+						Cours
 					</a>
+					<ul class="dropdown-menu border rounded shadow courses-menu" aria-labelledby="coursesMenu">
+						<li><a class="dropdown-item px-3 py-2 text-dark" routerLink="/mathphys">Math-Physique</a></li>
+						<li><a class="dropdown-item px-3 py-2 text-dark" routerLink="/biochimie">Bio-Chimie</a></li>
+						<li><a class="dropdown-item px-3 py-2 text-dark" routerLink="/langues">Langues</a></li>
+						<li><a class="dropdown-item px-3 py-2 text-dark" routerLink="/concours">9ème Année</a></li>
+					</ul>
 				</li>
-
-				<li class="nav-item px-2">
-					<a class="nav-link" routerLink="/biochimie" routerLinkActive="active">
-						<i class="me-1"></i> Bio-chimie
-					</a>
+				<li class="nav-item">
+					<a class="nav-link fw-medium px-3 py-2 text-dark" routerLink="/help"
+						routerLinkActive="active">Aide</a>
 				</li>
-
-				<li class="nav-item px-2">
-					<a class="nav-link" routerLink="/langues" routerLinkActive="active">
-						<i class="me-1"></i> Langues
-					</a>
-				</li>
-
-				<li class="nav-item px-2">
-					<a class="nav-link" routerLink="/concours" routerLinkActive="active">
-						<i class="me-1"></i> 9ème
-					</a>
-				</li>
-
-				<li class="nav-item px-2">
-					<a class="nav-link" routerLink="/help" routerLinkActive="active">
-						<i class="me-1"></i> Aide
-					</a>
-				</li>
-
-				<li class="nav-item px-2">
-					<a class="nav-link" routerLink="/contact" routerLinkActive="active">
-						<i class="me-1"></i> Contact
-					</a>
+				<li class="nav-item">
+					<a class="nav-link fw-medium px-3 py-2 text-dark" routerLink="/contact"
+						routerLinkActive="active">Contact</a>
 				</li>
 			</ul>
+
+			<!-- Mobile login section -->
+			<div class="d-lg-none mt-3 pt-3 border-top">
+				<div *ngIf="isLoggedIn" class="dropdown">
+					<a class="nav-link dropdown-toggle fw-medium text-dark" href="#" data-bs-toggle="dropdown">
+						<i class="pi pi-user me-2"></i>{{ currentUsername }}
+					</a>
+					<ul class="dropdown-menu">
+						<li><a class="dropdown-item" routerLink="/profile">Profile</a></li>
+						<li>
+							<hr class="dropdown-divider">
+						</li>
+						<li><a class="dropdown-item" (click)="logout()">Déconnectez-vous</a></li>
+					</ul>
+				</div>
+				<a *ngIf="!isLoggedIn" class="btn btn-primary w-100 mt-2 rounded-pill" href="/login">Se connecter</a>
+			</div>
+
+			<!-- Desktop actions -->
+			<div class="d-none d-lg-flex align-items-center">
+				<app-search-bar></app-search-bar>
+				<div *ngIf="isLoggedIn" class="dropdown ms-3">
+					<a class="nav-link dropdown-toggle d-flex align-items-center text-decoration-none fw-medium text-dark"
+						href="#" data-bs-toggle="dropdown">
+						<i class="pi pi-user custom-bg-primary text-white p-2 rounded-circle me-2"></i>
+						<span class="small">{{ currentUsername }}</span>
+					</a>
+					<ul class="dropdown-menu dropdown-menu-end border rounded shadow">
+						<li><a class="dropdown-item px-3 py-2 text-dark" routerLink="/profile">Profile</a></li>
+						<li>
+							<hr class="dropdown-divider my-2">
+						</li>
+						<li><a class="dropdown-item px-3 py-2 text-dark" (click)="logout()">Déconnectez-vous</a></li>
+					</ul>
+				</div>
+				<a *ngIf="!isLoggedIn"
+					class="btn btn-primary px-4 py-2 fw-medium rounded-pill text-decoration-none small ms-3"
+					href="/register">
+					S'inscrire
+				</a>
+			</div>
 		</div>
 	</div>
 </nav>

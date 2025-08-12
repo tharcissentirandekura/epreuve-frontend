@@ -8,22 +8,20 @@ import { LoginCredentials, User } from '../../models/user.model';
 import { ToastService } from '../../services/toast/toast.service';
 import { ToastComponent } from '../toast/toast.component';
 import { UserService } from '../../services/auth/user/user.service';
-
+import { NavbarComponent } from '../../reusable/navbar/navbar.component';
 @Component({
   selector: 'app-login',
   standalone: true,
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  imports: [CommonModule, ReactiveFormsModule, FooterComponent, ToastComponent],
+  imports: [CommonModule, ReactiveFormsModule, FooterComponent, ToastComponent,NavbarComponent],
 })
 
 
 export class LoginComponent implements OnInit {
   loginForm!: FormGroup;
-  errorMessage: string = '';
   isSubmitting: boolean = false;
   showPassword: boolean = false;
-  successMessage: string = '';
 
 
 
@@ -54,7 +52,8 @@ export class LoginComponent implements OnInit {
     //Using snapshot.queryParams (One-time, Static)
     //I only care about the query params at the time the component is loaded, and don't expect them to change
     if (this.route.snapshot.queryParams['message'] === 'registration-success') {
-      this.successMessage = 'Inscription réussie! Vous pouvez maintenant vous connecter.';
+      // this.successMessage = 'Inscription réussie! Vous pouvez maintenant vous connecter.';
+      this.toastService.success('Inscription réussie! Vous pouvez maintenant vous connecter.',6000);
     }
 
     // Redirect if already authenticated
@@ -96,8 +95,6 @@ export class LoginComponent implements OnInit {
      */
 
     this.isSubmitting = true;
-    this.errorMessage = '';
-    this.successMessage = '';
     /**
      * Login the user
      * @param credentials the user's credentials
@@ -110,7 +107,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(credentials).subscribe({
       next: (response) => {
         this.isSubmitting = false;
-        this.toastService.success('Connexion réussie! Redirection en cours...', 2000);
+        this.toastService.success('Connexion réussie! Redirection en cours...', 6000);
         
         // Small delay to show the success toast before navigation
         setTimeout(() => {
@@ -120,7 +117,8 @@ export class LoginComponent implements OnInit {
       },
       error: (error) => {
         this.isSubmitting = false;
-        this.handleError(error);
+        const errorMessage = this.getErrorMessage(error);
+        this.toastService.error(errorMessage, 4000);
       },
       complete: () =>{
         console.log('Login process completed')
@@ -142,18 +140,18 @@ export class LoginComponent implements OnInit {
   }
 
   /**
-   * An Error handler method
+   * Get error message for toast notification
    * @param error the error returned when logging the user
    */
-  private handleError(error: any): void {
+  private getErrorMessage(error: any): string {
     if (error.status === 401) {
-      this.errorMessage = 'Nom d\'utilisateur ou mot de passe incorrect.';
+      return 'Nom d\'utilisateur ou mot de passe incorrect.';
     } else if (error.status === 429) {
-      this.errorMessage = 'Trop de tentatives. Veuillez réessayer plus tard.';
+      return 'Trop de tentatives. Veuillez réessayer plus tard.';
     } else if (error.status === 0) {
-      this.errorMessage = 'Problème de connexion. Vérifiez votre connexion internet.';
+      return 'Problème de connexion. Vérifiez votre connexion internet.';
     } else {
-      this.errorMessage = 'Une erreur s\'est produite. Veuillez réessayer.';
+      return 'Une erreur s\'est produite. Veuillez réessayer.';
     }
   }
   /**

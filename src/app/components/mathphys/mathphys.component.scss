@@ -1,15 +1,1 @@
-// button
-.btn {
-  background-color: #EFF7FC;
-  border: none;
-  color: #005ea2;
-  font-size: 1.2rem;
-  padding: 3px;
-  border-radius: 5px;
-  transition: all 0.3s ease;
-  
-  &:hover {
-    background-color: #005ea2;
-    color: #ffffff;
-  }
-}
+// Component-specific styles - most button styles now use global classes

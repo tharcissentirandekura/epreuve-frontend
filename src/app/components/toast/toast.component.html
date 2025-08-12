@@ -1,0 +1,14 @@
+<div class="toast-container">
+    <div *ngFor="let toast of toasts" 
+        class="toast show" 
+        [ngClass]="'toast-' + toast.type"
+        role="alert">
+    <div class="toast-body d-flex align-items-center">
+        <i class="me-2" [ngClass]="getIcon(toast.type)"></i>
+        {{ toast.message }}
+        <button type="button" 
+                class="btn-close ms-auto" 
+                (click)="removeToast(toast.id)"></button>
+    </div>
+    </div>
+</div>

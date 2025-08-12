@@ -89,12 +89,20 @@ export class SearchBarComponent implements OnInit {
     //filter by category choosen by user after general search
     filterByCategory(category: string) {
         
-        this.selectedCategory =  this.selectedCategory === category ? '' : category; // determine if toggle selection or not
+        this.selectedCategory =  this.selectedCategory === category ? '' : category.toLocaleLowerCase(); // determine if toggle selection or not
         if (this.searchQuery) {
             this.onSearch(); // Trigger search if there is a query
         }
     }
 
+	// normalize the test name
+	normalizeCourseName(test:any): string {
+		const type = test.metadata.type ? test.metadata.type : '';
+		// const section = test.section ? test.section : '';
+		const course = test.course ? test.course : '';
+		const year = test.year ? ` ${new Date(test.year).getFullYear()}` : '';
+		return `${type} de  ${course} année ${year}`.trim();
+	}
 	//get all tests
 	searchTests(query: string) {
 		const endpoint = 'tests';
@@ -117,7 +125,7 @@ export class SearchBarComponent implements OnInit {
                     console.log('Selected catefories:', this.selectedCategory);
 
                     this.searchResults = filteredResults.map((epreuve: any) => ({
-                        name: epreuve.test,
+                        name: this.normalizeCourseName(epreuve),
                         url: epreuve.link,
 						metadata:epreuve.metadata
                     }));

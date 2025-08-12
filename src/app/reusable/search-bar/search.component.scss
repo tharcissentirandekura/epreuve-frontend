@@ -1,70 +1,111 @@
 .search-toggle-button {
   border-radius: 20px;
   transition: transform .2s;
-  &:hover { background: rgba(255,255,255,.15); }
-  &.search-bar-active { transform: scale(1.2); }
+
+  &:hover {
+    background: rgba(255, 255, 255, .15);
+  }
+
+  &.search-bar-active {
+    transform: scale(1.2);
+  }
 }
+
 .floating-search-bar {
   position: fixed;
-  top: 0;
+  top: 5%;
   left: 0;
   width: 100vw;
-  height: 20vh;
+  height: 230vh;
   padding-top: 5px;
   z-index: 1050;
 }
+
 .search-bar-container {
-  width: 90%;
+  width: 100%;
   max-width: 90vh;
   border-radius: 50px;
 }
 
-.search-icon,.btn-close {
+.search-icon,
+.btn-close {
   position: absolute;
   color: #666;
-  font-size: 1.25rem;
+  font-size: 1rem;
 }
-.search-icon { left: 20px; }
+
+.search-icon {
+  left: 20px;
+}
+
 .search-input {
-  height: 60px;
   padding: 0 60px 0 50px;
-  font-size: 1.25rem;
+  font-size: 1rem;
   border-radius: 50px;
   transition: all .3s;
+
   &:focus {
     outline: 0;
-    box-shadow: 0 4px 12px rgba(0,0,0,.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, .1);
   }
 }
+
 .btn-close {
   right: 2rem;
-  &:hover { color: #000; }
+
+  &:hover {
+    color: #000;
+  }
 }
 
 .search-results {
   position: fixed;
-  top: 70px;
-  left: 0;
-  width: 100vw;
+  top: 15%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80vw;
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0,0,0,.15);
+  // box-shadow: 0 4px 20px rgba(0, 0, 0, .15);
+  height: 80vh;
   max-height: 90vh;
   overflow-y: auto;
   z-index: 1060;
+  backdrop-filter: blur(20px);
+
 }
-.list-group-item {
-  border-bottom: 1px solid #eee;
-  transition: background .2s;
-  &:last-child { border-bottom: 0; }
-  &:hover { background: #f8f9fa; }
-  a { color: #333; min-width: 0; }
-  i {
-    margin-right: 12px;
-    color: #005ea2;
-    font-size: 1.1rem;
-    flex-shrink: 0;
+
+// Reusing course section styling
+.tests-list .list-group-item {
+  transition: box-shadow 0.2s;
+  background: transparent;
+  box-shadow: 0 1px 0 rgba(18, 18, 18, 0.1);
+
+  &:hover {
+    box-shadow: 0 6px 40px rgba(0, 94, 162, 0.16);
   }
 }
+
+.test-name {
+  color: #005ea2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+// Custom button styling matching course section
+.btn {
+  background-color: #d8effe;
+  border: none;
+  color: #005ea2;
+  border-radius: 25px;
+  transition: all 0.2s;
+
+  &:hover {
+    background-color: #005ea2;
+    color: #fff;
+  }
+}
+
 .result-name {
   white-space: nowrap;
   overflow: hidden;
@@ -74,3 +115,14 @@
 }
 
 
+@media (max-width: 768px) {
+  .search-bar-container {
+    max-width: 100%;
+  }
+
+  .search-results {
+    width: 100%;
+    height: 70%;
+    bottom: 8;
+  }
+}

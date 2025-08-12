@@ -19,7 +19,7 @@ export class AuthService {
     private tokenService: TokenService,
     private userService: UserService,
     @Inject(PLATFORM_ID) private platformId: Object
-    
+
   ) { }
 
   login(credentials: LoginCredentials): Observable<{ token: Token }> {
@@ -35,10 +35,7 @@ export class AuthService {
 
   register(user: RegisterData): Observable<RegisterData> {
     const backendData = {
-      first_name: user.firstName,
-      last_name: user.lastName,
       username: user.username,
-      email: user.email,
       password: user.password,
       confirm_password: user.confirmPassword
     };
@@ -49,12 +46,41 @@ export class AuthService {
   logout(): void {
     if (isPlatformBrowser(this.platformId)) {
       localStorage.removeItem(this.tokenKey);
+      // Also clean up any other token-related storage
+      this.tokenService.removeTokens();
+      // Only navigate if we're in the browser
+      this.router.navigate(['/login']);
     }
-    this.router.navigate(['/login']);
+  }
+
+  // Silent logout for token expiration (no navigation)
+  silentLogout(): void {
+    if (isPlatformBrowser(this.platformId)) {
+      localStorage.removeItem(this.tokenKey);
+      this.tokenService.removeTokens();
+    }
   }
 
   isAuthenticated(): boolean {
+    // Don't perform token validation during SSR to avoid timeouts
+    if (!isPlatformBrowser(this.platformId)) {
+      return false;
+    }
+
     const token = this.tokenService.getToken();
-    return !!token && !!token.access;
+    if (!token || !token.access) {
+      return false;
+    }
+
+    // Check if access token is still valid
+    const isValid = this.tokenService.isTokenValid(token.access);
+
+    if (!isValid) {
+      // Token is expired, clean up silently (don't call logout to avoid router navigation during SSR)
+      this.tokenService.removeTokens();
+      return false;
+    }
+
+    return true;
   }
 }

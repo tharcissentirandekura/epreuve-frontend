@@ -5,6 +5,8 @@ import { ApiService } from '../../services/api/api.service';
 import { CommonModule } from '@angular/common';
 import {MatIconModule} from '@angular/material/icon';
 
+declare var AOS: any;
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -126,6 +128,16 @@ export class HomeComponent implements OnInit {
   constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
+    // Initialize AOS (Animate On Scroll)
+    if (typeof AOS !== 'undefined') {
+      AOS.init({
+        duration: 800,
+        easing: 'ease-in-out',
+        once: true,
+        offset: 100
+      });
+    }
+
     this.apiService.getDataHandler('sections',1).subscribe({
       next: (response) => {
         this.data = response;

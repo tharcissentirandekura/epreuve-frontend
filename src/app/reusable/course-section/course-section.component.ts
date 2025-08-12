@@ -107,17 +107,32 @@ export class CourseSectionComponent implements OnInit {
       this.totalPages = Math.ceil(this.count / this.pageSize); // Assuming 5 items per page
 
       this.applyFilters();
-      console.log('Total tests:', this.allTests);
+      console.log('Total tests:', this.allTests.length);
     });
 
   }
+  normalizeCourseName(test: Test): string {
+    const type = test.metadata.type ? test.metadata.type : '';
+    // const section = test.section ? test.section : '';
+    const course = test.course ? test.course : '';
+    const year = test.year ? ` ${new Date(test.year).getFullYear()}` : '';
+    return `${type} de  ${course} année ${year}`.trim();
+  }
+  convertFIleSize = (bytes: number) => {
+    if (bytes === 0) return '0 Bytes';
+    const k = 1024;
+    const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
+    const i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 
+  }
   loadVideos(): void {
     // Load all videos from page 1 only (no pagination)
     this.api.getDataHandler(`videos`, 1).subscribe({
       next: videos => {
         this.videoList = videos.results || [];
-        console.log('Total videos loaded:', this.videoList.length);
+        console.log('Total videos loaded:', this.videoList.length
+        );
       },
       error: err => {
         console.warn('No videos available or error loading videos:', err.message);
@@ -134,7 +149,11 @@ export class CourseSectionComponent implements OnInit {
       this.loadTests();
     }
   }
-
+  onPageSizeChange(newPageSize: number): void {
+    this.pageSize = newPageSize;
+    this.currentPage = 1; // Reset to first page
+    this.loadTests(); // Reload data with new page size
+  }
   applyFilters(): void {
     const term = this.searchTerm.toLowerCase();
     this.filteredTests = this.allTests.filter(t => {

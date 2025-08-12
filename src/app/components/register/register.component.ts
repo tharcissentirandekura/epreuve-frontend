@@ -6,25 +6,26 @@ import { FooterComponent } from '../../reusable/footer/footer.component';
 import { AuthService } from '../../services/auth/auth.service';
 import { RegisterData } from '../../models/user.model';
 import { AuthValidators } from '../../validators/auth.validators';
-
+import { NavbarComponent } from '../../reusable/navbar/navbar.component';
+import { ToastService } from '../../services/toast/toast.service';
+import { ToastComponent } from '../toast/toast.component';
 @Component({
     selector: 'app-register',
     standalone: true,
     templateUrl: './register.component.html',
     styleUrls: ['./register.component.scss'],
-    imports: [CommonModule, ReactiveFormsModule, FooterComponent],
+    imports: [CommonModule, ReactiveFormsModule, FooterComponent, NavbarComponent,ToastComponent],
 })
 export class RegisterComponent implements OnInit {
     registerForm!: FormGroup;
     isSubmitting = false;
     showPassword = false;
     showConfirmPassword = false;
-    errorMessage = '';
-    successMessage = '';
 
     constructor(
         private fb: FormBuilder,
         private authService: AuthService,
+        private toastService: ToastService,
         private router: Router,
         private route: ActivatedRoute
     ) { }
@@ -38,10 +39,7 @@ export class RegisterComponent implements OnInit {
         }
 
         this.registerForm = this.fb.group({
-            firstName: ['', [Validators.required, AuthValidators.nameValidator]],
-            lastName: ['', [Validators.required, AuthValidators.nameValidator]],
             username: ['', [Validators.required, AuthValidators.username]],
-            email: ['', [Validators.required, AuthValidators.email]],
             password: ['', [Validators.required, AuthValidators.strongPassword, AuthValidators.notCommonPassword]],
             confirmPassword: ['', [Validators.required]]
         }, {
@@ -66,27 +64,24 @@ export class RegisterComponent implements OnInit {
         }
 
         const registerData: RegisterData = {
-            firstName: this.registerForm.value.firstName,
-            lastName: this.registerForm.value.lastName,
             username: this.registerForm.value.username,
-            email: this.registerForm.value.email,
             password: this.registerForm.value.password,
             confirmPassword: this.registerForm.value.confirmPassword
         };
 
         this.isSubmitting = true;
-        this.errorMessage = '';
-        this.successMessage = '';
 
         this.authService.register(registerData).subscribe({
             next: (response) => {
+                this.isSubmitting = false;
                 this.router.navigate(['/login'], {
                     queryParams: { message: 'registration-success' }
                 });
             },
             error: (error) => {
                 this.isSubmitting = false;
-                this.handleError(error);
+                const errorMessage = this.getErrorMessage(error);
+                this.toastService.error(errorMessage, 5000);
             }
         });
     }
@@ -96,24 +91,24 @@ export class RegisterComponent implements OnInit {
         this.router.navigate(['/login']);
     }
 
-    private handleError(error: any): void {
+    private getErrorMessage(error: any): string {
         if (error.status === 400) {
             if (error.error?.errors) {
                 const firstError = Object.values(error.error.errors)[0];
-                this.errorMessage = Array.isArray(firstError) ? firstError[0] : firstError as string;
+                return Array.isArray(firstError) ? firstError[0] : firstError as string;
             } else if (error.error?.detail) {
-                this.errorMessage = error.error.detail;
+                return error.error.detail;
             } else {
-                this.errorMessage = 'Données invalides. Veuillez vérifier vos informations.';
+                return 'Données invalides. Veuillez vérifier vos informations.';
             }
         } else if (error.status === 409) {
-            this.errorMessage = 'Ce nom d\'utilisateur ou email existe déjà.';
+            return 'Ce nom d\'utilisateur existe déjà.';
         } else if (error.status === 500) {
-            this.errorMessage = 'Erreur serveur. Veuillez réessayer plus tard.';
+            return 'Erreur serveur. Veuillez réessayer plus tard.';
         } else if (error.status === 0) {
-            this.errorMessage = 'Problème de connexion. Vérifiez votre connexion internet.';
+            return 'Problème de connexion. Vérifiez votre connexion internet.';
         } else {
-            this.errorMessage = 'Une erreur s\'est produite. Veuillez réessayer.';
+            return 'Une erreur s\'est produite. Veuillez réessayer.';
         }
     }
 
@@ -143,6 +138,4 @@ export class RegisterComponent implements OnInit {
         }
         return AuthValidators.getPasswordStrength(passwordValue);
     }
-
-
 }
