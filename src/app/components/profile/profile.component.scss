@@ -1,13 +1,12 @@
-.avatar-placeholder {
-    width: 60px;
-    height: 60px;
-    border-radius: 50%;
-    background: var(--bs-primary);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    color: white;
-    font-weight: bold;
-    text-transform: uppercase;
-  }
+// Profile component uses Bootstrap utility classes with minimal custom CSS
+
+.app-avatar {
+  width: 80px;
+  height: 80px;
+  font-size: 1.5rem;
+}
+
+.app-status-dot {
+  font-size: 0.5rem;
+}
   

@@ -35,8 +35,7 @@ body {
   height: 100%;
   overflow-x: hidden;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-  padding-top: 2%;
-  /* Account for fixed navbar */
+  padding-top: 0.5%;
 }
 
 .p-custom-font {
@@ -62,6 +61,7 @@ body {
 
 .textfonts .container-fluid {
   flex: 1 0 auto;
+
 }
 
 /* Main title styling */

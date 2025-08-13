@@ -67,6 +67,10 @@ export class TokenService {
   removeTokens(): void {
     if (!this.isBrowser) return;
 
+    // Remove the main auth token
+    localStorage.removeItem(this.tokenKey);
+    
+    // Remove other token-related keys
     Object.values(this.KEYS).forEach(key =>
       localStorage.removeItem(key)
     );
@@ -74,14 +78,21 @@ export class TokenService {
 
   // Token validation
   isTokenValid(token?: string): boolean {
-    const exstingToken = this.getToken();
-    const tokenToCheck = token || exstingToken?.refresh;
+    const existingToken = this.getToken();
+    const tokenToCheck = token || existingToken?.access; // Check access token by default
     if (!tokenToCheck) return false;
 
     try {
       const decoded = jwtDecode<DecodedToken>(tokenToCheck);
-      return decoded.exp > Math.floor(Date.now() / 1000);
-    } catch {
+      const isValid = decoded.exp > Math.floor(Date.now() / 1000);
+      
+      if (!isValid) {
+        console.warn('Access token is expired');
+      }
+      
+      return isValid;
+    } catch (error) {
+      console.error('Error validating token:', error);
       return false;
     }
   }

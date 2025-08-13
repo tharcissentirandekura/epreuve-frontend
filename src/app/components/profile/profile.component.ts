@@ -1,15 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject, PLATFORM_ID } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { isPlatformBrowser } from '@angular/common';
 import { NavbarComponent } from '../../reusable/navbar/navbar.component';
 import { FooterComponent } from '../../reusable/footer/footer.component';
 import { UserService } from '../../services/auth/user/user.service';
 import { User, ValidationPatterns, ValidationMessages } from '../../models/user.model';
-
+import { ToastComponent } from '../toast/toast.component';
+import { ToastService } from '../../services/toast/toast.service';
 @Component({
   selector: 'app-profile',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, NavbarComponent, FooterComponent],
+  imports: [CommonModule, ReactiveFormsModule, NavbarComponent, FooterComponent,ToastComponent],
   templateUrl: './profile.component.html',
   styleUrl: './profile.component.scss'
 })
@@ -25,7 +27,9 @@ export class ProfileComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private userService: UserService
+    private userService: UserService,
+    private toastService: ToastService,
+    @Inject(PLATFORM_ID) private platformId: Object
   ) {
     this.profileForm = this.fb.group({
       first_name: ['', [Validators.required, Validators.pattern(ValidationPatterns.name)]],
@@ -36,10 +40,17 @@ export class ProfileComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadUserProfile();
+    // Only load user profile in the browser, not during SSR
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadUserProfile();
+    }
   }
 
   loadUserProfile(): void {
+    // Additional safety check - only proceed if in browser
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
     this.isLoading = true;
     this.errorMessage = '';
 
@@ -55,8 +66,9 @@ export class ProfileComponent implements OnInit {
         this.isLoading = false;
       },
       error: (error) => {
-        this.errorMessage = 'Failed to load profile information';
+        this.errorMessage = 'Echec de recuperer vos compte';
         this.isLoading = false;
+        this.toastService.error(`${this.errorMessage}`,5000)
         console.error('Error loading user profile:', error);
       }
     });
@@ -84,22 +96,22 @@ export class ProfileComponent implements OnInit {
       this.successMessage = '';
 
       const formData = this.profileForm.value;
-      
+
       this.userService.updateUser(formData).subscribe({
         next: (updatedUser) => {
           this.user = updatedUser;
           this.isEditing = false;
           this.isSaving = false;
-          this.successMessage = 'Profile updated successfully!';
-          
-          // Clear success message after 3 seconds
-          setTimeout(() => {
-            this.successMessage = '';
-          }, 3000);
+          // this.successMessage = 'Profile updated successfully!';
+          this.successMessage  = 'Votre profile a été mis à jour avec succès !'
+          this.toastService.success(`${this.successMessage}`, 5000)
+
+ 
         },
         error: (error) => {
           this.isSaving = false;
-          this.errorMessage = 'Failed to update profile. Please try again.';
+          this.errorMessage = 'Echec de la mise à jour de votre profile. Veuillez réessayer.'
+          this.toastService.error(`${this.errorMessage}`, 5000)
           console.error('Error updating profile:', error);
         }
       });

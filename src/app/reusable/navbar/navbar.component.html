@@ -1,5 +1,4 @@
-<nav
-	class="navbar navbar-expand-lg navbar-light bg-white border-bottom p-custom-font fixed-top shadow-sm compact-navbar">
+<nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom p-custom-font fixed-top shadow-sm compact-navbar">
 	<div class="container-fluid">
 		<!-- Brand -->
 		<a class="navbar-brand d-flex align-items-center text-decoration-none fw-bold" routerLink="/home">
@@ -48,10 +47,10 @@
 			<div class="d-lg-none mt-3 pt-3 border-top">
 				<div *ngIf="isLoggedIn" class="dropdown">
 					<a class="nav-link dropdown-toggle fw-medium text-dark" href="#" data-bs-toggle="dropdown">
-						<i class="pi pi-user me-2"></i>{{ currentUser?.username }}
+						<i class="pi pi-user me-2"></i>{{ currentUsername }}
 					</a>
 					<ul class="dropdown-menu">
-						<li><a class="dropdown-item" href="/profile">Profile</a></li>
+						<li><a class="dropdown-item" routerLink="/profile">Profile</a></li>
 						<li>
 							<hr class="dropdown-divider">
 						</li>
@@ -68,10 +67,10 @@
 					<a class="nav-link dropdown-toggle d-flex align-items-center text-decoration-none fw-medium text-dark"
 						href="#" data-bs-toggle="dropdown">
 						<i class="pi pi-user custom-bg-primary text-white p-2 rounded-circle me-2"></i>
-						<span class="small">{{ currentUser?.username }}</span>
+						<span class="small">{{ currentUsername }}</span>
 					</a>
 					<ul class="dropdown-menu dropdown-menu-end border rounded shadow">
-						<li><a class="dropdown-item px-3 py-2 text-dark" href="/profile">Profile</a></li>
+						<li><a class="dropdown-item px-3 py-2 text-dark" routerLink="/profile">Profile</a></li>
 						<li>
 							<hr class="dropdown-divider my-2">
 						</li>

@@ -1,20 +1,6 @@
-.register-form-container {
-  max-width: 520px;
-  border: 1px solid #e9ecef;
-  border-radius: 12px;
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-}
+@import '../shared-auth.scss';
 
-.register-btn {
-  height: 48px;
-  border-radius: 8px;
-  transition: background-color 0.2s ease;
-  
-  &:hover:not(:disabled) {
-    background-color: #0056b3;
-  }
-}
-
+// Registration-specific styles only
 .password-strength .progress {
   height: 4px;
   border-radius: 4px;
@@ -23,37 +9,4 @@
 .password-strength .progress-bar {
   transition: width 0.3s ease;
   border-radius: 4px;
-}
-
-@media (max-width: 575.98px) {
-  .register-btn { 
-    height: 44px; 
-  }
-}
-
-// Small devices (480px and below) - Full viewport
-@media (max-width: 480px) {
-  .register-form-container {
-    max-width: 100%;
-    margin: 0 !important;
-    border: none;
-    border-radius: 0;
-    box-shadow: none;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-  
-  h2 {
-    font-size: 1.5rem;
-  }
-  
-  .form-label {
-    font-size: 0.9rem;
-  }
-  
-  .form-control {
-    font-size: 1rem;
-  }
 }

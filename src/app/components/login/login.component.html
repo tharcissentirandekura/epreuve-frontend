@@ -31,18 +31,7 @@
 
       <!-- Right Side - Form -->
       <div class="col-lg-6 d-flex align-items-center justify-content-center">
-        <div class="login-form-container w-100 p-4 bg-white m-4">
-          
-          <!-- Success Message -->
-          <div *ngIf="successMessage" class="alert alert-success mb-4">
-            {{ successMessage }}
-          </div>
-
-          <!-- Error Message -->
-          <div *ngIf="errorMessage" class="alert alert-danger mb-4">
-            {{ errorMessage }}
-          </div>
-
+        <div class="auth-form-container w-100 p-4 bg-white m-4">
           <div class="text-center mb-5">
             <div class="d-flex justify-content-center mb-4">
               <div class="logo-circle rounded-circle d-flex align-items-center justify-content-center text-white">
@@ -96,7 +85,7 @@
             </div>
 
             <!-- Submit Button -->
-            <button type="submit" class="btn btn-primary w-100 mb-3 login-btn fw-semibold" [disabled]="isSubmitting">
+            <button type="submit" class="btn btn-primary w-100 mb-3 auth-btn fw-semibold" [disabled]="isSubmitting">
               <span *ngIf="isSubmitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
               <span *ngIf="isSubmitting">Connexion en cours...</span>
               <span *ngIf="!isSubmitting">Se connecter</span>
