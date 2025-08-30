@@ -97,7 +97,9 @@ export class CourseSectionComponent implements OnInit {
 
   loadTests(): void {
     this.api.getDataHandler(`tests`, this.currentPage).subscribe(response => {
+      // console.log('Tests fetched:', response.results);
       this.allTests = response.results.filter((t: any) =>
+        
         t.section?.toLowerCase().includes(this.sectionId?.toLowerCase())
       );
       this.uniqueCourses = Array.from(new Set(this.allTests.map((t: any) => t.course)));
