@@ -1,217 +1,51 @@
-<div class="exam-viewer-container">
-  <!-- Loading State -->
-  <div *ngIf="loading" class="loading-state">
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-lg-8">
-          <div class="card shadow-lg border-0 rounded-4">
-            <div class="card-body p-5 text-center">
-              <div class="spinner-border text-primary mb-4" role="status">
-                <span class="visually-hidden">Chargement...</span>
-              </div>
-              <h4 class="text-primary mb-3">Chargement de l'examen...</h4>
-              <p class="text-muted">Veuillez patienter pendant que nous préparons votre examen.</p>
-            </div>
+<div class="exam-viewer">
+  <!-- Exam Header -->
+  <div class="exam-header">
+    <h1>{{ exam?.examTitle || 'Examen' }}</h1>
+    <h2>{{ exam?.subject }} - {{ exam?.section }}</h2>
+    <p><strong>Durée:</strong> {{ exam?.duration }} | <strong>Points:</strong> {{ exam?.maxPoints }} | <strong>Année:</strong> {{ exam?.sessionYear }}</p>
+    <div class="instructions" *ngIf="exam?.instructions">
+      <h3>Instructions</h3>
+      <p>{{ exam?.instructions }}</p>
+    </div>
+  </div>
+
+  <!-- Questions -->
+  <div class="questions" *ngIf="exam?.questions">
+    <div *ngFor="let question of exam?.questions" class="question">
+      <h3>Question {{ question.number }} ({{ question.points }} points)</h3>
+      <p>{{ question.text }}</p>
+      
+      <div *ngFor="let subQuestion of question.subQuestions" class="sub-question">
+        <h4>{{ subQuestion.label }}</h4>
+        <p>{{ subQuestion.text }}</p>
+        
+        <!-- Student Answer Area -->
+        <div class="answer-input">
+          <label>Votre réponse:</label>
+          <textarea placeholder="Tapez votre réponse ici..." rows="4"></textarea>
+        </div>
+        
+        <!-- Hint (if available) -->
+        <div class="hint" *ngIf="subQuestion.hint">
+          <strong>Indice:</strong> {{ subQuestion.hint }}
+        </div>
+        
+        <!-- Answer (if available) -->
+        <div class="answer" *ngIf="subQuestion.answer">
+          <strong>Réponse:</strong> {{ subQuestion.answer }}
+          <div *ngIf="subQuestion.explanation">
+            <strong>Explication:</strong> {{ subQuestion.explanation }}
           </div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Error State -->
-  <div *ngIf="error" class="error-state">
-    <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-lg-8">
-          <div class="card shadow-lg border-0 rounded-4 border-danger">
-            <div class="card-body p-5 text-center">
-              <i class="pi pi-exclamation-triangle text-danger mb-4" style="font-size: 3rem;"></i>
-              <h4 class="text-danger mb-3">Erreur de chargement</h4>
-              <p class="text-muted mb-4">{{ error }}</p>
-              <button class="btn btn-primary rounded-pill px-4" (click)="retry()">
-                <i class="pi pi-refresh me-2"></i>
-                Réessayer
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Exam Content -->
-  <div *ngIf="exam" class="exam-content">
-    <div class="container">
-      <!-- Exam Header -->
-      <div class="row justify-content-center mb-5">
-        <div class="col-lg-10">
-          <div class="card shadow-lg border-0 rounded-4 exam-header-card">
-            <div class="card-body p-5">
-              <div class="row align-items-center">
-                <div class="col-md-8">
-                  <div class="d-flex align-items-center mb-3">
-                    <div class="bg-primary bg-opacity-10 rounded-circle d-flex align-items-center justify-content-center me-3" style="width: 60px; height: 60px;">
-                      <i class="pi pi-book text-primary fs-2"></i>
-                    </div>
-                    <div>
-                      <h1 class="display-5 fw-bold text-primary mb-2 p-custom-font">{{ exam.examTitle }}</h1>
-                      <h2 class="h4 text-muted mb-0 p-custom-font">{{ exam.subject }} ({{ exam.section }})</h2>
-                    </div>
-                  </div>
-                </div>
-                <div class="col-md-4">
-                  <div class="exam-meta">
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                      <span class="text-muted">Durée:</span>
-                      <span class="fw-bold text-primary">{{ exam.duration }}</span>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center mb-2">
-                      <span class="text-muted">Points:</span>
-                      <span class="fw-bold text-success">{{ exam.maxPoints }}</span>
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center">
-                      <span class="text-muted">Année:</span>
-                      <span class="fw-bold text-info">{{ exam.sessionYear }}</span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="mt-4 pt-4 border-top">
-                <div class="instructions-section">
-                  <h5 class="text-primary mb-3">
-                    <i class="pi pi-info-circle me-2"></i>
-                    Instructions
-                  </h5>
-                  <p class="text-muted fs-5 p-custom-font">{{ exam.instructions }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Questions Section -->
-      <div class="row justify-content-center">
-        <div class="col-lg-10">
-          <div class="questions-container">
-            <div *ngFor="let q of exam.questions; let i = index" class="question-card mb-4">
-              <div class="card shadow-lg border-0 rounded-4">
-                <div class="card-header bg-primary bg-opacity-10 border-0 rounded-top-4">
-                  <div class="d-flex justify-content-between align-items-center">
-                    <h3 class="h4 mb-0 text-primary p-custom-font">
-                      <i class="pi pi-question-circle me-2"></i>
-                      Question {{ q.number }}
-                    </h3>
-                    <span class="badge bg-primary bg-opacity-20 text-primary px-3 py-2 rounded-pill">
-                      {{ q.points }} pts
-                    </span>
-                  </div>
-                </div>
-                <div class="card-body p-4">
-                  <p class="fs-5 text-dark mb-4 p-custom-font">{{ q.text }}</p>
-
-                  <div *ngFor="let s of q.subQuestions; let j = index" class="subquestion-section mb-4">
-                    <div class="subquestion-card p-4 bg-light rounded-3">
-                      <div class="d-flex align-items-start mb-3">
-                        <span class="badge bg-secondary bg-opacity-20 text-secondary me-3 px-3 py-2 rounded-pill">
-                          {{ s.label }}
-                        </span>
-                        <p class="fw-bold text-dark mb-0 p-custom-font">{{ s.text }}</p>
-                      </div>
-
-                      <!-- Student Input Area -->
-                      <div class="student-input-section mb-4">
-                        <label class="form-label text-primary fw-bold">
-                          <i class="pi pi-pencil me-2"></i>
-                          Votre réponse
-                        </label>
-                        <textarea 
-                          class="form-control" 
-                          placeholder="Tapez votre réponse ici..." 
-                          rows="4"
-                          style="border-radius: 12px; border: 2px solid #e5ecf3; transition: all 0.3s ease;"
-                          (focus)="onTextareaFocus($event)"
-                          (blur)="onTextareaBlur($event)">
-                        </textarea>
-                      </div>
-
-                      <!-- Hint Section -->
-                      <div class="hint-section mb-3" *ngIf="s.hint">
-                        <div class="alert alert-info border-0 rounded-3">
-                          <div class="d-flex align-items-start">
-                            <i class="pi pi-lightbulb text-info me-3 mt-1"></i>
-                            <div>
-                              <strong class="text-info">Indice:</strong>
-                              <p class="mb-0 text-muted p-custom-font">{{ s.hint }}</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <!-- Answer Section (Toggle) -->
-                      <div class="answer-section" *ngIf="s.answer">
-                        <div class="d-flex justify-content-between align-items-center mb-3">
-                          <h6 class="text-success mb-0">
-                            <i class="pi pi-check-circle me-2"></i>
-                            Réponse
-                          </h6>
-                          <button 
-                            class="btn btn-outline-success btn-sm rounded-pill"
-                            (click)="toggleAnswer(i, j)"
-                            [attr.aria-expanded]="showAnswers[i]?.[j]">
-                            <i class="pi" [ngClass]="showAnswers[i]?.[j] ? 'pi-eye-slash' : 'pi-eye'"></i>
-                            {{ showAnswers[i]?.[j] ? 'Masquer' : 'Afficher' }}
-                          </button>
-                        </div>
-                        
-                        <div *ngIf="showAnswers[i]?.[j]" class="answer-content">
-                          <div class="card border-success border-0 bg-success bg-opacity-10 rounded-3">
-                            <div class="card-body">
-                              <div class="mb-3">
-                                <strong class="text-success">Réponse:</strong>
-                                <p class="text-dark mb-0 p-custom-font">{{ s.answer }}</p>
-                              </div>
-                              <div *ngIf="s.explanation">
-                                <strong class="text-success">Explication:</strong>
-                                <p class="text-muted mb-0 p-custom-font">{{ s.explanation }}</p>
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Action Buttons -->
-      <div class="row justify-content-center mt-5">
-        <div class="col-lg-10">
-          <div class="card shadow-lg border-0 rounded-4">
-            <div class="card-body p-4 text-center">
-              <div class="d-flex flex-column flex-sm-row gap-3 justify-content-center">
-                <button class="btn btn-primary btn-lg px-4 py-3 rounded-pill" (click)="saveAnswers()">
-                  <i class="pi pi-save me-2"></i>
-                  Sauvegarder les réponses
-                </button>
-                <button class="btn btn-outline-primary btn-lg px-4 py-3 rounded-pill" (click)="downloadExam()">
-                  <i class="pi pi-download me-2"></i>
-                  Télécharger l'examen
-                </button>
-                <button class="btn btn-outline-secondary btn-lg px-4 py-3 rounded-pill" (click)="goBack()">
-                  <i class="pi pi-arrow-left me-2"></i>
-                  Retour à la liste
-                </button>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
+  <!-- Actions -->
+  <div class="actions">
+    <button (click)="saveAnswers()">Sauvegarder</button>
+    <button (click)="downloadExam()">Télécharger</button>
+    <button (click)="goBack()">Retour</button>
   </div>
 </div>
