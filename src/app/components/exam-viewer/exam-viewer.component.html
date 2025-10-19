@@ -1,0 +1,51 @@
+<div class="exam-viewer">
+  <!-- Exam Header -->
+  <div class="exam-header">
+    <h1>{{ exam?.examTitle || 'Examen' }}</h1>
+    <h2>{{ exam?.subject }} - {{ exam?.section }}</h2>
+    <p><strong>Durée:</strong> {{ exam?.duration }} | <strong>Points:</strong> {{ exam?.maxPoints }} | <strong>Année:</strong> {{ exam?.sessionYear }}</p>
+    <div class="instructions" *ngIf="exam?.instructions">
+      <h3>Instructions</h3>
+      <p>{{ exam?.instructions }}</p>
+    </div>
+  </div>
+
+  <!-- Questions -->
+  <div class="questions" *ngIf="exam?.questions">
+    <div *ngFor="let question of exam?.questions" class="question">
+      <h3>Question {{ question.number }} ({{ question.points }} points)</h3>
+      <p>{{ question.text }}</p>
+      
+      <div *ngFor="let subQuestion of question.subQuestions" class="sub-question">
+        <h4>{{ subQuestion.label }}</h4>
+        <p>{{ subQuestion.text }}</p>
+        
+        <!-- Student Answer Area -->
+        <div class="answer-input">
+          <label>Votre réponse:</label>
+          <textarea placeholder="Tapez votre réponse ici..." rows="4"></textarea>
+        </div>
+        
+        <!-- Hint (if available) -->
+        <div class="hint" *ngIf="subQuestion.hint">
+          <strong>Indice:</strong> {{ subQuestion.hint }}
+        </div>
+        
+        <!-- Answer (if available) -->
+        <div class="answer" *ngIf="subQuestion.answer">
+          <strong>Réponse:</strong> {{ subQuestion.answer }}
+          <div *ngIf="subQuestion.explanation">
+            <strong>Explication:</strong> {{ subQuestion.explanation }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Actions -->
+  <div class="actions">
+    <button (click)="saveAnswers()">Sauvegarder</button>
+    <button (click)="downloadExam()">Télécharger</button>
+    <button (click)="goBack()">Retour</button>
+  </div>
+</div>

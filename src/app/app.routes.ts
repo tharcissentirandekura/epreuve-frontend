@@ -11,6 +11,7 @@ import { RegisterComponent } from './components/register/register.component';
 import { NgModule } from '@angular/core';
 import { HelpFormComponent } from './components/help-form/help-form.component';
 import { TermsServiceComponent } from './components/terms/terms-service/terms-service.component';
+import { ExamViewerComponent } from './components/exam-viewer/exam-viewer.component';
 import { AuthGuard } from './guards/auth.guard';
 export const routes: Routes = [
   // { path: '',  component: HomeComponent },
@@ -26,6 +27,7 @@ export const routes: Routes = [
   { path: 'Terms', component: TermsServiceComponent },
   { path: 'Privacy', component: TermsServiceComponent },
   // {path: 'Terms', component: TermsServiceComponent},
+  {path: 'exam/:id', component: ExamViewerComponent},
   { path: 'register', component: RegisterComponent },
   { path: '**', redirectTo: 'home' },
 ];

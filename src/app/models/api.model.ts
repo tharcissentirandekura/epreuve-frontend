@@ -21,3 +21,28 @@ export interface ApiResponse{
     previous: string | null;
     results: Test[] | Video[];
 }
+
+export interface Question {
+  number: string;
+  text: string;
+  points: number;
+  subQuestions: SubQuestion[];
+}
+export interface SubQuestion {
+  label: string;
+  text: string;
+  answer: string | null;
+  explanation: string | null;
+  hint: string | null;
+}
+
+export interface Exam {
+  examTitle: string;
+  sessionYear: number;
+  subject: string;
+  section: string;
+  duration: string;
+  maxPoints: number;
+  instructions: string;
+  questions: Question[];
+}
