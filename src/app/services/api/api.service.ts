@@ -42,10 +42,22 @@ export class ApiService {
    * @returns the response of what searched after filtering
    */
   getTestByCategory(route: string,query: string): Observable<any> {
-    return this.http.get<any>(`${this.apiUrl}/${route}?search=${query}`, { headers: this.headers })
+    const url = `${this.apiUrl}/${route}?search=${encodeURIComponent(query)}`;
+    console.log('Search API request:', url);
+    
+    // Only include headers if they exist and are not null/undefined
+    const options = this.headers ? { headers: this.headers } : {};
+    
+    return this.http.get<any>(url, options)
     .pipe(
       catchError((error) => {
-        console.error('Error fetching data:', error);
+        console.error('Error fetching search data:', error);
+        console.error('Error details:', {
+          status: error.status,
+          statusText: error.statusText,
+          message: error.message,
+          url: error.url
+        });
         return throwError(() => error);
       })
     );
