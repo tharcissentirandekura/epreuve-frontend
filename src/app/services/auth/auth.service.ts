@@ -8,6 +8,8 @@ import { RegisterData, LoginCredentials } from "../../models/user.model";
 import { Token } from '../../models/auth.model';
 import { TokenService } from "./token.service";
 import { UserService } from "./user/user.service";
+import { HttpHeaders } from '@angular/common/http';
+
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private apiUrl = environment.apiBaseUrl;
@@ -22,12 +24,28 @@ export class AuthService {
 
   ) { }
 
-  login(credentials: LoginCredentials): Observable<{ token: Token }> {
-    return this.http.post<{ token: Token }>(`${this.apiUrl}/login/`, credentials)
+  login(credentials: LoginCredentials): Observable<Token> {
+    return this.http.post<Token>(`${this.apiUrl}/login/`, credentials)
       .pipe(
         tap(response => {
           if (isPlatformBrowser(this.platformId)) {
-            localStorage.setItem(this.tokenKey, JSON.stringify(response));
+            // store the token - response is directly a Token object
+            this.tokenService.setToken(response);
+            
+            // Only get user AFTER token is stored and verified
+            setTimeout(() => {
+              const token = this.tokenService.getToken();
+              if (token?.access) {
+                this.userService.getCurrentUser().subscribe({
+                  next: (user) => {
+                    this.tokenService.setUser(user);
+                  },
+                  error: (error) => {
+                    console.error('Error fetching current user:', error);
+                  }
+                });
+              }
+            }, 100);
           }
         })
       );
@@ -40,13 +58,20 @@ export class AuthService {
       confirm_password: user.confirmPassword
     };
 
-    return this.http.post<RegisterData>(`${this.apiUrl}/register/`, backendData);
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json'
+    });
+
+    return this.http.post<RegisterData>(
+      `${this.apiUrl}/register/`,
+      backendData,
+      { headers }
+    );
   }
 
   logout(): void {
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem(this.tokenKey);
-      // Also clean up any other token-related storage
+      // token-related storage
       this.tokenService.removeTokens();
       // Only navigate if we're in the browser
       this.router.navigate(['/login']);
@@ -56,7 +81,6 @@ export class AuthService {
   // Silent logout for token expiration (no navigation)
   silentLogout(): void {
     if (isPlatformBrowser(this.platformId)) {
-      localStorage.removeItem(this.tokenKey);
       this.tokenService.removeTokens();
     }
   }

@@ -34,29 +34,77 @@ export class TokenService {
   private get isBrowser(): boolean {
     return isPlatformBrowser(this.platformId);
   }
-
-  
+  /**
+   * This method set a localstorage token key
+   * @param response the token object
+   * @returns nothing
+   */
+  setToken(response: Token): void {
+    if (!isPlatformBrowser(this.platformId)) {
+      return;
+    }
+    
+    // Debug: Log the actual response structure
+    console.log('setToken called with response:', response);
+    
+    // Validate that token exists before storing
+    if (!response || !response.access || !response.refresh) {
+      console.warn('Invalid token provided to setToken', {
+        hasResponse: !!response,
+        hasAccess: !!response?.access,
+        hasRefresh: !!response?.refresh,
+        fullResponse: response
+      });
+      return;
+    }
+    // Store the entire token object (both access and refresh)
+    const token = JSON.stringify(response);
+    localStorage.setItem(this.tokenKey, token);
+    console.log('Token stored successfully');
+  }
   getToken(): Token | null {
-      if (!isPlatformBrowser(this.platformId)) {
-        return null;
+    if (!isPlatformBrowser(this.platformId)) {
+      return null;
+    }
+    const stored = localStorage.getItem(this.tokenKey);
+    // Check for null, empty string, or the string "undefined"
+    if (!stored || stored === 'undefined' || stored === 'null') {
+      return null;
+    }
+    
+    try {
+      const parsed = JSON.parse(stored);
+      // Handle both formats: { token: Token } and Token
+      if (parsed.token && parsed.token.access) {
+        // Old format: { token: { access, refresh } }
+        return parsed.token;
+      } else if (parsed.access) {
+        // Correct format: { access, refresh }
+        return parsed;
       }
-      const token = localStorage.getItem(this.tokenKey);
-      return token ? JSON.parse(token) : null;
+      return null;
+    } catch (error) {
+      console.error('Error parsing token:', error);
+      // Clean up invalid token from storage
+      localStorage.removeItem(this.tokenKey);
+      return null;
+    }
   }
 
-  refreshToken() : Observable<{token:Token}>{
+  refreshToken(): Observable<Token> {
     const currentToken = this.getToken();
     console.log(currentToken)
     if (!currentToken || !currentToken.refresh){
       return throwError(() => new Error("No refresh token available"));
     }
 
-    return this.http.post<{token:Token}>(`${this.apiUrl}/token/refresh`, {
-        refresh:currentToken.refresh
+    return this.http.post<Token>(`${this.apiUrl}/token/refresh`, {
+        refresh: currentToken.refresh
       }).pipe(
         tap(response => {
           if(this.isBrowser){
-            localStorage.setItem(this.tokenKey, JSON.stringify(response.token))
+            // Store the token object directly (API returns Token, not {token:Token})
+            localStorage.setItem(this.tokenKey, JSON.stringify(response))
           }
         })
       )
