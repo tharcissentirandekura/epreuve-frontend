@@ -7,12 +7,13 @@ import { FooterComponent } from '../footer/footer.component';
 import { Test, Video } from '../../models/api.model';
 import { PaginatorComponent } from '../paginator/paginator.component';
 import { MatIconModule } from '@angular/material/icon';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-course-section',
   templateUrl: './course-section.component.html',
   styleUrls: ['./course-section.component.scss'],
-  imports: [NavbarComponent, FooterComponent, DatePipe, CommonModule, FormsModule, MatIconModule, PaginatorComponent],
+  imports: [NavbarComponent, FooterComponent, DatePipe, CommonModule, FormsModule, MatIconModule, PaginatorComponent, RouterLink],
   standalone: true
 })
 export class CourseSectionComponent implements OnInit {

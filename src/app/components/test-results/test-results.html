@@ -1,0 +1,125 @@
+<app-test-header></app-test-header>
+
+    <div class="results-container">
+      <div class="results-wrapper">
+        <!-- Test Complete Header -->
+        <div class="results-header">
+          <h1 class="results-title">Test Complete!</h1>
+          <p class="results-subtitle">Timed Test Results</p>
+
+          <!-- Score Display -->
+          <div class="score-section">
+            <div class="score-card">
+              <div class="score-percentage">{{ scorePercentage }}%</div>
+              <div class="score-label">Score</div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="score-card">
+              <div class="score-count">{{ correctCount }} / {{ totalQuestions }}</div>
+              <div class="score-label">Correct Answers</div>
+            </div>
+          </div>
+
+          <!-- Breakdown -->
+          <div class="breakdown">
+            <div class="breakdown-item correct">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="10" fill="#10b981"/>
+                <path d="M8 12L11 15L16 9" stroke="white" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <span>{{ correctCount }} Correct</span>
+            </div>
+            <div class="breakdown-item incorrect">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <circle cx="12" cy="12" r="10" fill="#ef4444"/>
+                <path d="M8 8L16 16M16 8L8 16" stroke="white" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              <span>{{ incorrectCount }} Incorrect</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Detailed Results -->
+        <div class="detailed-results">
+          <h2 class="section-title">Detailed Results</h2>
+          <p class="section-description">
+            Click on any question to view the correct answer and step-by-step solution
+          </p>
+
+          <div class="questions-list">
+            <div
+              *ngFor="let result of results"
+              class="question-result-card"
+              [class.expanded]="result.number === expandedQuestion"
+              (click)="toggleQuestion(result.number)">
+              <div class="question-header">
+                <div class="question-header-left">
+                  <div class="status-icon" [class.correct]="result.isCorrect">
+                    <svg *ngIf="!result.isCorrect" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                      <circle cx="12" cy="12" r="10" stroke="#ef4444" stroke-width="2" fill="none"/>
+                      <path d="M8 8L16 16M16 8L8 16" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                    <svg *ngIf="result.isCorrect" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                      <circle cx="12" cy="12" r="10" stroke="#10b981" stroke-width="2" fill="none"/>
+                      <path d="M8 12L11 15L16 9" stroke="#10b981" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                  </div>
+                  <div class="question-info">
+                    <div class="question-meta">
+                      <span class="question-number">Question {{ result.number }}</span>
+                      <span class="subject-tag" *ngIf="result.subject">{{ result.subject }}</span>
+                    </div>
+                    <div class="question-text">{{ result.text }}</div>
+                  </div>
+                </div>
+                <svg class="expand-icon" [class.rotated]="result.number === expandedQuestion" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                  <path d="M19 9L12 16L5 9" stroke="#9ca3af" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+              </div>
+
+              <div class="question-details" *ngIf="result.number === expandedQuestion">
+                <div class="answer-section">
+                  <div class="answer-box user-answer">
+                    <div class="answer-label">Your Answer</div>
+                    <div class="answer-content">{{ result.userAnswer || 'No answer provided' }}</div>
+                  </div>
+
+                  <div class="answer-box correct-answer">
+                    <div class="answer-label">Correct Answer</div>
+                    <div class="answer-content">{{ result.correctAnswer }}</div>
+                  </div>
+                </div>
+
+                <div class="explanation" *ngIf="result.explanation">
+                  <div class="explanation-title">Explanation</div>
+                  <p class="explanation-text">{{ result.explanation }}</p>
+                </div>
+
+                <div class="steps" *ngIf="result.steps && result.steps.length > 0">
+                  <div class="steps-title">Step-by-Step Solution</div>
+                  <ol class="steps-list">
+                    <li *ngFor="let step of result.steps">{{ step }}</li>
+                  </ol>
+                </div>
+
+                <div class="points-earned">
+                  <strong>Points:</strong> {{ result.earnedPoints }} / {{ result.points }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Back to Home Button -->
+        <div class="actions">
+          <button class="btn-home" (click)="goHome()">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+              <path d="M10 20V14H14V20H19V12H22L12 3L2 12H5V20H10Z" fill="currentColor"/>
+            </svg>
+            Back to Home
+          </button>
+        </div>
+      </div>
+    </div>

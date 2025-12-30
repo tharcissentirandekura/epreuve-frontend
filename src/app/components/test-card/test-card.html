@@ -1,0 +1,12 @@
+<div class="test-card">
+      <div class="card-content">
+        <div [class]="'icon-wrapper ' + iconClass">
+          {{ icon }}
+        </div>
+        <h3 class="card-title">{{ title }}</h3>
+        <p class="card-description">{{ description }}</p>
+        <button [class]="'test-button ' + buttonClass" (click)="onStartTest()">
+          {{ buttonText }}
+        </button>
+      </div>
+</div>
