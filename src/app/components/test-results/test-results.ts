@@ -20,7 +20,8 @@ interface QuestionResult {
   selector: 'app-test-results',
   imports: [TestHeader, CommonModule],
   templateUrl: './test-results.html',
-  styleUrl: './test-results.scss'
+  styleUrl: './test-results.scss',
+  standalone:true
 })
 export class TestResults implements OnInit {
 

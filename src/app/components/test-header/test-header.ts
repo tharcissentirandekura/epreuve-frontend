@@ -5,7 +5,8 @@ import { Component } from '@angular/core';
   selector: 'app-test-header',
   imports: [CommonModule],
   templateUrl: './test-header.html',
-  styleUrl: './test-header.scss'
+  styleUrl: './test-header.scss',
+  standalone:true
 })
 export class TestHeader {
 

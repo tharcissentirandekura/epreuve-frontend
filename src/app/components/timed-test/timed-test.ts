@@ -17,7 +17,8 @@ interface Question extends ApiQuestion {
   selector: 'app-timed-test',
   imports: [CommonModule, FormsModule, TestHeader],
   templateUrl: './timed-test.html',
-  styleUrl: './timed-test.scss'
+  styleUrl: './timed-test.scss',
+  standalone:true
 })
 export class TimedTest implements OnInit, OnDestroy{
 
