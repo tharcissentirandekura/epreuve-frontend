@@ -5,7 +5,8 @@ import { Component,Input } from '@angular/core';
   selector: 'app-feature-item',
   imports: [CommonModule],
   templateUrl: './feature-item.html',
-  styleUrl: './feature-item.scss'
+  styleUrl: './feature-item.scss',
+  standalone:true
 })
 export class FeatureItem {
   @Input() icon: string = '';

@@ -6,7 +6,8 @@ import { Router } from '@angular/router';
   selector: 'app-test-card',
   imports: [CommonModule],
   templateUrl: './test-card.html',
-  styleUrl: './test-card.scss'
+  styleUrl: './test-card.scss',
+  standalone:true
 })
 export class TestCard {
 

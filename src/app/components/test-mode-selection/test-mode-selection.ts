@@ -8,7 +8,8 @@ import { TestHeader } from '../test-header/test-header';
   selector: 'app-test-mode-selection',
   imports: [CommonModule, TestCard, TestHeader],
   templateUrl: './test-mode-selection.html',
-  styleUrl: './test-mode-selection.scss'
+  styleUrl: './test-mode-selection.scss',
+  standalone:true
 })
 export class TestModeSelection {
 
