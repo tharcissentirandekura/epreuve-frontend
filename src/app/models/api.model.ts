@@ -27,6 +27,8 @@ export interface Question {
   text: string;
   points: number;
   subQuestions: SubQuestion[];
+  subject?: string;
+  userAnswer?: string;
 }
 export interface SubQuestion {
   label: string;
@@ -41,8 +43,8 @@ export interface Exam {
   sessionYear: number;
   subject: string;
   section: string;
-  duration: string;
   maxPoints: number;
   instructions: string;
   questions: Question[];
+  duration?: number;
 }
