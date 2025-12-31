@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { TestCard } from '../test-card/test-card';
-import { FeatureItem } from '../feature-item/feature-item';
 import { TestHeader } from '../test-header/test-header';
 
 @Component({

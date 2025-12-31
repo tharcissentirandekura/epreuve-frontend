@@ -47,7 +47,7 @@ export class TimedTest implements OnInit, OnDestroy{
 
   loadExam(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.examService.getExamContent(id).subscribe({
+    this.examService.getExamContent(14).subscribe({
       next: (data: Exam) => {
         this.exam = data;
 
@@ -127,8 +127,8 @@ export class TimedTest implements OnInit, OnDestroy{
     console.log('Downloading exam...');
   }
 
-  goBack(): void {
-    this.router.navigate(['/']);
-  }
+  // goBack(): void {
+  //   this.router.navigate(['/testmode']);
+  // }
 
 }
