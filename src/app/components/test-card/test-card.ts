@@ -23,7 +23,20 @@ export class TestCard {
 
   onStartTest() {
     if (this.route) {
-      this.router.navigate([this.route]);
+      // Parse route and query parameters
+      const [path, queryString] = this.route.split('?');
+      const queryParams: { [key: string]: string } = {};
+      
+      if (queryString) {
+        queryString.split('&').forEach(param => {
+          const [key, value] = param.split('=');
+          if (key && value) {
+            queryParams[key] = decodeURIComponent(value);
+          }
+        });
+      }
+      
+      this.router.navigate([path], { queryParams: Object.keys(queryParams).length > 0 ? queryParams : undefined });
     } else {
       console.log(`Starting ${this.title}`);
     }
