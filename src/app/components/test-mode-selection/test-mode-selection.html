@@ -1,49 +1,32 @@
-<div class="container">
-
-  <!--Header-->
+<div class="container mt-5">
   <div>
-    <app-test-header></app-test-header>
+    <app-navbar></app-navbar>
   </div>
   
-      <div class="text-center mb-5">
-        <h1 class="main-heading">Choose Your Test Mode</h1>
-        <p class="sub-heading">Select how you'll like to take your test</p>
-      </div>
+  <div class="text-center m-5">
+    <h1 class="main-heading">Choisissez votre mode de test</h1>
+    <p class="sub-heading">Sélectionnez la manière dont vous souhaitez passer votre test</p>
+    
+  </div>
 
-      <div class="cards-wrapper">
-        <app-test-card
-          icon="🕐"
-          iconClass="icon-blue"
-          title="Timed Test"
-          description="Challenge yourself with a limited time. Perfect for practicing under pressure. Improve your speed."
-          buttonText="Start Timed Test"
-          buttonClass="btn-blue"
-          route="/timedtest">
-        </app-test-card>
-        <app-test-card
-          icon="∞"
-          iconClass="icon-green"
-          title="Unlimited Test"
-          description="Take your time and work on your own pace and focus on accuracy."
-          buttonText="Start Untimed Test"
-          buttonClass="btn-green"
-          route="/timedtest?mode=unlimited">
-        </app-test-card>
-      </div>
+  <div class="cards-wrapper" *ngIf="testId">
+    <app-test-card
+    title="Temps limité "
+    description="Teste-toi avec un temps limité. Parfait pour t’entraîner et aller plus vite."
+    buttonText="Commencer"
+    
+      buttonClass="btn-blue"
+      [route]="'/timedtest/' + testId">
+    </app-test-card>
+    <app-test-card
+      title="Temps illimité"
+      description="Prenez votre temps, travaillez à votre rythme et concentrez-vous sur la précision."
+      buttonText="Commencer"
+      
+      buttonClass="btn-green"
+      [route]="'/timedtest/' + testId + '?mode=unlimited'">
+    </app-test-card>
+  </div>
 
-       <div class="features">
-        <div class="feature">
-          <h3>📝 Question Display</h3>
-          <p>Clear and organized question presentation</p>
-        </div>
-        <div class="feature">
-          <h3>✅ Answer Review</h3>
-          <p>Detailed answer explanations after completion</p>
-        </div>
-        <div class="feature">
-          <h3>📊 Track Progress</h3>
-          <p>Monitor your performance and improvement</p>
-        </div>
-      </div>
     
 </div>

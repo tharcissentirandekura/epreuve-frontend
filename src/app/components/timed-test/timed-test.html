@@ -1,6 +1,6 @@
-<app-test-header></app-test-header>
+<app-navbar></app-navbar>
 
-<div class="test-container">
+<div class="test-container mt-5">
       <!-- Timer and Progress Bar -->
       <div class="timer-section" *ngIf="!isUnlimitedMode">
         <div class="timer-info">
@@ -37,9 +37,9 @@
 
           <!-- Question Number and Title -->
           <h2 class="question-title">Question {{ currentQuestion.number }}</h2>
+          <!-- <p class="question-text">{{ currentQuestion.text }}</p> -->
+          <markdown [data]="currentQuestion.text" class="question-text"></markdown>
 
-          <!-- Question Text -->
-          <p class="question-text">{{ currentQuestion.text }}</p>
 
           <!-- Subquestions if any -->
           <div class="subquestions" *ngIf="currentQuestion.subQuestions && currentQuestion.subQuestions.length > 0">
