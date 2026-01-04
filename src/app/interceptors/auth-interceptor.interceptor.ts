@@ -22,6 +22,9 @@ export class AuthInterceptor implements HttpInterceptor {
   ) {}
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    // Debug: log the URL and skip status
+    console.log('Interceptor - URL:', req.url, 'shouldSkip:', this.shouldSkipAuth(req));
+    
     // Skip authentication for certain URLs
     if (this.shouldSkipAuth(req)) {
       return next.handle(req);
@@ -47,18 +50,31 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private shouldSkipAuth(req: HttpRequest<any>): boolean {
-    const skipUrls = [
+    const url = req.url.toLowerCase();
+    
+    // Explicitly check for authentication endpoints that should never require auth
+    const authEndpoints = [
       '/login/',
       '/register/',
       '/password-reset/',
-      '/token/refresh/',
-      'oauth',
-      'facebook.com',
-      'google.com'
+      '/token/refresh'
     ];
     
-    return skipUrls.some(url => req.url.includes(url)) || 
-           !req.url.includes('/api/');
+    // Check if this is an authentication endpoint
+    const isAuthEndpoint = authEndpoints.some(endpoint => url.includes(endpoint));
+    
+    // Skip auth for authentication endpoints
+    if (isAuthEndpoint) {
+      return true;
+    }
+    
+    // Skip auth for non-API requests (external URLs, etc.)
+    if (!url.includes('/api/')) {
+      return true;
+    }
+    
+    // All other API requests need authentication
+    return false;
   }
 
   private addTokenToRequest(req: HttpRequest<any>, token: string): HttpRequest<any> {

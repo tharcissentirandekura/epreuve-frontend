@@ -92,15 +92,43 @@ export class RegisterComponent implements OnInit {
     }
 
     private getErrorMessage(error: any): string {
+        // Log the full error for debugging
+        console.error('Registration error:', error);
+        console.error('Error status:', error.status);
+        console.error('Error body:', error.error);
+
         if (error.status === 400) {
+            // Try multiple possible error response structures
             if (error.error?.errors) {
+                // Django-style errors: { errors: { field: ["message"] } }
                 const firstError = Object.values(error.error.errors)[0];
                 return Array.isArray(firstError) ? firstError[0] : firstError as string;
             } else if (error.error?.detail) {
+                // Simple detail message
                 return error.error.detail;
-            } else {
-                return 'Données invalides. Veuillez vérifier vos informations.';
+            } else if (error.error?.message) {
+                // Message field
+                return error.error.message;
+            } else if (typeof error.error === 'string') {
+                // Error is a string
+                return error.error;
+            } else if (Array.isArray(error.error)) {
+                // Error is an array of messages
+                return error.error[0] || 'Données invalides. Veuillez vérifier vos informations.';
+            } else if (error.error && typeof error.error === 'object') {
+                // Try to extract first error message from object
+                const errorKeys = Object.keys(error.error);
+                if (errorKeys.length > 0) {
+                    const firstKey = errorKeys[0];
+                    const firstValue = error.error[firstKey];
+                    if (Array.isArray(firstValue)) {
+                        return firstValue[0];
+                    } else if (typeof firstValue === 'string') {
+                        return firstValue;
+                    }
+                }
             }
+            return 'Données invalides. Veuillez vérifier vos informations.';
         } else if (error.status === 409) {
             return 'Ce nom d\'utilisateur existe déjà.';
         } else if (error.status === 500) {

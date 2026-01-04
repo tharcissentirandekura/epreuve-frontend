@@ -1,10 +1,10 @@
+<app-toast></app-toast>
 <app-navbar></app-navbar>
-
 <div class="container-fluid py-5">
   <div class="row justify-content-center">
     <div class="col-12 col-md-8 col-lg-6">
       <div class="card border-0 shadow-lg">
-        <div class="card-header bg-primary text-white py-4">
+        <div class="card-header custom-bg-primary text-white py-4">
           <div class="d-flex justify-content-between align-items-center">
             <div>
               <h2 class="mb-1 fw-bold">Mon Profil</h2>
@@ -31,22 +31,22 @@
           </div>
 
           <!-- Error Message -->
-          <div *ngIf="errorMessage" class="alert alert-danger border-0 shadow-sm" role="alert">
+          <!-- <div *ngIf="errorMessage" class="alert alert-danger border-0 shadow-sm" role="alert">
             <i class="bi bi-exclamation-triangle-fill me-2"></i>
             {{ errorMessage }}
-          </div>
+          </div> -->
 
           <!-- Success Message -->
-          <div *ngIf="successMessage" class="alert alert-success border-0 shadow-sm" role="alert">
+          <!-- <div *ngIf="successMessage" class="alert alert-success border-0 shadow-sm" role="alert">
             <i class="bi bi-check-circle-fill me-2"></i>
             {{ successMessage }}
-          </div>
+          </div> -->
 
           <!-- Profile Content -->
           <div *ngIf="!isLoading && user">
             <!-- Avatar Section -->
             <div class="text-center mb-4 pb-4 border-bottom">
-              <div class="d-inline-flex align-items-center justify-content-center bg-primary text-white rounded-circle fw-bold text-uppercase mb-3 app-avatar">
+              <div class="d-inline-flex align-items-center justify-content-center custom-bg-primary text-white rounded-circle fw-bold text-uppercase mb-3 app-avatar">
                 {{ user.first_name.charAt(0) }}{{ user.last_name.charAt(0) }}
               </div>
               <h4 class="mb-1 fw-bold text-dark">{{ user.first_name }} {{ user.last_name }}</h4>

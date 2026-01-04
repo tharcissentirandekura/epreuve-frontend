@@ -11,7 +11,11 @@ import { RegisterComponent } from './components/register/register.component';
 import { NgModule } from '@angular/core';
 import { HelpFormComponent } from './components/help-form/help-form.component';
 import { TermsServiceComponent } from './components/terms/terms-service/terms-service.component';
+import { ExamViewerComponent } from './components/exam-viewer/exam-viewer.component';
 import { AuthGuard } from './guards/auth.guard';
+import { TestModeSelection } from './components/test-mode-selection/test-mode-selection';
+import { TimedTest } from './components/timed-test/timed-test';
+import { TestResults } from './components/test-results/test-results';
 export const routes: Routes = [
   // { path: '',  component: HomeComponent },
   { path: 'home', component: HomeComponent },
@@ -26,7 +30,11 @@ export const routes: Routes = [
   { path: 'Terms', component: TermsServiceComponent },
   { path: 'Privacy', component: TermsServiceComponent },
   // {path: 'Terms', component: TermsServiceComponent},
+  {path: 'exam/:id', component: ExamViewerComponent},
   { path: 'register', component: RegisterComponent },
+  { path: 'testmode', component: TestModeSelection},
+  { path: 'timedtest', component: TimedTest},
+  { path: 'test-results', component: TestResults},
   { path: '**', redirectTo: 'home' },
 ];
 

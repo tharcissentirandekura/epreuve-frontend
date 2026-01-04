@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { Subject, debounceTime, distinctUntilChanged, takeUntil } from 'rxjs';
@@ -12,7 +12,7 @@ import { ApiService } from '../../services/api/api.service';
 	styleUrl: './search.component.scss',
 
 })
-export class SearchBarComponent implements OnInit {
+export class SearchBarComponent implements OnInit, OnDestroy {
 	// Using a Subject to manage the unsubscribe logic
 	private searchSubject = new Subject<string>();
 	private destroy$ = new Subject<void>();
@@ -23,16 +23,17 @@ export class SearchBarComponent implements OnInit {
     categories: string[] = ['BCSCT', 'LANGUE', 'Maths', 'Physique', 'Chimie', 'Biologie'];
     selectedCategory: string = '';
 	isFeatureOn: boolean = false;
+	isSearching: boolean = false;
+	searchError: string | null = null;
 
 	constructor(
 		private apiService: ApiService
 	) {}
 
 	ngOnInit(): void {
-
 		// Set up the search subject to handle search input changes
 		this.searchSubject.pipe(
-			debounceTime(400), // Wait for 300ms after the last keystroke
+			debounceTime(400), // Wait for 400ms after the last keystroke
 			distinctUntilChanged(), // Only emit if the value has changed
 			takeUntil(this.destroy$) // Automatically unsubscribe when the component is destroyed
 		).subscribe((query: string) => {
@@ -41,8 +42,12 @@ export class SearchBarComponent implements OnInit {
 			}else{
 				this.searchResults = [];
 			}
-		}
-		)
+		});
+	}
+
+	ngOnDestroy(): void {
+		this.destroy$.next();
+		this.destroy$.complete();
 	}
 
 	/**
@@ -77,6 +82,9 @@ export class SearchBarComponent implements OnInit {
 			this.searchQuery = '';
 			//clear search results when closing the search bar
 			this.searchResults = [];
+			//clear error and loading state
+			this.searchError = null;
+			this.isSearching = false;
 		}
 	}
 
@@ -96,12 +104,27 @@ export class SearchBarComponent implements OnInit {
     }
 
 	// normalize the test name
-	normalizeCourseName(test:any): string {
-		const type = test.metadata.type ? test.metadata.type : '';
-		// const section = test.section ? test.section : '';
-		const course = test.course ? test.course : '';
-		const year = test.year ? ` ${new Date(test.year).getFullYear()}` : '';
-		return `${type} de  ${course} année ${year}`.trim();
+	normalizeCourseName(test: any): string {
+		if (!test) return 'Test inconnu';
+		
+		const type = test.metadata?.type || test.type || '';
+		const course = test.course || '';
+		let year = '';
+		
+		if (test.year) {
+			try {
+				// Handle both string and Date objects
+				const yearValue = typeof test.year === 'string' ? new Date(test.year) : test.year;
+				year = ` ${yearValue.getFullYear()}`;
+			} catch (e) {
+				// If date parsing fails, try to extract year from string
+				const yearMatch = String(test.year).match(/\d{4}/);
+				year = yearMatch ? ` ${yearMatch[0]}` : '';
+			}
+		}
+		
+		const result = `${type} de ${course}${year}`.trim();
+		return result || test.test || 'Test sans nom';
 	}
 	//get all tests
 	searchTests(query: string) {
@@ -109,35 +132,98 @@ export class SearchBarComponent implements OnInit {
 		const trimmedQuery = query.trim().toLowerCase();
 
 		if (trimmedQuery) {
+			this.isSearching = true;
+			this.searchError = null;
+			
 			this.apiService.getTestByCategory(endpoint, trimmedQuery).subscribe({
 				next: (response) => {
-                    let filteredResults = response.results
-                        .filter((epreuve:any) => 
-                            epreuve.test.toLowerCase().includes(trimmedQuery));
-                    //apply category filter if selected
-                    if (this.selectedCategory) {
-                        filteredResults = filteredResults.filter((epreuve:any) =>
-                            epreuve.category.toLowerCase().includes(this.selectedCategory.toLowerCase())
-                        );
-                    }
+					this.isSearching = false;
+					
+					// Handle different response structures
+					let results: any[] = [];
+					
+					// Check if response has results property (ApiResponse structure)
+					if (response && response.results && Array.isArray(response.results)) {
+						results = response.results;
+					} 
+					// Check if response is directly an array
+					else if (Array.isArray(response)) {
+						results = response;
+					}
+					// If neither, log and return empty
+					else {
+						console.warn('Unexpected API response structure:', response);
+						this.searchResults = [];
+						this.searchError = 'Format de réponse inattendu du serveur';
+						return;
+					}
 
-                    console.log('Filtered search results:', filteredResults);
-                    console.log('Selected catefories:', this.selectedCategory);
+					// Filter results by search query (backend may already filter, but we do client-side too for safety)
+					let filteredResults = results.filter((epreuve: any) => {
+						if (!epreuve) return false;
+						// Check multiple fields for search matching
+						const testMatch = epreuve.test?.toLowerCase().includes(trimmedQuery) || false;
+						const courseMatch = epreuve.course?.toLowerCase().includes(trimmedQuery) || false;
+						const sectionMatch = epreuve.section?.toLowerCase().includes(trimmedQuery) || false;
+						return testMatch || courseMatch || sectionMatch;
+					});
 
-                    this.searchResults = filteredResults.map((epreuve: any) => ({
-                        name: this.normalizeCourseName(epreuve),
-                        url: epreuve.link,
-						metadata:epreuve.metadata
-                    }));
+					// Apply category filter if selected
+					if (this.selectedCategory) {
+						filteredResults = filteredResults.filter((epreuve: any) => {
+							if (!epreuve) return false;
+							// Check category in multiple possible locations
+							const category = epreuve.category?.toLowerCase() || 
+											epreuve.metadata?.category?.toLowerCase() || 
+											epreuve.section?.toLowerCase() || '';
+							return category.includes(this.selectedCategory.toLowerCase());
+						});
+					}
 
+					console.log('Filtered search results:', filteredResults);
+					console.log('Selected categories:', this.selectedCategory);
+					console.log('Total results:', filteredResults.length);
+
+					// Map results to display format
+					this.searchResults = filteredResults.map((epreuve: any) => ({
+						name: this.normalizeCourseName(epreuve),
+						url: epreuve.link || epreuve.url || '#',
+						metadata: epreuve.metadata || {
+							section: epreuve.section || '',
+							course: epreuve.course || '',
+							type: epreuve.metadata?.type || ''
+						}
+					}));
+
+					// Clear error if we have results
+					if (this.searchResults.length === 0) {
+						this.searchError = 'Aucun résultat trouvé pour votre recherche';
+					}
 				},
 				error: (error) => {
-					console.log('Error happened filtering search:', error);
+					this.isSearching = false;
+					console.error('Error happened filtering search:', error);
+					
+					// Provide user-friendly error messages
+					if (error.status === 401 || error.status === 403) {
+						this.searchError = 'Authentification requise pour effectuer une recherche';
+					} else if (error.status === 404) {
+						this.searchError = 'Endpoint de recherche introuvable';
+					} else if (error.status === 0 || error.status >= 500) {
+						this.searchError = 'Erreur serveur. Veuillez réessayer plus tard';
+					} else if (error.message?.includes('No valid authentication tokens')) {
+						this.searchError = 'Session expirée. Veuillez vous reconnecter';
+					} else {
+						this.searchError = 'Erreur lors de la recherche. Veuillez réessayer';
+					}
+					
 					this.searchResults = [];
 				},
 			});
 		} else {
 			this.searchResults = [];
+			this.searchError = null;
+			this.isSearching = false;
 		}
 	}
 }

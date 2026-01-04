@@ -1,0 +1,112 @@
+<app-test-header></app-test-header>
+
+<div class="test-container">
+      <!-- Timer and Progress Bar -->
+      <div class="timer-section" *ngIf="!isUnlimitedMode">
+        <div class="timer-info">
+          <svg class="clock-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
+            <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
+            <path d="M12 7V12L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <span class="timer-text">Time Remaining: {{ formatTime(timeRemaining) }}</span>
+        </div>
+        <div class="question-indicator">
+          Question {{ currentQuestionIndex + 1 }} of {{ questions.length }}
+        </div>
+      </div>
+      <div class="timer-section" *ngIf="isUnlimitedMode">
+        <div class="question-indicator">
+          Question {{ currentQuestionIndex + 1 }} of {{ questions.length }}
+        </div>
+        <div class="timer-info">
+          <span class="timer-text">Unlimited Time Mode</span>
+        </div>
+      </div>
+
+      <div class="progress-bar">
+        <div class="progress-fill" [style.width.%]="getProgress()"></div>
+      </div>
+
+      <!-- Question Content -->
+      <div class="content-wrapper">
+        <div class="question-card" *ngIf="currentQuestion">
+          <!-- Subject Badge -->
+          <span class="subject-badge" *ngIf="currentQuestion.subject">
+            {{ currentQuestion.subject }}
+          </span>
+
+          <!-- Question Number and Title -->
+          <h2 class="question-title">Question {{ currentQuestion.number }}</h2>
+
+          <!-- Question Text -->
+          <p class="question-text">{{ currentQuestion.text }}</p>
+
+          <!-- Subquestions if any -->
+          <div class="subquestions" *ngIf="currentQuestion.subQuestions && currentQuestion.subQuestions.length > 0">
+            <div class="subquestion" *ngFor="let subQuestion of currentQuestion.subQuestions">
+              <div class="subquestion-label">{{ subQuestion.label }}</div>
+              <p class="subquestion-text">{{ subQuestion.text }}</p>
+              <div class="hint" *ngIf="subQuestion.hint">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
+                  <path d="M12 2C6.48 2 2 6.48 2 12C2 17.52 6.48 22 12 22C17.52 22 22 17.52 22 12C22 6.48 17.52 2 12 2ZM13 17H11V11H13V17ZM13 9H11V7H13V9Z" fill="currentColor"/>
+                </svg>
+                <span>{{ subQuestion.hint }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Answer Input -->
+          <div class="answer-section">
+            <label class="answer-label">Your Answer</label>
+            <textarea
+              class="answer-input"
+              [(ngModel)]="currentQuestion.userAnswer"
+              placeholder="Enter your answer here..."
+              rows="3">
+            </textarea>
+          </div>
+
+          <!-- Navigation Buttons -->
+          <div class="navigation-buttons">
+            <button
+              class="btn-previous"
+              (click)="previousQuestion()"
+              [disabled]="currentQuestionIndex === 0">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M15 18L9 12L15 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+              Previous
+            </button>
+
+            <button
+              *ngIf="currentQuestionIndex < questions.length - 1"
+              class="btn-next"
+              (click)="nextQuestion()">
+              Next
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                <path d="M9 6L15 12L9 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </button>
+
+            <button
+              *ngIf="currentQuestionIndex === questions.length - 1"
+              class="btn-submit"
+              (click)="submitTest()">
+              Submit Test
+            </button>
+          </div>
+
+          <!-- Question Number Pagination -->
+          <div class="question-pagination">
+            <button
+              *ngFor="let q of questions; let i = index"
+              class="page-number"
+              [class.active]="i === currentQuestionIndex"
+              [class.answered]="q.userAnswer"
+              (click)="goToQuestion(i)">
+              {{ i + 1 }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>

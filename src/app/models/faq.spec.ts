@@ -1,7 +1,8 @@
-import { Faq } from './faq';
+import { FaqService } from '../services/faq/faq.service';
+import { FAQ } from './faq';
 
 describe('Faq', () => {
   it('should create an instance', () => {
-    expect(new Faq()).toBeTruthy();
+    expect(new FaqService()).toBeTruthy();
   });
 });

@@ -97,9 +97,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
 		// Show logout toast notification
 		this.toastService.success('Déconnexion réussie! À bientôt.', 3000);
 		// Clear the token from local storage and redirect
-		setTimeout(() => {
 			this.authservice.logout();
-		}, 500);
 	}
 
 

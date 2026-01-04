@@ -1,0 +1,49 @@
+<div class="container">
+
+  <!--Header-->
+  <div>
+    <app-test-header></app-test-header>
+  </div>
+  
+      <div class="text-center mb-5">
+        <h1 class="main-heading">Choose Your Test Mode</h1>
+        <p class="sub-heading">Select how you'll like to take your test</p>
+      </div>
+
+      <div class="cards-wrapper">
+        <app-test-card
+          icon="🕐"
+          iconClass="icon-blue"
+          title="Timed Test"
+          description="Challenge yourself with a limited time. Perfect for practicing under pressure. Improve your speed."
+          buttonText="Start Timed Test"
+          buttonClass="btn-blue"
+          route="/timedtest">
+        </app-test-card>
+        <app-test-card
+          icon="∞"
+          iconClass="icon-green"
+          title="Unlimited Test"
+          description="Take your time and work on your own pace and focus on accuracy."
+          buttonText="Start Untimed Test"
+          buttonClass="btn-green"
+          route="/timedtest?mode=unlimited">
+        </app-test-card>
+      </div>
+
+       <div class="features">
+        <div class="feature">
+          <h3>📝 Question Display</h3>
+          <p>Clear and organized question presentation</p>
+        </div>
+        <div class="feature">
+          <h3>✅ Answer Review</h3>
+          <p>Detailed answer explanations after completion</p>
+        </div>
+        <div class="feature">
+          <h3>📊 Track Progress</h3>
+          <p>Monitor your performance and improvement</p>
+        </div>
+      </div>
+    
+</div>

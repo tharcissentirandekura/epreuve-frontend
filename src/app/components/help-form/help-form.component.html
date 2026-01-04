@@ -61,7 +61,7 @@
                         data-bs-toggle="collapse" [attr.data-bs-target]="'#collapse' + i" aria-expanded="false"
                         [attr.aria-controls]="'collapse' + i">
                         <span class="me-3">
-                            <i class="bi bi-question-circle text-primary"></i>
+                            <i class="bi bi-question-circle text-primary font-inter fs-md"></i>
                         </span>
                         {{ faq.question }}
                     </button>
@@ -70,7 +70,7 @@
                     data-bs-parent="#helpAccordion">
                     <div class="accordion-body px-4 py-4 bg-light">
                         <div class="d-flex">
-                            <span class="me-3 text-success">
+                            <span class="me-3 text-success font-inter fs-md">
                                 <i class="bi bi-check-circle"></i>
                             </span>
                             <div class="lh-lg">{{ faq.answer }}</div>
