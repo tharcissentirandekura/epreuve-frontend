@@ -2,7 +2,7 @@
 
 <div class="test-container">
       <!-- Timer and Progress Bar -->
-      <div class="timer-section">
+      <div class="timer-section" *ngIf="!isUnlimitedMode">
         <div class="timer-info">
           <svg class="clock-icon" width="20" height="20" viewBox="0 0 24 24" fill="none">
             <circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/>
@@ -12,6 +12,14 @@
         </div>
         <div class="question-indicator">
           Question {{ currentQuestionIndex + 1 }} of {{ questions.length }}
+        </div>
+      </div>
+      <div class="timer-section" *ngIf="isUnlimitedMode">
+        <div class="question-indicator">
+          Question {{ currentQuestionIndex + 1 }} of {{ questions.length }}
+        </div>
+        <div class="timer-info">
+          <span class="timer-text">Unlimited Time Mode</span>
         </div>
       </div>
 

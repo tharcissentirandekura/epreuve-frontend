@@ -23,7 +23,7 @@ export interface ApiResponse{
 }
 
 export interface Question {
-  number: string;
+  number: number;
   text: string;
   points: number;
   subQuestions: SubQuestion[];

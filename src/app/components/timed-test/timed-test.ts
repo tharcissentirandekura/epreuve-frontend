@@ -26,6 +26,7 @@ export class TimedTest implements OnInit, OnDestroy{
   questions: Question[] = [];
   currentQuestionIndex = 0;
   timeRemaining = 1800;
+  isUnlimitedMode = false;
   private timerInterval: any;
 
   constructor(
@@ -36,7 +37,14 @@ export class TimedTest implements OnInit, OnDestroy{
 
   ngOnInit(): void {
     this.loadExam();
-    this.startTimer();
+    const mode = this.route.snapshot.queryParamMap.get('mode');
+    if (mode === 'unlimited') {
+      this.isUnlimitedMode = true;
+      // For unlimited mode, set a very high time to effectively disable timer
+      this.timeRemaining = Number.MAX_SAFE_INTEGER;
+    } else {
+      this.startTimer();
+    }
   }
 
   ngOnDestroy(): void {
@@ -54,7 +62,7 @@ export class TimedTest implements OnInit, OnDestroy{
         if (this.exam?.questions) {
           this.questions = this.exam.questions.map((q, index): Question => ({
             ...q,
-            number: q.number ?? index + 1,
+            number: typeof q.number === 'string' ? parseInt(q.number, 10) || index + 1 : (q.number ?? index + 1),
             userAnswer: ''
           }));
         }
