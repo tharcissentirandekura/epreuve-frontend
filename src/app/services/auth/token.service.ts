@@ -6,7 +6,6 @@ import { User } from '../../models/user.model';
 import { Token } from '../../models/auth.model';
 import { Observable, tap, throwError } from 'rxjs';
 import { environment } from '../../../environments/environment';
-import { decode } from 'punycode';
 
 interface DecodedToken {
   exp: number;
