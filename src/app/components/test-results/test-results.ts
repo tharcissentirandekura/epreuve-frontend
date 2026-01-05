@@ -75,7 +75,7 @@ export class TestResults implements OnInit {
   }
 
   goHome() {
-    this.router.navigate(['/testmode']);
+    this.router.navigate(['/']);
   }
 
 }
