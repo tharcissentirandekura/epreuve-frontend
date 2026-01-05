@@ -46,10 +46,16 @@
     <ng-container *ngIf="!showVideos">
         <div class="bg-white rounded-4 p-4 shadow-sm" *ngIf="filteredTests.length > 0">
             <!-- Pagination -->
-            <app-paginator [totalPages]="totalPages" [count]="count" [currentPage]="currentPage" [previous]="previous"
-                [next]="next" [pageSize]="pageSize" (pageChange)="goToPage($event)"
-                (pageSizeChange)="onPageSizeChange($event)">
-            </app-paginator>
+            <app-paginator 
+            [totalPages]="totalPages" 
+            [count]="count" 
+            [currentPage]="currentPage"
+            [previous]="previous" 
+            [next]="next"
+            [pageSize]="pageSize"
+            (pageChange)="goToPage($event)"
+            (pageSizeChange)="onPageSizeChange($event)">
+          </app-paginator>
 
             <!-- Test Items -->
             <div class="list-group list-group-flush">
@@ -66,14 +72,14 @@
                             </div>
                         </div>
                         <div class="col-12 col-md-5 col-lg-6 text-md-end d-flex gap-2 justify-content-md-end flex-wrap">
-                            <a [href]="t.link" target="_blank" rel="noreferrer"
-                                class="btn btn-primary rounded-pill px-4">
+                            <a [href]="t.link" target="_blank" rel="noreferrer" class="btn btn-primary rounded-pill px-4">
                                 <i class="pi pi-cloud-download me-2"></i>
                                 Télécharger
                             </a>
-                            <a routerLink="/testmode/{{t.id}}" class="btn btn-primary rounded-pill px-4">
+
+                            <a routerLink="/testmode" class="btn btn-primary rounded-pill px-4">
                                 <i class="pi pi-clock me-2"></i>
-                                {{t.metadata.json_content.questions ? 'Passer le test' : 'Indisponible' }}
+                                Passer le test
                             </a>
                         </div>
                     </div>
@@ -101,8 +107,7 @@
                             [title]="v.title">
                             {{ v.title }}
                         </h5>
-                        <a [href]="v.youtubeLink" target="_blank" rel="noreferrer"
-                            class="btn btn-primary rounded-pill w-100 mt-auto">
+                        <a [href]="v.youtubeLink" target="_blank" rel="noreferrer" class="btn btn-primary rounded-pill w-100 mt-auto">
                             <i class="pi pi-youtube me-2"></i>
                             Regarder
                         </a>

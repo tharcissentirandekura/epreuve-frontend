@@ -39,7 +39,6 @@ export class CourseSectionComponent implements OnInit {
   searchTerm = '';
   selectedCourse = '';
   showVideos = false;
-  isTestAvailable = false;
 
   // Data storage
   allTests: Test[] = [];
@@ -76,6 +75,23 @@ export class CourseSectionComponent implements OnInit {
      * This allows is to have a dynamic section that can be reused for different sections
      */
 
+    // this.api.getDataHandler(`tests`).subscribe(tests => {
+    //   console.log('Tests fetched:', tests);
+    //   this.allTests = tests.results.filter((t:any) => t.section?.toLowerCase().includes(this.sectionId?.toLowerCase()));
+    //   this.uniqueCourses = Array.from(new Set(this.allTests.map((t:any) => t.course)));
+    //   this.applyFilters();
+    // });
+
+    // this.api.getDataHandler('videos').subscribe(videos => {
+    //  /**
+    //   * Filter videos based on the sectionId
+    //   * For now I am ignoring it because api doesn't have section or sectionId on videos
+    //   * In the future, if the API is updated to include sectionId, we can filter videos accordingly
+    //   * this.videoList = videos.results.filter((v:any) => v.section.toLowerCase().includes(this.sectionId.toLowerCase()));
+    //   */
+    //   this.videoList = videos.results;
+    // });
+
     this.loadTests();
     this.loadVideos();
   }
@@ -99,17 +115,14 @@ export class CourseSectionComponent implements OnInit {
 
   }
   normalizeCourseName(test: Test): string {
-    const fileName = test.metadata.filename.split('_')
-    const type = fileName[0]
-    const course = test.course
-    const year = test.year.split('-')[0]
-  
-    return `${type} de ${course} année ${year}`.trim();
+    const type = test.metadata.type ? test.metadata.type : '';
+    // const section = test.section ? test.section : '';
+    const course = test.course ? test.course : '';
+    const year = test.year ? ` ${new Date(test.year).getFullYear()}` : '';
+    return `${type} de  ${course} année ${year}`.trim();
   }
-  
-  
   convertFIleSize = (bytes: number) => {
-    if (!bytes || bytes === 0) return 'Inconnue';
+    if (bytes === 0) return '0 Bytes';
     const k = 1024;
     const sizes = ['Bytes', 'KB', 'MB', 'GB', 'TB'];
     const i = Math.floor(Math.log(bytes) / Math.log(k));

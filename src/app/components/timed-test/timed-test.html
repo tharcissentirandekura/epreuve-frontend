@@ -1,6 +1,8 @@
-<app-navbar></app-navbar>
+<div>
+  <app-test-header></app-test-header>
+</div>
 
-<div class="test-container mt-5">
+<div class="test-container">
       <!-- Timer and Progress Bar -->
       <div class="timer-section" *ngIf="!isUnlimitedMode">
         <div class="timer-info">
@@ -31,15 +33,16 @@
       <div class="content-wrapper">
         <div class="question-card" *ngIf="currentQuestion">
           <!-- Subject Badge -->
+          <h2 class="mb-4">{{ exam?.subject }} - {{ exam?.section }}</h2>
           <span class="subject-badge" *ngIf="currentQuestion.subject">
             {{ currentQuestion.subject }}
           </span>
 
           <!-- Question Number and Title -->
           <h2 class="question-title">Question {{ currentQuestion.number }}</h2>
-          <!-- <p class="question-text">{{ currentQuestion.text }}</p> -->
-          <markdown [data]="currentQuestion.text" class="question-text"></markdown>
 
+          <!-- Question Text -->
+          <p class="question-text">{{ currentQuestion.text }}</p>
 
           <!-- Subquestions if any -->
           <div class="subquestions" *ngIf="currentQuestion.subQuestions && currentQuestion.subQuestions.length > 0">
