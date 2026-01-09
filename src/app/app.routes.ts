@@ -32,8 +32,8 @@ export const routes: Routes = [
   // {path: 'Terms', component: TermsServiceComponent},
   {path: 'exam/:id', component: ExamViewerComponent},
   { path: 'register', component: RegisterComponent },
-  { path: 'testmode', component: TestModeSelection},
-  { path: 'timedtest', component: TimedTest},
+  { path: 'testmode/:id', component: TestModeSelection},
+  { path: 'timedtest/:id', component: TimedTest},
   { path: 'test-results', component: TestResults},
   { path: '**', redirectTo: 'home' },
 ];

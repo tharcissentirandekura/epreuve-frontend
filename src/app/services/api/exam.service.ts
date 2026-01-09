@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import {Observable,of} from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
 import { ApiResponse,Question,SubQuestion,Exam } from "../../models/api.model";
 import { environment } from '../../../environments/environment';
 @Injectable({
@@ -13,5 +14,12 @@ export class ExamService {
 
   getExamContent(examId: number): Observable<Exam> {
     return this.http.get<Exam>(`${this.apiUrl}/exam/${examId}/parse/`);
+  }
+
+  checkExamAvailability(examId: number): Observable<boolean> {
+    return this.http.get<Exam>(`${this.apiUrl}/exam/${examId}/parse`).pipe(
+      map(() => true),
+      catchError(()=>of(false))
+    );
   }
 }
