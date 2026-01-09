@@ -1,101 +1,110 @@
-<div class="textfonts">
-  <!-- Navbar -->
-  <div>
-    <app-navbar></app-navbar>
-  </div>
+<div class="min-vh-100">
+  <app-navbar></app-navbar>
 
-  <!-- Two-Column Layout -->
-  <div class="container mb-4">
-    <div class="row mb-4">
-
-      <!-- Left Column: Informational Panel -->
-      <div class="info-panel col-md-6 d-flex flex-column justify-content-center align-items-start p-5 mt-4" >
-        <h2 class="mb-2 fw-bold fs-1">Restons en contact!</h2>
-        <hr class="mb-4 w-25 border-4 text-primary">
-        <p class="mb-4 fs-4">
-          Nous serions ravis d’avoir de vos nouvelles. Envoyez-nous un message 
-          et nous vous répondrons dans les plus brefs délais.  
-          Que vous ayez une question sur nos services ou que vous souhaitiez 
-          simplement dire bonjour, nous sommes là pour vous aider.  
-        </p>
+  <div class="container-fluid h-100">
+    <div class="row h-100">
+      <!-- Left Side - Hero Section -->
+      <div class="col-12 col-lg-6 d-flex hero-section position-relative overflow-hidden order-0 order-lg-0">
+        <div
+          class="position-relative z-2 d-flex flex-column justify-content-center align-items-center text-center p-4 w-100">
+          <div class="position-absolute top-0 start-0 w-100 h-100" style="z-index: -1;"></div>
+          <div class="hero-text text-start">
+            <h2 class="mb-2 fw-bold fs-1">Restons en contact!</h2>
+            <hr class="mb-4 w-25 border-4 text-primary">
+            <p class="mb-4 fs-4">
+              Nous serions ravis d’avoir de vos nouvelles. Envoyez-nous un message 
+              et nous vous répondrons dans les plus brefs délais.  
+              Que vous ayez une question sur nos services ou que vous souhaitiez 
+              simplement dire bonjour, nous sommes là pour vous aider.  
+            </p>
+          </div>
+        </div>
       </div>
 
-      <!-- Right Column: Contact Form -->
-      <div class="col-md-6 px-5 py-4 mt-4 bg-white">
+      <!-- Right Side - Form -->
+      <div class="col-12 col-lg-6 d-flex align-items-center justify-content-center order-1 order-lg-1">
+        <div class="auth-form-container w-100 p-4 bg-white m-4">
 
-        <!-- Heading with Bold Underline -->
-        <h1 class="mb-2 mt-4 fw-bold fs-1">Contactez-nous!</h1>
-        <hr class="mb-4 w-25 border-4 text-primary">
-
-        <!-- Contact Form -->
-        <form (ngSubmit)="onSubmit()" #contactForm="ngForm">
-          <!-- First Name -->
-          <div class="mb-3">
-            <label for="firstName" class="form-label fs-6 fw-bold">Prénom</label>
-            <input
-              type="text"
-              class="form-control border-0 border-bottom rounded-0"
-              id="firstName"
-              name="firstName"
-              placeholder="Entrez votre prénom"
-              [(ngModel)]="formData.firstName"
-              required
-            >
+          <div class="text-center mb-5">
+            <div class="d-flex justify-content-center mb-4">
+            </div>
+            <!-- Heading with Bold Underline -->
+             <div class="text-start">
+              <h1 class="mb-2 mt-4 fw-bold fs-1">Contactez-nous!</h1>
+              <hr class="mb-4 w-25 border-4 text-primary">
+             </div>
           </div>
 
-          <!-- Last Name -->
-          <div class="mb-3">
-            <label for="lastName" class="form-label fs-6 fw-bold">Nom de famille</label>
-            <input
-              type="text"
-              class="form-control border-0 border-bottom rounded-0"
-              id="lastName"
-              name="lastName"
-              placeholder="Entrez votre nom de famille"
-              [(ngModel)]="formData.lastName"
-              required
-            >
-          </div>
+          <!-- Contact Form -->
+          <form (ngSubmit)="onSubmit()" #contactForm="ngForm">
+            <!-- First Name -->
+            <div class="mb-3">
+              <label for="firstName" class="form-label fs-6 fw-bold">Prénom</label>
+              <input
+                type="text"
+                class="form-control border-0 border-bottom rounded-0"
+                id="firstName"
+                name="firstName"
+                placeholder="Entrez votre prénom"
+                [(ngModel)]="formData.firstName"
+                required
+              >
+            </div>
 
-          <!-- Email -->
-          <div class="mb-3">
-            <label for="email" class="form-label fs-6 fw-bold">Adresse e-mail</label>
-            <input
-              type="email"
-              class="form-control border-0 border-bottom rounded-0"
-              id="email"
-              name="email"
-              placeholder="Entrez votre adresse e-mail"
-              [(ngModel)]="formData.email"
-              required email
-            >
-          </div>
+            <!-- Last Name -->
+            <div class="mb-3">
+              <label for="lastName" class="form-label fs-6 fw-bold">Nom de famille</label>
+              <input
+                type="text"
+                class="form-control border-0 border-bottom rounded-0"
+                id="lastName"
+                name="lastName"
+                placeholder="Entrez votre nom de famille"
+                [(ngModel)]="formData.lastName"
+                required
+              >
+            </div>
 
-          <!-- Message -->
-          <div class="mb-3">
-            <label for="message" class="form-label fs-5 fw-bold">Message</label>
-            <textarea
-              class="form-control border-0 border-bottom rounded-0"
-              id="message"
-              name="message"
-              rows="3"
-              placeholder="Entrez votre message"
-              [(ngModel)]="formData.message"
-              required
-            ></textarea>
-          </div>
+            <!-- Email -->
+            <div class="mb-3">
+              <label for="email" class="form-label fs-6 fw-bold">Adresse e-mail</label>
+              <input
+                type="email"
+                class="form-control border-0 border-bottom rounded-0"
+                id="email"
+                name="email"
+                placeholder="Entrez votre adresse e-mail"
+                [(ngModel)]="formData.email"
+                required email
+              >
+            </div>
 
-          <!-- Submit Button -->
-          <div>
-            <button
-            type="submit"
-            class="btn btn-send px-5 py-2 font-Inter fs-5"
-            [disabled]="!contactForm.form.valid || isSubmitting"
-            >
-            {{ isSubmitting ? 'Sending...' : 'ENVOYER' }}
-          </button>
-          </div>
-        </form>
+            <!-- Message -->
+            <div class="mb-3">
+              <label for="message" class="form-label fs-5 fw-bold">Message</label>
+              <textarea
+                class="form-control border-0 border-bottom rounded-0"
+                id="message"
+                name="message"
+                rows="3"
+                placeholder="Entrez votre message"
+                [(ngModel)]="formData.message"
+                required
+              ></textarea>
+            </div>
+
+            <!-- Submit Button -->
+            <div>
+              <button
+              type="submit"
+              class="btn btn-send px-5 py-2 font-Inter fs-5"
+              [disabled]="!contactForm.form.valid || isSubmitting"
+              >
+              {{ isSubmitting ? 'Sending...' : 'ENVOYER' }}
+            </button>
+            </div>
+          </form>
+        </div>
       </div>
     </div>
   </div>
@@ -113,7 +122,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Footer -->
+  <!--Footer-->
   <app-footer></app-footer>
 </div>

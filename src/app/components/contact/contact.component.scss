@@ -1,16 +1,10 @@
-/* Apply the Inter font-family globally to the hero section */
-h1,
+@import '../shared-auth.scss';
+
 h2,
 p {
   font-family: 'Inter', sans-serif;
 }
 
-.p-custom-font {
-  font-family: 'Arial', sans-serif!important;
-}
-.info-panel{
-  background-color: #EFF7FC;
-}
 .form-control {
   border: none;
   border-bottom: 2px solid #e9ecef;
@@ -45,31 +39,14 @@ p {
   transform: translateY(-1px);
 }
 
-.display-4 {
-  font-weight: 600;
-  color: #2d3436;
-}
-
-.lead {
-  color: #636e72;
-}
-
 .text-muted {
   color: #636e72 !important;
   line-height: 1.6;
 }
 
-h1{
-  color: rgb(9, 39, 60);
-}
-
 h2 {
   color: #2d3436;
   font-weight: 600;
-}
-
-span{
-  color: rgb(63, 172, 250);
 }
 
 .modal-blur-backdrop {

@@ -99,7 +99,8 @@ export class CourseSectionComponent implements OnInit {
 
   }
   normalizeCourseName(test: Test): string {
-    const fileName = test.metadata.filename.split('_')
+    console.log(test.metadata.name)
+    const fileName = test.metadata.name.split('_')
     const type = fileName[0]
     const course = test.course
     const year = test.year.split('-')[0]
