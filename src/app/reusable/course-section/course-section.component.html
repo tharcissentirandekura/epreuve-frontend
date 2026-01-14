@@ -73,7 +73,7 @@
                             </a>
                             <a routerLink="/testmode/{{t.id}}" class="btn btn-primary rounded-pill px-4">
                                 <i class="pi pi-clock me-2"></i>
-                                {{t.metadata.json_content.questions ? 'Passer le test' : 'Indisponible' }}
+                                {{t.metadata?.has_content ? 'Passer le test' : 'Indisponible' }}
                             </a>
                         </div>
                     </div>
