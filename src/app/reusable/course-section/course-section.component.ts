@@ -8,8 +8,6 @@ import { Test, Video,TestContent } from '../../models/api.model';
 import { PaginatorComponent } from '../paginator/paginator.component';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
-import { response } from 'express';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-course-section',
