@@ -4,7 +4,7 @@ export interface LoginCredentials {
   password: string;
   rememberMe?: boolean;
 }
-
+// make a change for new pr
 export interface RegisterData {
   username: string;
   password: string;
