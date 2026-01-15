@@ -78,7 +78,6 @@ export class CourseSectionComponent implements OnInit {
      */
 
     this.loadTests();
-    // this.getTestContent(18);
     this.loadVideos();
   }
 
