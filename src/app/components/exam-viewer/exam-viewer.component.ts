@@ -29,7 +29,7 @@ export class ExamViewerComponent implements OnInit {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.examService.getExamContent(id).subscribe({
       next: (data) => {
-        this.exam = data;
+        this.exam = data.json_content;
       },
       error: (err) => {
         console.error('Error loading exam:', err);

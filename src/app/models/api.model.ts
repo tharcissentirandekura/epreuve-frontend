@@ -7,7 +7,13 @@ export interface Test{
   year: string;
   metadata: any;
 }
+export interface TestContent{
+  id:number,
+  json_content: Exam,
+  created_at: string,
+  updated_at: string
 
+}
 export interface Video {
     id: number;
     title: string;

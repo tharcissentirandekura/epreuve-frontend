@@ -25,7 +25,7 @@ export class ApiService {
  * example : /sections; /courses,....
  * @returns  the response or error
  */
-  getDataHandler(endpoint: string,page:number): Observable<any> {
+  getDataHandler(endpoint: string,page?:number): Observable<any> {
 
     return this.http.get<any>(`${this.apiUrl}/${endpoint}?page=${page}`)
     .pipe(
