@@ -46,7 +46,7 @@ export class CourseSectionComponent implements OnInit {
   filteredTests: Test[] = [];
   uniqueCourses: string[] = [];
   videoList: Video[] = [];
-  loadedTestContent: TestContent | null = null;
+  // loadedTestContent: TestContent | null = null;
 
   // pagination data
 
@@ -78,7 +78,6 @@ export class CourseSectionComponent implements OnInit {
      */
 
     this.loadTests();
-    // this.getTestContent(18);
     this.loadVideos();
   }
 
@@ -103,17 +102,17 @@ export class CourseSectionComponent implements OnInit {
    * Given a test id, load its pdf content
    * @param id The id of the test
    */
-  loadTestContent(id:number): void {
-    this.api.getDataHandler(`tests/${id}/content`).subscribe({
-      next: (response) => {
-        this.loadedTestContent = response;
-      },
-      error: () => {
-        this.loadedTestContent = null;
-      }
-    })
+  // loadTestContent(id:number): void {
+  //   this.api.getDataHandler(`tests/${id}/content`).subscribe({
+  //     next: (response) => {
+  //       this.loadedTestContent = response;
+  //     },
+  //     error: () => {
+  //       this.loadedTestContent = null;
+  //     }
+  //   })
 
-  }
+  // }
   normalizeCourseName(test: Test): string {
     const fileName = test.test.split(' ')
     const type = fileName[0]
