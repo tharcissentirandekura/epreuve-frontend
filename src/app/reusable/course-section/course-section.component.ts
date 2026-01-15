@@ -8,8 +8,6 @@ import { Test, Video,TestContent } from '../../models/api.model';
 import { PaginatorComponent } from '../paginator/paginator.component';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
-import { response } from 'express';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-course-section',
@@ -108,7 +106,7 @@ export class CourseSectionComponent implements OnInit {
   loadTestContent(id:number): void {
     this.api.getDataHandler(`tests/${id}/content`).subscribe({
       next: (response) => {
-        this.loadTestContent = response;
+        this.loadedTestContent = response;
       },
       error: () => {
         this.loadedTestContent = null;
