@@ -4,10 +4,12 @@ import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api/api.service';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { FooterComponent } from '../footer/footer.component';
-import { Test, Video } from '../../models/api.model';
+import { Test, Video,TestContent } from '../../models/api.model';
 import { PaginatorComponent } from '../paginator/paginator.component';
 import { MatIconModule } from '@angular/material/icon';
 import { RouterLink } from '@angular/router';
+import { response } from 'express';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-course-section',
@@ -46,6 +48,7 @@ export class CourseSectionComponent implements OnInit {
   filteredTests: Test[] = [];
   uniqueCourses: string[] = [];
   videoList: Video[] = [];
+  loadedTestContent: TestContent | null = null;
 
   // pagination data
 
@@ -77,6 +80,7 @@ export class CourseSectionComponent implements OnInit {
      */
 
     this.loadTests();
+    // this.getTestContent(18);
     this.loadVideos();
   }
 
@@ -84,7 +88,6 @@ export class CourseSectionComponent implements OnInit {
     this.api.getDataHandler(`tests`, this.currentPage).subscribe(response => {
       // console.log('Tests fetched:', response.results);
       this.allTests = response.results.filter((t: any) =>
-        
         t.section?.toLowerCase().includes(this.sectionId?.toLowerCase())
       );
       this.uniqueCourses = Array.from(new Set(this.allTests.map((t: any) => t.course)));
@@ -98,12 +101,27 @@ export class CourseSectionComponent implements OnInit {
     });
 
   }
+  /**
+   * Given a test id, load its pdf content
+   * @param id The id of the test
+   */
+  loadTestContent(id:number): void {
+    this.api.getDataHandler(`tests/${id}/content`).subscribe({
+      next: (response) => {
+        this.loadTestContent = response;
+      },
+      error: () => {
+        this.loadedTestContent = null;
+      }
+    })
+
+  }
   normalizeCourseName(test: Test): string {
-    const fileName = test.metadata.filename.split('_')
+    const fileName = test.test.split(' ')
     const type = fileName[0]
     const course = test.course
     const year = test.year.split('-')[0]
-  
+
     return `${type} de ${course} année ${year}`.trim();
   }
   

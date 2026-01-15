@@ -3,7 +3,7 @@ import { Component, OnDestroy, Inject, OnInit, PLATFORM_ID } from '@angular/core
 import { MarkdownModule } from 'ngx-markdown';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ExamService } from '../../services/api/exam.service';
-import { Exam, Question as ApiQuestion } from '../../models/api.model';
+import { Exam, Question as ApiQuestion, TestContent } from '../../models/api.model';
 import { FormsModule } from '@angular/forms';
 import { TestHeader } from '../test-header/test-header';
 import { NavbarComponent } from "../../reusable/navbar/navbar.component";
@@ -57,8 +57,8 @@ export class TimedTest implements OnInit, OnDestroy {
   loadExam(): void {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.examService.getExamContent(id).subscribe({
-      next: (data: Exam) => {
-        this.exam = data;
+      next: (data) => {
+        this.exam = data.json_content;
 
         if (this.exam?.questions) {
           this.questions = this.exam.questions.map((q, index): Question => ({
