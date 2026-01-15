@@ -71,10 +71,15 @@
                                 <i class="pi pi-cloud-download me-2"></i>
                                 Télécharger
                             </a>
-                            <a routerLink="/testmode/{{t.id}}" class="btn btn-primary rounded-pill px-4">
+                            <!-- Only display the take course if it exists -->
+                            <a *ngIf="t.metadata?.has_content" routerLink="/testmode/{{t.id}}" class="btn btn-primary rounded-pill px-4">
                                 <i class="pi pi-clock me-2"></i>
-                                {{t.metadata?.has_content ? 'Passer le test' : 'Indisponible' }}
+                                Visiter
                             </a>
+                            <!-- if it doesn't exist -->
+                            <button *ngIf="!t.metadata?.has_content" class="btn btn-secondary rounded-pill px-4"  disabled>
+                                Indisponible
+                            </button>
                         </div>
                     </div>
                 </div>
