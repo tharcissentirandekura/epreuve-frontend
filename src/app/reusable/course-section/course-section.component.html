@@ -15,7 +15,7 @@
     <div class="row mb-4">
         <div class="col-md-8 col-lg-6 mx-auto">
             <div class="app-search-container rounded-5 p-2">
-                <i class="pi pi-search search-icon fs-4"></i>
+                <i class="bi bi-search search-icon fs-4"></i>
                 <input type="text" class="search-input border-1" placeholder="Rechercher par titre ou cours"
                     [(ngModel)]="searchTerm" (input)="onSearchInput($event)" />
             </div>
@@ -60,20 +60,20 @@
                             <div class="fw-bold text-primary mb-1 app-text-truncate" [title]="normalizeCourseName(t)">
                                 {{normalizeCourseName(t)}}</div>
                             <div class="d-flex flex-wrap gap-3 small text-muted">
-                                <span><i class="pi pi-calendar me-1"></i>{{ t.year | date:'yyyy' }}</span>
-                                <span><i class="pi pi-book me-1"></i>{{t.course}}</span>
-                                <span><i class="pi pi-file me-1"></i>{{convertFIleSize(t.metadata.size)}}</span>
+                                <span><i class="bi bi-calendar me-1"></i>{{ t.year | date:'yyyy' }}</span>
+                                <span><i class="bi bi-book me-1"></i>{{t.course}}</span>
+                                <span><i class="bi bi-file me-1"></i>{{convertFIleSize(t.metadata.size)}}</span>
                             </div>
                         </div>
                         <div class="col-12 col-md-5 col-lg-6 text-md-end d-flex gap-2 justify-content-md-end flex-wrap">
                             <a [href]="t.link" target="_blank" rel="noreferrer"
                                 class="btn btn-primary rounded-pill px-4">
-                                <i class="pi pi-cloud-download me-2"></i>
+                                <i class="bi bi-cloud-download me-2"></i>
                                 Télécharger
                             </a>
                             <!-- Only display the take course if it exists -->
                             <a *ngIf="t.metadata?.has_content" routerLink="/testmode/{{t.id}}" class="btn btn-primary rounded-pill px-4">
-                                <i class="pi pi-clock me-2"></i>
+                                <i class="bi bi-clock me-2"></i>
                                 Visiter
                             </a>
                             <!-- if it doesn't exist -->
@@ -87,7 +87,7 @@
         </div>
         <!-- No Results -->
         <div *ngIf="filteredTests.length === 0" class="text-center py-5">
-            <i class="pi pi-search fs-1 text-secondary mb-3"></i>
+            <i class="bi bi-search fs-1 text-secondary mb-3"></i>
             <p class="fs-5 text-muted mb-4">Aucun test ne correspond à vos critères de recherche.</p>
             <button class="btn btn-outline-primary rounded-pill px-4" (click)="resetFilters()">
                 Réinitialiser
@@ -108,7 +108,7 @@
                         </h5>
                         <a [href]="v.youtubeLink" target="_blank" rel="noreferrer"
                             class="btn btn-primary rounded-pill w-100 mt-auto">
-                            <i class="pi pi-youtube me-2"></i>
+                            <i class="bi bi-youtube me-2"></i>
                             Regarder
                         </a>
                     </div>

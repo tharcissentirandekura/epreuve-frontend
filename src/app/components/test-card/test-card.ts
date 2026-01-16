@@ -38,40 +38,8 @@ export class TestCard implements OnInit {
   }
 
   onStartTest() {
-    console.log('onStartTest called', { route: this.route, testId: this.testId });
-    
-    if (this.route && this.testId) {
-      // Check if exam is available before navigating
-      this.examService.checkExamAvailability(this.testId).subscribe({
-        next: (isAvailable) => {
-          console.log('Exam availability check:', isAvailable);
-          if (isAvailable) {
-            this.navigateToTest();
-          } else {
-            this.toastService.error('This test does not have online content available.');
-          }
-        },
-        error: (err) => {
-          console.error('Availability check error:', err);
-          // If check fails, still try to navigate (maybe the endpoint doesn't support HEAD)
-          this.navigateToTest();
-        }
-      });
-    } else if (this.route) {
-      // Fallback: navigate without checking if testId is not available
-      console.log('Navigating without testId check');
-      this.navigateToTest();
-    } else {
-      console.log(`Starting ${this.title}`);
-    }
-  }
-
-  private navigateToTest(): void {
-    if (!this.route) {
-      console.error('No route provided');
-      return;
-    }
-
+    // TODO: remove it later
+    console.debug('onStartTest called', { route: this.route, testId: this.testId });
     const [path, queryString] = this.route.split('?');
     const queryParams: { [key: string]: string } = {};
     
@@ -89,8 +57,8 @@ export class TestCard implements OnInit {
     this.router.navigate([path], { 
       queryParams: Object.keys(queryParams).length > 0 ? queryParams : undefined 
     }).then(
-      (success) => console.log('Navigation success:', success),
-      (error) => console.error('Navigation error:', error)
+      () => {this.toastService.success('Navigation success');},
+      () => {this.toastService.error('Erreur de charger le test');}
     );
   }
 }
