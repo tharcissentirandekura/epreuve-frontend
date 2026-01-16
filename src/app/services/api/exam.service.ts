@@ -16,10 +16,10 @@ export class ExamService {
     return this.http.get<TestContent>(`${this.apiUrl}/tests/${examId}/content`);
   }
 
-  checkExamAvailability(examId: number): Observable<boolean> {
-    return this.http.get<Exam>(`${this.apiUrl}/exam/${examId}/parse`).pipe(
-      map(() => true),
-      catchError(()=>of(false))
-    );
-  }
+  // checkExamAvailability(examId: number): Observable<boolean> {
+  //   return this.http.get<Exam>(`${this.apiUrl}/exam/${examId}/parse`).pipe(
+  //     map(() => true),
+  //     catchError(()=>of(false))
+  //   );
+  // }
 }
