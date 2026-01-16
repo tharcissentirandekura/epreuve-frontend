@@ -26,8 +26,12 @@ export class ApiService {
  * @returns  the response or error
  */
   getDataHandler(endpoint: string,page?:number): Observable<any> {
+    // Build URL with conditional page parameter to avoid sending undefined page in the link
+    const url = page !== undefined && page !== null 
+      ? `${this.apiUrl}/${endpoint}?page=${page}` 
+      : `${this.apiUrl}/${endpoint}`
 
-    return this.http.get<any>(`${this.apiUrl}/${endpoint}?page=${page}`)
+    return this.http.get<any>(url)
     .pipe(
       catchError((error) => {
         console.error('Error fetching data:', error);
