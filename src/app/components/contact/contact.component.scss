@@ -1,88 +1,71 @@
 /* Apply the Inter font-family globally to the hero section */
-h1,
-h2,
-p {
-  font-family: 'Inter', sans-serif;
-}
+// h1,
+// h2,
+// p {
+//   font-family: 'Inter', sans-serif;
+// }
 
-.p-custom-font {
-  font-family: 'Arial', sans-serif!important;
-}
-.info-panel{
-  background-color: #EFF7FC;
-}
-.form-control {
-  border: none;
-  border-bottom: 2px solid #e9ecef;
-  border-radius: 0;
-  padding-left: 0;
-  transition: all 0.3s ease;
-}
+// .p-custom-font {
+//   font-family: 'Arial', sans-serif!important;
+// }
+// .info-panel{
+//   background-color: #EFF7FC;
+// }
+// .form-control {
+//   border: none;
+//   border-bottom: 2px solid #e9ecef;
+//   border-radius: 0;
+//   padding-left: 0;
+//   transition: all 0.3s ease;
+// }
 
-.form-control:focus {
-  box-shadow: none;
-  border-color: #4a4a4a;
-}
+// .form-control:focus {
+//   box-shadow: none;
+//   border-color: #4a4a4a;
+// }
 
-.form-control::placeholder {
-  color: #adb5bd;
-}
+// .form-control::placeholder {
+//   color: #adb5bd;
+// }
 
-.btn-send {
-  background-color: #0a62a1;
-  color: white;
-  border-radius: 4px;
-  padding: 12px 35px;
-  border: none;
-  text-transform: uppercase;
-  font-weight: 500;
-  letter-spacing: 0.5px;
-  transition: all 0.3s ease;
-}
+// .display-4 {
+//   font-weight: 600;
+//   color: #2d3436;
+// }
 
-.btn-send:hover {
-  background-color: #005ea2;
-  transform: translateY(-1px);
-}
+// .lead {
+//   color: #636e72;
+// }
 
-.display-4 {
-  font-weight: 600;
-  color: #2d3436;
-}
+// .text-muted {
+//   color: #636e72 !important;
+//   line-height: 1.6;
+// }
 
-.lead {
-  color: #636e72;
-}
+// h1{
+//   color: rgb(9, 39, 60);
+// }
 
-.text-muted {
-  color: #636e72 !important;
-  line-height: 1.6;
-}
+// h2 {
+//   color: #2d3436;
+//   font-weight: 600;
+// }
 
-h1{
-  color: rgb(9, 39, 60);
-}
+// span{
+//   color: rgb(63, 172, 250);
+// }
 
-h2 {
-  color: #2d3436;
-  font-weight: 600;
-}
+// .modal-blur-backdrop {
+//   position: fixed; 
+//   inset: 0;
+//   background-color: rgba(255, 255, 255, 0.2) !important;
+//   backdrop-filter: blur(6px); 
+//   display: flex;              
+//   align-items: center;
+//   justify-content: center;
+//   z-index: 1050; 
+// }
 
-span{
-  color: rgb(63, 172, 250);
-}
-
-.modal-blur-backdrop {
-  position: fixed; 
-  inset: 0;
-  background-color: rgba(255, 255, 255, 0.2) !important;
-  backdrop-filter: blur(6px); 
-  display: flex;              
-  align-items: center;
-  justify-content: center;
-  z-index: 1050; 
-}
-
-.modal-blur-backdrop .modal-content {
-  background-color: #fff; 
-}
+// .modal-blur-backdrop .modal-content {
+//   background-color: #fff; 
+// }
