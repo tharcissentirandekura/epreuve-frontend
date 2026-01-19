@@ -105,26 +105,9 @@ export class SearchBarComponent implements OnInit, OnDestroy {
 
 	// normalize the test name
 	normalizeCourseName(test: any): string {
+		console.log("Tests:", test)
 		if (!test) return 'Test inconnu';
-		
-		const type = test.metadata?.type || test.type || '';
-		const course = test.course || '';
-		let year = '';
-		
-		if (test.year) {
-			try {
-				// Handle both string and Date objects
-				const yearValue = typeof test.year === 'string' ? new Date(test.year) : test.year;
-				year = ` ${yearValue.getFullYear()}`;
-			} catch (e) {
-				// If date parsing fails, try to extract year from string
-				const yearMatch = String(test.year).match(/\d{4}/);
-				year = yearMatch ? ` ${yearMatch[0]}` : '';
-			}
-		}
-		
-		const result = `${type} de ${course}${year}`.trim();
-		return result || test.test || 'Test sans nom';
+		return test.test || 'Test sans nom';
 	}
 	//get all tests
 	searchTests(query: string) {

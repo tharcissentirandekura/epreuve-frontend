@@ -65,12 +65,12 @@
   transform: translateX(-50%);
   width: 80vw;
   border-radius: 12px;
-  // box-shadow: 0 4px 20px rgba(0, 0, 0, .15);
-  height: 80vh;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, .15);
+  // height: 80vh;
   max-height: 90vh;
   overflow-y: auto;
   z-index: 1060;
-  backdrop-filter: blur(20px);
+  backdrop-filter: blur(100px);
 
 }
 
