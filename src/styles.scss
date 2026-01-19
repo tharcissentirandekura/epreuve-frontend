@@ -30,6 +30,7 @@ body {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  scroll-behavior: smooth;
   min-height: 100dvh;
   height: 100%;
   overflow-x: hidden;
@@ -90,8 +91,7 @@ body {
 /* Button customizations */
 
 
-.btn-primary,
-.custom-bg-primary {
+.btn-primary{
   background-color: var(--primary-color) !important;
   border-color: var(--primary-color);
   transition: all 0.3s ease;
@@ -102,7 +102,10 @@ body {
     box-shadow: 0 4px 16px rgba(0, 94, 162, 0.10);
   }
 }
+.custom-bg-primary {
+  background: linear-gradient(135deg, #f0f6fa, #d8effe);
 
+}
 .btn-outline-primary {
   color: #005ea2 !important;
   border-color: #005ea2 !important;
@@ -127,7 +130,6 @@ html .text-primary {
 
 /* Hero section styling */
 .hero-section {
-  background: linear-gradient(135deg, #f0f6fa, #d8effe);
   box-shadow: 0 4px 16px rgba(0, 94, 162, 0.1);
 
   .container {
