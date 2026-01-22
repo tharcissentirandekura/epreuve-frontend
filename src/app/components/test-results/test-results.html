@@ -1,111 +1,121 @@
 <app-test-header></app-test-header>
 
-    <div class="results-container">
-      <div class="results-wrapper">
+    <div class="min-vh-100 bg-light py-5 px-3 px-md-4">
+      <div class="container">
         <!-- Test Complete Header -->
-        <div class="results-header">
-          <h1 class="results-title">Test Complete!</h1>
-          <p class="results-subtitle">Timed Test Results</p>
+        <div class="card shadow-sm border-0 rounded-4 mb-4 mb-md-5">
+          <div class="card-body text-center p-4 p-md-5">
+            <h1 class="display-4 fw-bold mb-2">Test Complete!</h1>
+            <p class="text-muted mb-4 mb-md-5">Timed Test Results</p>
 
-          <!-- Score Display -->
-          <div class="score-section">
-            <div class="score-card">
-              <div class="score-percentage">{{ scorePercentage }}%</div>
-              <div class="score-label">Score</div>
+            <!-- Score Display -->
+            <div class="d-flex flex-column flex-md-row align-items-center justify-content-center gap-4 gap-md-5 mb-4">
+              <div class="text-center">
+                <div class="display-1 fw-bold text-primary mb-2">{{ scorePercentage }}%</div>
+                <div class="text-muted small">Score</div>
+              </div>
+
+              <div class="d-none d-md-block" style="width: 1px; height: 60px; background-color: #e5e7eb;"></div>
+              <div class="d-md-none w-100" style="height: 1px; background-color: #e5e7eb;"></div>
+
+              <div class="text-center">
+                <div class="display-1 fw-bold text-dark mb-2">{{ correctCount }} / {{ totalQuestions }}</div>
+                <div class="text-muted small">Correct Answers</div>
+              </div>
             </div>
 
-            <div class="divider"></div>
-
-            <div class="score-card">
-              <div class="score-count">{{ correctCount }} / {{ totalQuestions }}</div>
-              <div class="score-label">Correct Answers</div>
-            </div>
-          </div>
-
-          <!-- Breakdown -->
-          <div class="breakdown">
-            <div class="breakdown-item correct">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <circle cx="12" cy="12" r="10" fill="#10b981"/>
-                <path d="M8 12L11 15L16 9" stroke="white" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-              <span>{{ correctCount }} Correct</span>
-            </div>
-            <div class="breakdown-item incorrect">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-                <circle cx="12" cy="12" r="10" fill="#ef4444"/>
-                <path d="M8 8L16 16M16 8L8 16" stroke="white" stroke-width="2" stroke-linecap="round"/>
-              </svg>
-              <span>{{ incorrectCount }} Incorrect</span>
+            <!-- Breakdown -->
+            <div class="d-flex flex-column flex-md-row align-items-center justify-content-center gap-3 gap-md-4">
+              <div class="d-flex align-items-center gap-2 text-success">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="10" fill="#10b981"/>
+                  <path d="M8 12L11 15L16 9" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span class="fw-semibold">{{ correctCount }} Correct</span>
+              </div>
+              <div class="d-flex align-items-center gap-2 text-danger">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                  <circle cx="12" cy="12" r="10" fill="#ef4444"/>
+                  <path d="M8 8L16 16M16 8L8 16" stroke="white" stroke-width="2" stroke-linecap="round"/>
+                </svg>
+                <span class="fw-semibold">{{ incorrectCount }} Incorrect</span>
+              </div>
             </div>
           </div>
         </div>
 
         <!-- Detailed Results -->
-        <div class="detailed-results">
-          <h2 class="section-title">Detailed Results</h2>
-          <p class="section-description">
-            Click on any question to view the correct answer and step-by-step solution
-          </p>
+        <div class="card shadow-sm border-0 rounded-4 mb-4">
+          <div class="card-body p-4 p-md-5">
+            <h2 class="display-5 fw-bold mb-2">Detailed Results</h2>
+            <p class="text-muted mb-4">
+              Click on any question to view the correct answer and step-by-step solution
+            </p>
 
-          <div class="questions-list">
-            <div
-              *ngFor="let result of results"
-              class="question-result-card"
-              [class.expanded]="result.number === expandedQuestion"
-              (click)="toggleQuestion(result.number)">
-              <div class="question-header">
-                <div class="question-header-left">
-                  <div class="status-icon" [class.correct]="result.isCorrect">
-                    <svg *ngIf="!result.isCorrect" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                      <circle cx="12" cy="12" r="10" stroke="#ef4444" stroke-width="2" fill="none"/>
-                      <path d="M8 8L16 16M16 8L8 16" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                    <svg *ngIf="result.isCorrect" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                      <circle cx="12" cy="12" r="10" stroke="#10b981" stroke-width="2" fill="none"/>
-                      <path d="M8 12L11 15L16 9" stroke="#10b981" stroke-width="2" stroke-linecap="round"/>
-                    </svg>
-                  </div>
-                  <div class="question-info">
-                    <div class="question-meta">
-                      <span class="question-number">Question {{ result.number }}</span>
-                      <span class="subject-tag" *ngIf="result.subject">{{ result.subject }}</span>
+            <div class="d-flex flex-column gap-3">
+              <div
+                *ngFor="let result of results"
+                class="card border-2 rounded-3"
+                [class.border-primary]="result.number === expandedQuestion"
+                [class.border-secondary]="result.number !== expandedQuestion"
+                style="cursor: pointer;"
+                (click)="toggleQuestion(result.number)">
+                <div class="card-body p-3 p-md-4">
+                  <div class="d-flex align-items-start justify-content-between gap-3">
+                    <div class="d-flex align-items-start gap-3 flex-grow-1">
+                      <div class="flex-shrink-0 mt-1">
+                        <svg *ngIf="!result.isCorrect" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                          <circle cx="12" cy="12" r="10" stroke="#ef4444" stroke-width="2" fill="none"/>
+                          <path d="M8 8L16 16M16 8L8 16" stroke="#ef4444" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                        <svg *ngIf="result.isCorrect" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                          <circle cx="12" cy="12" r="10" stroke="#10b981" stroke-width="2" fill="none"/>
+                          <path d="M8 12L11 15L16 9" stroke="#10b981" stroke-width="2" stroke-linecap="round"/>
+                        </svg>
+                      </div>
+                      <div class="flex-grow-1">
+                        <div class="d-flex flex-wrap align-items-center gap-2 mb-2">
+                          <span class="fw-bold fs-5">Question {{ result.number }}</span>
+                          <span class="badge bg-info" *ngIf="result.subject">{{ result.subject }}</span>
+                        </div>
+                        <div class="text-dark">{{ result.text }}</div>
+                      </div>
                     </div>
-                    <div class="question-text">{{ result.text }}</div>
-                  </div>
-                </div>
-                <svg class="expand-icon" [class.rotated]="result.number === expandedQuestion" width="24" height="24" viewBox="0 0 24 24" fill="none">
-                  <path d="M19 9L12 16L5 9" stroke="#9ca3af" stroke-width="2" stroke-linecap="round"/>
-                </svg>
-              </div>
-
-              <div class="question-details" *ngIf="result.number === expandedQuestion">
-                <div class="answer-section">
-                  <div class="answer-box user-answer">
-                    <div class="answer-label">Your Answer</div>
-                    <div class="answer-content">{{ result.userAnswer || 'No answer provided' }}</div>
+                    <i class="bi bi-chevron-down flex-shrink-0" [class.bi-chevron-up]="result.number === expandedQuestion"></i>
                   </div>
 
-                  <div class="answer-box correct-answer">
-                    <div class="answer-label">Correct Answer</div>
-                    <div class="answer-content">{{ result.correctAnswer }}</div>
+                  <div *ngIf="result.number === expandedQuestion" class="mt-4 pt-4 border-top">
+                    <div class="row g-3 mb-4">
+                      <div class="col-12 col-md-6">
+                        <div class="p-3 rounded-3 border-2 border-danger bg-danger bg-opacity-10">
+                          <div class="small text-uppercase fw-bold text-muted mb-2">Your Answer</div>
+                          <div class="text-dark">{{ result.userAnswer || 'No answer provided' }}</div>
+                        </div>
+                      </div>
+                      <div class="col-12 col-md-6">
+                        <div class="p-3 rounded-3 border-2 border-success bg-success bg-opacity-10">
+                          <div class="small text-uppercase fw-bold text-muted mb-2">Correct Answer</div>
+                          <div class="text-dark">{{ result.correctAnswer }}</div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="p-3 bg-light rounded-3 mb-3" *ngIf="result.explanation">
+                      <div class="fw-semibold mb-2">Explanation</div>
+                      <p class="mb-0">{{ result.explanation }}</p>
+                    </div>
+
+                    <div class="mb-3" *ngIf="result.steps && result.steps.length > 0">
+                      <div class="fw-semibold mb-2">Step-by-Step Solution</div>
+                      <ol class="ps-4">
+                        <li *ngFor="let step of result.steps" class="mb-2">{{ step }}</li>
+                      </ol>
+                    </div>
+
+                    <div class="text-muted small">
+                      <strong>Points:</strong> {{ result.earnedPoints }} / {{ result.points }}
+                    </div>
                   </div>
-                </div>
-
-                <div class="explanation" *ngIf="result.explanation">
-                  <div class="explanation-title">Explanation</div>
-                  <p class="explanation-text">{{ result.explanation }}</p>
-                </div>
-
-                <div class="steps" *ngIf="result.steps && result.steps.length > 0">
-                  <div class="steps-title">Step-by-Step Solution</div>
-                  <ol class="steps-list">
-                    <li *ngFor="let step of result.steps">{{ step }}</li>
-                  </ol>
-                </div>
-
-                <div class="points-earned">
-                  <strong>Points:</strong> {{ result.earnedPoints }} / {{ result.points }}
                 </div>
               </div>
             </div>
@@ -113,11 +123,9 @@
         </div>
 
         <!-- Back to Home Button -->
-        <div class="actions">
-          <button class="btn-home" (click)="goHome()">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-              <path d="M10 20V14H14V20H19V12H22L12 3L2 12H5V20H10Z" fill="currentColor"/>
-            </svg>
+        <div class="text-center">
+          <button class="btn btn-primary btn-lg rounded-pill px-4 py-2" (click)="goHome()">
+            <i class="bi bi-house-door me-2"></i>
             Back to Home
           </button>
         </div>

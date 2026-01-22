@@ -1,0 +1,14 @@
+.hero-section {
+  h1 {
+    font-size: 1.75rem;
+    line-height: 1.2;
+    
+    @media (min-width: 768px) {
+      font-size: 4rem;
+    }
+    
+    @media (min-width: 992px) {
+      font-size: 5rem;
+    }
+  }
+}
