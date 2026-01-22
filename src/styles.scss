@@ -119,23 +119,17 @@ body {
 }
 
 
-
+.text-green{
+  color: #a89f68 !important;
+}
+.bg-green,.btn-green{
+  background-color: #e8f5e9 !important;
+  color:#000000 !important;
+}
 /* Text utilities */
 body .text-primary,
 html .text-primary {
   color: var(--primary-color) !important;
-}
-
-/* Card hover effects - now using app-card-hover and app-card-hover-subtle classes */
-
-/* Hero section styling */
-.hero-section {
-  box-shadow: 0 4px 16px rgba(0, 94, 162, 0.1);
-
-  .container {
-    position: relative;
-    z-index: 2;
-  }
 }
 
 /* Smooth scrolling for better mobile experience */
@@ -307,12 +301,7 @@ html .text-primary {
   }
 }
 
-.app-text-truncate {
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  max-width: 100%;
-}
+/* .app-text-truncate - REMOVED: Use Bootstrap's text-truncate class instead */
 
 .app-text-truncate-2-lines {
   display: -webkit-box;
@@ -323,33 +312,15 @@ html .text-primary {
   max-height: 2.8em; /* 2 lines * 1.4 line-height */
 }
 
-/* Utility classes */
-.mobile-container {
-  padding-left: 1rem;
-  padding-right: 1rem;
-}
-
-.mobile-text-center {
-  text-align: center;
-}
-
-.mobile-full-width {
-  width: 100%;
-}
-
-.mobile-hidden {
-  display: none;
-}
-
-.touch-friendly {
-  min-height: 44px;
-  min-width: 44px;
-}
-
-.no-zoom {
-  font-size: 16px;
-  /* Prevents zoom on iOS */
-}
+/* Utility classes - REMOVED DUPLICATES:
+   Use Bootstrap equivalents instead:
+   - .mobile-container → px-3
+   - .mobile-text-center → text-center
+   - .mobile-full-width → w-100
+   - .mobile-hidden → d-none
+   - .touch-friendly → (no direct equivalent, use min-height/min-width if needed)
+   - .no-zoom → (use font-size: 16px inline if needed for iOS)
+*/
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
@@ -386,31 +357,14 @@ html .text-primary {
     padding-right: 1rem;
   }
 
-  .mobile-container {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-  }
-
-  .desktop-only {
-    display: none !important;
-  }
-
-  .mobile-only {
-    display: block !important;
-  }
-
-  .mobile-stack {
-    flex-direction: column !important;
-  }
-
-  .mobile-center {
-    justify-content: center !important;
-    align-items: center !important;
-  }
-
-  .mobile-spacing {
-    margin-bottom: 1rem !important;
-  }
+  /* REMOVED DUPLICATES - Use Bootstrap instead:
+     - .mobile-container → px-2
+     - .desktop-only → d-none d-lg-block
+     - .mobile-only → d-block d-lg-none
+     - .mobile-stack → flex-column
+     - .mobile-center → justify-content-center align-items-center
+     - .mobile-spacing → mb-3
+  */
 }
 
 @media (max-width: 576px) {
@@ -432,20 +386,10 @@ html .text-primary {
     font-size: 14px;
   }
 
-  .mobile-container {
-    padding-left: 0.25rem;
-    padding-right: 0.25rem;
-  }
-
-  .small-mobile-hidden {
-    display: none !important;
-  }
-
-  .small-mobile-text {
-    font-size: 0.9rem !important;
-  }
-
-  .small-mobile-spacing {
-    margin-bottom: 0.5rem !important;
-  }
+  /* REMOVED DUPLICATES - Use Bootstrap instead:
+     - .mobile-container → px-1
+     - .small-mobile-hidden → d-none d-sm-block
+     - .small-mobile-text → fs-6 or custom
+     - .small-mobile-spacing → mb-2
+  */
 }

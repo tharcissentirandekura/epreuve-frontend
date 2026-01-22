@@ -1,12 +1,9 @@
-<div class="test-card">
-      <div class="card-content">
-        <div [class]="'icon-wrapper ' + iconClass">
-          {{ icon }}
-        </div>
-        <h3 class="card-title">{{ title }}</h3>
-        <p class="card-description">{{ description }}</p>
-        <button [class]="'test-button ' + buttonClass" (click)="onStartTest()">
-          {{ buttonText }}
-        </button>
-      </div>
+<div class="test-card bg-white rounded-4 shadow-sm p-5 p-md-5 app-card-hover-subtle text-center mx-auto border-0">
+  <div class="d-flex flex-column align-items-center">
+    <h3 class="fs-3 fw-bold text-dark mb-4 lh-tight">{{ title }}</h3>
+    <p class="text-secondary mb-5 card-description lh-base">{{ description }}</p>
+    <button class="btn btn-primary rounded-pill px-5 py-3 fw-semibold app-btn-primary-custom" (click)="onStartTest()">
+      {{ buttonText }}
+    </button>
+  </div>
 </div>

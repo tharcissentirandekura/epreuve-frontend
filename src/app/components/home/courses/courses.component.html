@@ -1,0 +1,40 @@
+<section id="courses" class="py-4 py-md-5">
+  <div class="container">
+    <div class="col-lg-6">
+      <h2 class="display-3 text-black mb-4 lh-sm">
+        Les matières disponibles <span class="text-muted">pour le moment</span>
+      </h2>
+    </div>
+
+    <div class="row justify-content-center g-4">
+      <div *ngFor="let course of courses"
+        class="col-12 col-md-6 col-xl-3 {{course.delay}}">
+        <div class="card shadow-sm border-0 rounded-4 h-100 modern-course-card app-card-hover-subtle overflow-hidden" [style.background-color]="course.cardBg">
+          <div class="card-body p-4 p-md-5 d-flex flex-column">
+            <!-- Student Count -->
+            <div class="d-flex align-items-center mb-4">
+              <div class="d-flex align-items-center modern-student-avatars">
+                <div class="rounded-circle border border-2 border-white modern-avatar" *ngFor="let i of [0,1,2]"></div>
+              </div>
+              <span class="text-muted small ms-2">{{course.exams}} exams</span>
+            </div>
+        
+            <h4 class="fw-bold fs-3 mb-2 text-dark lh-tight">{{course.title}}</h4>
+    
+            <!-- <p class="text-muted small mb-4">{{course.description}}</p> -->
+            
+            <!-- Action Buttons -->
+            <div class="d-flex align-items-center gap-2 mt-auto">
+              <a href="{{course.link}}" class="btn btn-light rounded-pill fw-semibold px-4 py-2 flex-grow-1 modern-join-btn">
+                Explorer
+              </a>
+              <a href="{{course.link}}" class="btn btn-dark rounded-circle d-flex align-items-center justify-content-center modern-arrow-btn">
+                <i class="bi bi-arrow-up-right text-white"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
