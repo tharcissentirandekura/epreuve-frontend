@@ -16,7 +16,7 @@
     buttonText="Commencer"
     
       buttonClass="btn-blue"
-      [route]="'/timedtest/' + testId">
+      [route]="'/timedtest/' + encodedTestId">
     </app-test-card>
     <app-test-card
       title="Temps illimité"
@@ -24,7 +24,7 @@
       buttonText="Commencer"
       
       buttonClass="btn-green"
-      [route]="'/timedtest/' + testId + '?mode=unlimited'">
+      [route]="'/timedtest/' + encodedTestId + '?mode=unlimited'">
     </app-test-card>
   </div>
 

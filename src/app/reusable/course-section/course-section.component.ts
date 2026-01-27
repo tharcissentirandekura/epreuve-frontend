@@ -8,14 +8,15 @@ import {
   input,
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { DatePipe, CommonModule } from '@angular/common';
+import {CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { RouterLink, Router } from '@angular/router';
 import { ApiService } from '../../services/api/api.service';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { FooterComponent } from '../footer/footer.component';
 import { Test, Video } from '../../models/api.model';
 import { PaginatorComponent } from '../paginator/paginator.component';
+import { IdEncoderService } from '../../services/id-encoder.service';
 @Component({
   selector: 'app-course-section',
   templateUrl: './course-section.component.html',
@@ -23,7 +24,6 @@ import { PaginatorComponent } from '../paginator/paginator.component';
   imports: [
     NavbarComponent,
     FooterComponent,
-    DatePipe,
     CommonModule,
     FormsModule,
     PaginatorComponent,
@@ -37,6 +37,8 @@ export class CourseSectionComponent implements OnInit {
   private readonly api = inject(ApiService);
   private readonly destroyRef = inject(DestroyRef);
   private readonly cdr = inject(ChangeDetectorRef);
+  private readonly router = inject(Router);
+  private readonly idEncoder = inject(IdEncoderService);
 
   // Inputs
   sectionId = input.required<string>();
@@ -172,5 +174,25 @@ export class CourseSectionComponent implements OnInit {
 
   trackByVideo(_idx: number, video: Video): number {
     return video.id;
+  }
+
+  /**
+   * Encode test ID for secure navigation
+   */
+  encodeTestId(testId: number): string {
+    try {
+      return this.idEncoder.encode(testId);
+    } catch (error) {
+      console.error('Error encoding test ID:', error);
+      return testId.toString(); // Fallback to plain ID if encoding fails
+    }
+  }
+
+  /**
+   * Navigate to test mode selection with encoded ID
+   */
+  navigateToTestMode(testId: number): void {
+    const encodedId = this.encodeTestId(testId);
+    this.router.navigate(['/testmode', encodedId]);
   }
 }

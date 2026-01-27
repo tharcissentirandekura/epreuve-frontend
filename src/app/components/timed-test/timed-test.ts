@@ -8,6 +8,7 @@ import { TestTimerComponent } from './components/test-timer/test-timer';
 import { TestProgressComponent } from './components/test-progress/test-progress';
 import { QuestionCardComponent } from './components/question-card/question-card';
 import { QuestionNavigatorComponent } from './components/question-navigator/question-navigator';
+import { IdEncoderService } from '../../services/id-encoder.service';
 
 interface Question extends ApiQuestion {
   userAnswer?: string;
@@ -40,7 +41,8 @@ export class TimedTest implements OnInit, OnDestroy {
     private examService: ExamService,
     private route: ActivatedRoute,
     private router: Router,
-    @Inject(PLATFORM_ID) private platformId: Object
+    @Inject(PLATFORM_ID) private platformId: Object,
+    private idEncoder: IdEncoderService
   ) {}
 
   ngOnInit(): void {
@@ -62,12 +64,20 @@ export class TimedTest implements OnInit, OnDestroy {
   }
 
   loadExam(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.examService.getExamContent(id).subscribe({
+    const encodedId = this.route.snapshot.paramMap.get('id');
+    const testId = this.idEncoder.decode(encodedId || '');
+    
+    if (!testId) {
+      // Guard should catch this, but handle just in case
+      this.router.navigate(['/home']);
+      return;
+    }
+    
+    this.examService.getExamContent(testId).subscribe({
       next: (data) => {
         this.exam = data.json_content;
 
-        if (this.exam?.questions) {
+        if (this.exam?.questions && this.exam.questions.length > 0) {
           this.questions = this.exam.questions.map((q, index): Question => ({
             ...q,
             number: typeof q.number === 'string' ? parseInt(q.number, 10) || index + 1 : (q.number ?? index + 1),
@@ -83,8 +93,10 @@ export class TimedTest implements OnInit, OnDestroy {
           this.timeRemaining = hours * 3600 + minutes * 60;
         }
       },
-      error: (err: Error) => {
+      error: (err: any) => {
         console.error('Error loading exam:', err);
+        // Guard should handle this, but redirect just in case
+        this.router.navigate(['/home']);
       }
     });
   }

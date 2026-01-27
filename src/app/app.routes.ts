@@ -1,6 +1,7 @@
 import { RouterModule, Routes } from '@angular/router';
 import { NgModule } from '@angular/core';
 import { AuthGuard } from './guards/auth.guard';
+import { TestAccessGuard } from './guards/test-access.guard';
 
 // Eagerly loaded (core pages)
 import { HomeComponent } from './components/home/home.component';
@@ -53,19 +54,15 @@ export const routes: Routes = [
     loadComponent: () => import('./components/profile/profile.component').then(m => m.ProfileComponent),
     canActivate: [AuthGuard]
   },
-
-  // Exam/Test routes (lazy loaded)
-  { 
-    path: 'exam/:id', 
-    loadComponent: () => import('./components/exam-viewer/exam-viewer.component').then(m => m.ExamViewerComponent)
-  },
   { 
     path: 'testmode/:id', 
-    loadComponent: () => import('./components/test-mode-selection/test-mode-selection').then(m => m.TestModeSelection)
+    loadComponent: () => import('./components/test-mode-selection/test-mode-selection').then(m => m.TestModeSelection),
+    canActivate: [TestAccessGuard]
   },
   { 
     path: 'timedtest/:id', 
-    loadComponent: () => import('./components/timed-test/timed-test').then(m => m.TimedTest)
+    loadComponent: () => import('./components/timed-test/timed-test').then(m => m.TimedTest),
+    canActivate: [TestAccessGuard]
   },
   { 
     path: 'test-results', 
