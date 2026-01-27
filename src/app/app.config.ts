@@ -1,6 +1,6 @@
-import { ApplicationConfig, provideZoneChangeDetection,importProvidersFrom } from '@angular/core';
+import { ApplicationConfig, provideZoneChangeDetection, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
-import { provideHttpClient, withFetch } from '@angular/common/http'; // Import provideHttpClient
+import { provideHttpClient, withFetch } from '@angular/common/http';
 import { AuthInterceptor } from './interceptors/auth-interceptor.interceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { routes } from './app.routes';
@@ -16,6 +16,6 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(withFetch()),
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
     provideAnimationsAsync(),
-    importProvidersFrom(MarkdownModule.forRoot()), //TODO: no change for now
+    importProvidersFrom(MarkdownModule.forRoot()),
   ],
 };

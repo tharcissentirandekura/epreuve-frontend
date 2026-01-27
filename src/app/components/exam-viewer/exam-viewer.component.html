@@ -17,11 +17,11 @@
     <div *ngFor="let question of exam?.questions" class="card border rounded-3 mb-3 mb-md-4">
       <div class="card-body p-4">
         <h3 class="h4 text-primary mb-3 pb-2 border-bottom">Question {{ question.number }} ({{ question.points }} points)</h3>
-        <p class="mb-4 lh-lg">{{ question.text }}</p>
+        <div class="mb-4 lh-lg" [innerHTML]="question.text | katex"></div>
         
         <div *ngFor="let subQuestion of question.subQuestions" class="bg-light p-3 rounded-3 mb-3">
           <h4 class="h5 fw-semibold mb-2">{{ subQuestion.label }}</h4>
-          <p class="mb-3">{{ subQuestion.text }}</p>
+          <div class="mb-3" [innerHTML]="subQuestion.text | katex"></div>
           
           <!-- Student Answer Area -->
           <div class="mb-3">
@@ -31,14 +31,17 @@
           
           <!-- Hint (if available) -->
           <div class="alert alert-info mb-2" *ngIf="subQuestion.hint">
-            <strong>Indice:</strong> {{ subQuestion.hint }}
+            <strong>Indice:</strong>
+            <span [innerHTML]="subQuestion.hint | katex" class="d-inline"></span>
           </div>
           
           <!-- Answer (if available) -->
           <div class="alert alert-success mb-0" *ngIf="subQuestion.answer">
-            <strong>Réponse:</strong> {{ subQuestion.answer }}
+            <strong>Réponse:</strong>
+            <span [innerHTML]="subQuestion.answer | katex" class="d-inline"></span>
             <div *ngIf="subQuestion.explanation" class="mt-2">
-              <strong>Explication:</strong> {{ subQuestion.explanation }}
+              <strong>Explication:</strong>
+              <span [innerHTML]="subQuestion.explanation | katex" class="d-inline"></span>
             </div>
           </div>
         </div>

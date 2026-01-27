@@ -1,5 +1,38 @@
 /* Google Fonts are loaded in index.html for better performance */
 
+/* Import KaTeX styles */
+@import 'katex/dist/katex.min.css';
+
+/* KaTeX math styling - ensure inline rendering */
+.katex,
+.katex-html,
+.katex .base,
+.katex .strut,
+.katex .mord,
+.katex .mrel,
+.katex .mbin,
+.katex .mopen,
+.katex .mclose,
+.katex .mpunct,
+.katex .minner {
+  display: inline !important;
+}
+
+.katex-display {
+  display: block !important;
+  margin: 1em 0;
+  text-align: center;
+}
+
+.katex-display > .katex {
+  display: block !important;
+}
+
+/* Ensure math renders inline with text */
+span.katex {
+  white-space: nowrap;
+}
+
 :root {
   --sidebar-width: 250px;
   --primary-color: #005ea2;

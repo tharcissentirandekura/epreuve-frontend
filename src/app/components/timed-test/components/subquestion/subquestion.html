@@ -1,8 +1,8 @@
 <div class="mb-3" [style.margin-left.px]="depth() * 12">
-  <p class="mb-1">
+  <div class="mb-1">
     <strong class="text-primary">{{ subQuestion().label }}</strong>
-    {{ subQuestion().text }}
-  </p>
+    <span [innerHTML]="subQuestion().text | katex" class="d-inline"></span>
+  </div>
 
   @if (subQuestion().hint) {
     <div class="mb-2">
@@ -14,7 +14,7 @@
       </button>
       @if (subQuestion().showHint) {
         <div class="small text-muted bg-light p-2 rounded mt-1">
-          <markdown [data]="subQuestion().hint!"></markdown>
+          <span [innerHTML]="subQuestion().hint! | katex"></span>
         </div>
       }
     </div>

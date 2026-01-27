@@ -4,7 +4,7 @@
       <h2 class="fs-4 fw-bold mb-4">Question {{ question().number }}</h2>
 
       @if (question().text) {
-        <markdown [data]="question().text" class="mb-4 d-block"></markdown>
+        <div [innerHTML]="question().text | katex" class="mb-4 d-block"></div>
       }
 
       @if (question().subQuestions.length) {

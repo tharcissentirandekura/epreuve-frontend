@@ -2,13 +2,14 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { KatexPipe } from '../../pipes/katex.pipe';
 import { ExamService } from '../../services/api/exam.service';
 import { Exam } from '../../models/api.model';
 
 @Component({
   selector: 'app-exam-viewer',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, KatexPipe],
   templateUrl: './exam-viewer.component.html',
   styleUrl: './exam-viewer.component.scss'
 })

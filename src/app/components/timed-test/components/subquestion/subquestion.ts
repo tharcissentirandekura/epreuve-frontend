@@ -1,13 +1,13 @@
 import { Component, input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { MarkdownModule } from 'ngx-markdown';
+import { KatexPipe } from '../../../../pipes/katex.pipe';
 import { SubQuestion } from '../../../../models/api.model';
 
 @Component({
   selector: 'app-subquestion',
   standalone: true,
-  imports: [CommonModule, FormsModule, MarkdownModule],
+  imports: [CommonModule, FormsModule, KatexPipe],
   templateUrl: './subquestion.html'
 })
 export class SubquestionComponent {
