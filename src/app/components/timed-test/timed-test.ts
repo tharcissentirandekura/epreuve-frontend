@@ -95,6 +95,8 @@ export class TimedTest implements OnInit, OnDestroy {
       ...sq,
       userAnswer: '',
       showHint: false,
+      showAnswer:false,
+      showExplanation:false,
       subQuestions: this.initializeSubQuestions(sq.subQuestions)
     }));
   }

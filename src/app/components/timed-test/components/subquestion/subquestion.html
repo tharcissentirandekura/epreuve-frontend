@@ -3,37 +3,75 @@
     <strong class="text-primary">{{ subQuestion().label }}</strong>
     <span [innerHTML]="subQuestion().text | katex" class="d-inline"></span>
   </div>
-
-  @if (subQuestion().hint) {
+  <div class="d-flex gap-2">
+    @if (subQuestion().hint) {
     <div class="mb-2">
-      <button
-        type="button"
-        class="btn btn-link btn-sm p-0 text-primary"
-        (click)="toggleHint()">
-        {{ subQuestion().showHint ? 'Masquer indice' : 'Voir indice' }}
+      <button type="button" class="btn btn-link btn-sm p-0 text-primary" (click)="toggleHint()">
+        {{ subQuestion().showHint ? '' : ' Indice' }}
       </button>
-      @if (subQuestion().showHint) {
-        <div class="small text-muted bg-light p-2 rounded mt-1">
+    </div>
+    }
+
+    <!-- answer -->
+    @if (subQuestion().answer) {
+    <div class="mb-2">
+      <button type="button" class="btn btn-link btn-sm p-0 text-primary" (click)="toggleAnswer()">
+        {{ subQuestion().showAnswer ? '' : ' Reponse' }}
+      </button>
+    </div>
+    }
+
+    <!-- explanation -->
+    @if(subQuestion().explanation){
+    <div class="mb-2">
+      <button type="button" class="btn btn-link btn-sm p-0 text-primary" (click)="toggleExplanation()">
+        {{subQuestion().showExplanation ? "": "Explication"}}
+      </button>
+
+    </div>
+
+    }
+  </div>
+  <div class="d-flex flex-column gap-1">
+    <!-- Hint display -->
+    @if (subQuestion().showHint) {
+      <div class="position-relative text-muted bg-light rounded-2 mb-2">
+        <div class="overflow-x-auto mw-100 p-2 pe-5">
           <span [innerHTML]="subQuestion().hint! | katex"></span>
         </div>
-      }
+        <span class="bi-x-circle-fill position-absolute top-0 end-0 m-2 cursor-pointer fs-3 fs-md-4" style="z-index: 10;"
+          (click)="toggleHint()" role="button" aria-label="Fermer l'indice"></span>
+      </div>
+    }
+    <!-- Answer display -->
+    @if (subQuestion().showAnswer) {
+      <div class="position-relative text-muted bg-light rounded-2 mb-2">
+        <div class="overflow-x-auto mw-100 p-2 pe-5">
+          <span [innerHTML]="subQuestion().answer! | katex"></span>
+        </div>
+        <span class="bi-x-circle-fill position-absolute top-0 end-0 m-2 cursor-pointer fs-3 fs-md-4" style="z-index: 10;"
+          (click)="toggleAnswer()" role="button" aria-label="Fermer reponse"></span>
+      </div>
+    }
+    <!-- Explanation display -->
+    @if(subQuestion().showExplanation){
+    <div class="position-relative text-muted bg-light rounded-2 mb-2">
+      <div class="overflow-x-auto mw-100 p-2 pe-5">
+        <span [innerHTML]="subQuestion().explanation! | katex"></span>
+      </div>
+      <span class="bi-x-circle-fill position-absolute top-0 end-0 m-2 cursor-pointer fs-3 fs-md-4" style="z-index: 10;"
+        (click)="toggleExplanation()" role="button" aria-label="Fermer l'explication"></span>
     </div>
-  }
+    }
+  </div>
 
-  <textarea
-    class="form-control form-control-sm"
-    [(ngModel)]="subQuestion().userAnswer"
-    [name]="'ans_' + index() + '_' + depth()"
-    placeholder="Réponse..."
-    rows="1"
-    >
+
+  <textarea class="form-control form-control-sm" [(ngModel)]="subQuestion().userAnswer"
+    [name]="'ans_' + index() + '_' + depth()" placeholder="Réponse..." rows="1">
   </textarea>
 
   @for (nested of subQuestion().subQuestions; track nested.label; let j = $index) {
-    <app-subquestion
-      [subQuestion]="nested"
-      [index]="index() + '_' + j"
-      [depth]="depth() + 1">
-    </app-subquestion>
+  <app-subquestion [subQuestion]="nested" [index]="index() + '_' + j" [depth]="depth() + 1">
+  </app-subquestion>
   }
 </div>

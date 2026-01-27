@@ -19,4 +19,14 @@ export class SubquestionComponent {
     const sq = this.subQuestion();
     sq.showHint = !sq.showHint;
   }
+
+  toggleAnswer():void{
+    const sq = this.subQuestion();
+    sq.showAnswer = !sq.showAnswer;
+  }
+
+  toggleExplanation():void{
+    const sq = this.subQuestion();
+    sq.showExplanation = !sq.showExplanation;
+  }
 }

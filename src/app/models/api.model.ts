@@ -44,7 +44,9 @@ export interface SubQuestion {
   hint: string | null;
   subQuestions?: SubQuestion[];
   userAnswer?: string;
-  showHint?: boolean; // UI state for hint visibility
+  showHint?: boolean;
+  showAnswer?:boolean;
+  showExplanation?:boolean;
 }
 
 export interface Exam {
