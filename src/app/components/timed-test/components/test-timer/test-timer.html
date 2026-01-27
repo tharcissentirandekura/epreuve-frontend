@@ -1,0 +1,9 @@
+<div class="d-flex align-items-center gap-2 fw-semibold">
+  @if (isUnlimited()) {
+    <i class="bi bi-infinity text-success"></i>
+    <span class="text-success">Temps illimité</span>
+  } @else {
+    <i class="bi bi-clock text-primary"></i>
+    <span [class.text-danger]="isLowTime()">{{ formattedTime() }}</span>
+  }
+</div>

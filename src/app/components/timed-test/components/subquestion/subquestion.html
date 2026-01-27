@@ -1,0 +1,39 @@
+<div class="mb-3" [style.margin-left.px]="depth() * 12">
+  <p class="mb-1">
+    <strong class="text-primary">{{ subQuestion().label }}</strong>
+    {{ subQuestion().text }}
+  </p>
+
+  @if (subQuestion().hint) {
+    <div class="mb-2">
+      <button
+        type="button"
+        class="btn btn-link btn-sm p-0 text-primary"
+        (click)="toggleHint()">
+        {{ subQuestion().showHint ? 'Masquer indice' : 'Voir indice' }}
+      </button>
+      @if (subQuestion().showHint) {
+        <div class="small text-muted bg-light p-2 rounded mt-1">
+          <markdown [data]="subQuestion().hint!"></markdown>
+        </div>
+      }
+    </div>
+  }
+
+  <textarea
+    class="form-control form-control-sm"
+    [(ngModel)]="subQuestion().userAnswer"
+    [name]="'ans_' + index() + '_' + depth()"
+    placeholder="Réponse..."
+    rows="1"
+    >
+  </textarea>
+
+  @for (nested of subQuestion().subQuestions; track nested.label; let j = $index) {
+    <app-subquestion
+      [subQuestion]="nested"
+      [index]="index() + '_' + j"
+      [depth]="depth() + 1">
+    </app-subquestion>
+  }
+</div>

@@ -1,12 +1,13 @@
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { Component, OnDestroy, Inject, OnInit, PLATFORM_ID } from '@angular/core';
-import { MarkdownModule } from 'ngx-markdown';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ExamService } from '../../services/api/exam.service';
-import { Exam, Question as ApiQuestion, TestContent } from '../../models/api.model';
-import { FormsModule } from '@angular/forms';
-import { TestHeader } from '../test-header/test-header';
-import { NavbarComponent } from "../../reusable/navbar/navbar.component";
+import { Exam, Question as ApiQuestion, SubQuestion } from '../../models/api.model';
+import { NavbarComponent } from '../../reusable/navbar/navbar.component';
+import { TestTimerComponent } from './components/test-timer/test-timer';
+import { TestProgressComponent } from './components/test-progress/test-progress';
+import { QuestionCardComponent } from './components/question-card/question-card';
+import { QuestionNavigatorComponent } from './components/question-navigator/question-navigator';
 
 interface Question extends ApiQuestion {
   userAnswer?: string;
@@ -15,11 +16,17 @@ interface Question extends ApiQuestion {
 @Component({
   selector: 'app-timed-test',
   standalone: true,
-  imports: [CommonModule, FormsModule, NavbarComponent,MarkdownModule],
+  imports: [
+    CommonModule,
+    NavbarComponent,
+    TestTimerComponent,
+    TestProgressComponent,
+    QuestionCardComponent,
+    QuestionNavigatorComponent
+  ],
   templateUrl: './timed-test.html',
   styleUrls: ['./timed-test.scss'],
-  host: { 'ngSkipHydration': '' } 
-
+  host: { 'ngSkipHydration': '' }
 })
 export class TimedTest implements OnInit, OnDestroy {
   exam: Exam | null = null;
@@ -64,13 +71,12 @@ export class TimedTest implements OnInit, OnDestroy {
           this.questions = this.exam.questions.map((q, index): Question => ({
             ...q,
             number: typeof q.number === 'string' ? parseInt(q.number, 10) || index + 1 : (q.number ?? index + 1),
-            userAnswer: ''
+            userAnswer: '',
+            subQuestions: this.initializeSubQuestions(q.subQuestions)
           }));
         }
 
         if (this.exam?.duration) {
-          // convert duration to seconds
-          console.log("Time :", this.exam.duration)
           const durationParts = String(this.exam.duration).split('h');
           const hours = parseInt(durationParts[0], 10) || 0;
           const minutes = parseInt(durationParts[1], 10) || 0;
@@ -83,13 +89,20 @@ export class TimedTest implements OnInit, OnDestroy {
     });
   }
 
+  private initializeSubQuestions(subQuestions: SubQuestion[] | undefined): SubQuestion[] {
+    if (!subQuestions) return [];
+    return subQuestions.map(sq => ({
+      ...sq,
+      userAnswer: '',
+      showHint: false,
+      subQuestions: this.initializeSubQuestions(sq.subQuestions)
+    }));
+  }
+
   get currentQuestion(): Question | null {
     return this.questions[this.currentQuestionIndex] || null;
   }
-  // setQuestionText(md: string) {
-  //   this.markdownText = this.sanitizer.bypassSecurityTrustHtml(marked(md));
-  // }
-  // SSR-safe timer
+
   startTimer(): void {
     if (!isPlatformBrowser(this.platformId)) return;
 
@@ -102,22 +115,7 @@ export class TimedTest implements OnInit, OnDestroy {
     }, 1000);
   }
 
-  formatTime(seconds: number): string {
-    const hours = Math.floor(seconds / 3600);
-    const mins = Math.floor((seconds % 3600) / 60);
-    const secs = seconds % 60;
-    return `${hours}:${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
-  }
-  
-
-  getProgress(): number {
-    return this.questions.length > 0
-      ? ((this.currentQuestionIndex + 1) / this.questions.length) * 100
-      : 0;
-  }
-
   nextQuestion(): void {
-    console.log("move")
     if (this.currentQuestionIndex < this.questions.length - 1) {
       this.currentQuestionIndex++;
     }
@@ -143,10 +141,6 @@ export class TimedTest implements OnInit, OnDestroy {
 
   saveAnswers(): void {
     console.log('Saving answers...', this.questions);
-  }
-
-  downloadExam(): void {
-    console.log('Downloading exam...');
   }
 
   goBack(): void {

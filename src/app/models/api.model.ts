@@ -42,6 +42,9 @@ export interface SubQuestion {
   answer: string | null;
   explanation: string | null;
   hint: string | null;
+  subQuestions?: SubQuestion[];
+  userAnswer?: string;
+  showHint?: boolean; // UI state for hint visibility
 }
 
 export interface Exam {

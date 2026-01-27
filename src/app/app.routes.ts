@@ -1,41 +1,80 @@
 import { RouterModule, Routes } from '@angular/router';
-import { ContactComponent } from './components/contact/contact.component';
-import { HomeComponent } from './components/home/home.component';
-import { BiochimieComponent } from './components/biochimie/biochimie.component';
-import { MathphysComponent } from './components/mathphys/mathphys.component';
-import { LanguesComponent } from './components/langues/langues.component';
-import { ConcoursComponent } from './components/concours/concours.component';
-import { LoginComponent } from './components/login/login.component';
-import { ProfileComponent } from './components/profile/profile.component';
-import { RegisterComponent } from './components/register/register.component';
 import { NgModule } from '@angular/core';
-import { HelpFormComponent } from './components/help-form/help-form.component';
-import { TermsServiceComponent } from './components/terms/terms-service/terms-service.component';
-import { ExamViewerComponent } from './components/exam-viewer/exam-viewer.component';
 import { AuthGuard } from './guards/auth.guard';
-import { TestModeSelection } from './components/test-mode-selection/test-mode-selection';
-import { TimedTest } from './components/timed-test/timed-test';
-import { TestResults } from './components/test-results/test-results';
+
+// Eagerly loaded (core pages)
+import { HomeComponent } from './components/home/home.component';
+import { ContactComponent } from './components/contact/contact.component';
+import { LoginComponent } from './components/login/login.component';
+import { RegisterComponent } from './components/register/register.component';
+
 export const routes: Routes = [
-  // { path: '',  component: HomeComponent },
+  // Core pages (eagerly loaded)
   { path: 'home', component: HomeComponent },
-  { path: 'mathphys', component: MathphysComponent },
-  { path: 'biochimie', component: BiochimieComponent },
-  { path: 'langues', component: LanguesComponent },
-  { path: 'concours', component: ConcoursComponent },
-  { path: 'help', component: HelpFormComponent },
   { path: 'contact', component: ContactComponent },
   { path: 'login', component: LoginComponent },
-  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
-  { path: 'Terms', component: TermsServiceComponent },
-  { path: 'Privacy', component: TermsServiceComponent },
-  // {path: 'Terms', component: TermsServiceComponent},
-  {path: 'exam/:id', component: ExamViewerComponent},
   { path: 'register', component: RegisterComponent },
-  { path: 'testmode/:id', component: TestModeSelection},
-  { path: 'timedtest/:id', component: TimedTest},
-  { path: 'test-results', component: TestResults},
-  { path: '**', redirectTo: 'home' },
+
+  // Course sections (lazy loaded)
+  { 
+    path: 'mathphys', 
+    loadComponent: () => import('./components/mathphys/mathphys.component').then(m => m.MathphysComponent)
+  },
+  { 
+    path: 'biochimie', 
+    loadComponent: () => import('./components/biochimie/biochimie.component').then(m => m.BiochimieComponent)
+  },
+  { 
+    path: 'langues', 
+    loadComponent: () => import('./components/langues/langues.component').then(m => m.LanguesComponent)
+  },
+  { 
+    path: 'concours', 
+    loadComponent: () => import('./components/concours/concours.component').then(m => m.ConcoursComponent)
+  },
+
+  // Help & Legal (lazy loaded)
+  { 
+    path: 'help', 
+    loadComponent: () => import('./components/help-form/help-form.component').then(m => m.HelpFormComponent)
+  },
+  { 
+    path: 'Terms', 
+    loadComponent: () => import('./components/terms/terms-service/terms-service.component').then(m => m.TermsServiceComponent)
+  },
+  { 
+    path: 'Privacy', 
+    loadComponent: () => import('./components/terms/terms-service/terms-service.component').then(m => m.TermsServiceComponent)
+  },
+
+  // Protected routes (lazy loaded)
+  { 
+    path: 'profile', 
+    loadComponent: () => import('./components/profile/profile.component').then(m => m.ProfileComponent),
+    canActivate: [AuthGuard]
+  },
+
+  // Exam/Test routes (lazy loaded)
+  { 
+    path: 'exam/:id', 
+    loadComponent: () => import('./components/exam-viewer/exam-viewer.component').then(m => m.ExamViewerComponent)
+  },
+  { 
+    path: 'testmode/:id', 
+    loadComponent: () => import('./components/test-mode-selection/test-mode-selection').then(m => m.TestModeSelection)
+  },
+  { 
+    path: 'timedtest/:id', 
+    loadComponent: () => import('./components/timed-test/timed-test').then(m => m.TimedTest)
+  },
+  { 
+    path: 'test-results', 
+    loadComponent: () => import('./components/test-results/test-results').then(m => m.TestResults)
+  },
+
+  // Default redirect
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
+  { path: '**', redirectTo: 'home' }
 ];
 
 @NgModule({

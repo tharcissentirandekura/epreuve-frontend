@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, input, output, computed, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 @Component({
@@ -6,40 +6,41 @@ import { CommonModule } from '@angular/common';
   templateUrl: './paginator.component.html',
   imports: [CommonModule],
   styleUrls: ['./paginator.component.scss'],
-  standalone: true
+  standalone: true,
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
+
+/**
+ * This works like a linkedlist, we have next and previous. 
+ * So, we always hold a head, and move to next from the head if head.next is not null
+ * and we go back to previous if head.previous is not null
+ */
 export class PaginatorComponent {
-  @Input() totalPages: number = 1;
-  @Input() currentPage: number = 1;
-  @Input() endpoint: string | null = null;
-  @Input() next: string | null = null;
-  @Input() previous: string | null = null;
-  @Input() count: number = 0;
-  @Input() pageSize: number = 10;
-  @Output() pageChange = new EventEmitter<number>();
-  @Output() pageSizeChange = new EventEmitter<number>();
+  //Use signal based input/output
+  totalPages = input<number>(1);
+  currentPage = input<number>(1);
+  next = input<string | null>(null);
+  previous = input<string | null>(null);
+  count = input<number>(0);
+  pageSize = input<number>(10);
+  pageChange = output<number>();
+
+  // computed for memoization (automatically memoized)
+  resultsInfo = computed(() =>{
+    const start = (this.currentPage() - 1) * this.pageSize() + 1;
+    const end = Math.min(this.currentPage() * this.pageSize(), this.count());
+    return `${start}-${end} sur ${this.count()} résultats`;
+  });
 
   goToPrevious(): void {
-    if (this.previous && this.currentPage > 1) {
-      this.pageChange.emit(this.currentPage - 1);
+    if (this.previous() && this.currentPage() > 1) { // it is always has revious if there is next unless the firs page
+      this.pageChange.emit(this.currentPage() - 1);
     }
   }
 
   goToNext(): void {
-    if (this.next && this.currentPage < this.totalPages) {
-      this.pageChange.emit(this.currentPage + 1);
+    if (this.next() && this.currentPage() < this.totalPages()) {
+      this.pageChange.emit(this.currentPage() + 1);
     }
-  }
-
-  onPageSizeChange(event: Event): void {
-    const target = event.target as HTMLSelectElement;
-    const newPageSize = parseInt(target.value, 10);
-    this.pageSizeChange.emit(newPageSize);
-  }
-
-  getResultsInfo(): string {
-    const start = (this.currentPage - 1) * this.pageSize + 1;
-    const end = Math.min(this.currentPage * this.pageSize, this.count);
-    return `${start}-${end} sur ${this.count} résultats`;
   }
 }

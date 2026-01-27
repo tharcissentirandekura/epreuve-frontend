@@ -1,37 +1,19 @@
-<nav aria-label="Navigation de pagination" *ngIf="count > 0" class="d-flex flex-column flex-sm-row justify-content-between align-items-center mt-4 gap-3">
-  <!-- Page Size Selector -->
-  <div class="d-flex align-items-center gap-2">
-    <!-- <label for="pageSize" class="form-label mb-0 text-muted small">Afficher:</label> -->
-    <!-- <select 
-      id="pageSize" 
-      class="form-select form-select-sm" 
-      style="width: auto;"
-      [value]="pageSize" 
-      (change)="onPageSizeChange($event)">
-      <option value="5">5</option>
-      <option value="10">10</option>
-      <option value="20">20</option>
-      <option value="50">50</option>
-    </select>
-    <!-- <span class="text-muted small">résultats</span> -->
+<nav aria-label="Navigation de pagination" *ngIf="count() > 0"
+  class="d-flex flex-column flex-sm-row justify-content-between align-items-center mt-4 gap-3">
+  <!-- Results Info -->
+  <div class="text-muted small">
+    {{ resultsInfo() }}
   </div>
 
   <!-- Navigation Controls -->
   <div class="d-flex align-items-center gap-3 p-3">
-    <!-- Previous Button -->
-    <button 
-      class="btn btn-outline-primary d-flex align-items-center px-3 py-2"
-      [disabled]="!previous"
-      (click)="goToPrevious()"
-      [class.disabled]="!previous">
+    <button class="btn btn-outline-primary d-flex align-items-center px-3 py-2" [disabled]="!previous()"
+      (click)="goToPrevious()" [attr.aria-label]="'Aller à la page ' + (currentPage() - 1)">
       <i class="bi bi-chevron-left me-2"></i>
       Précédent
     </button>
-    <button 
-      class="btn btn-outline-primary d-flex align-items-center px-3 py-2"
-      [disabled]="!next"
-      (click)="goToNext()"
-      [class.disabled]="!next">
+    <button class="btn btn-outline-primary d-flex align-items-center px-3 py-2" [disabled]="!next()"
+      (click)="goToNext()" [attr.aria-label]="'Aller à la page ' + (currentPage() + 1)">
       Suivant
       <i class="bi bi-chevron-right ms-2"></i>
     </button>

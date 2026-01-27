@@ -1,0 +1,13 @@
+<div class="d-flex gap-2 flex-wrap justify-content-center">
+  @for (q of questions(); track q.number; let i = $index) {
+    <button
+      class="btn btn-sm rounded-circle"
+      [class.btn-primary]="i === currentIndex()"
+      [class.btn-success]="hasAnswer(q) && i !== currentIndex()"
+      [class.btn-outline-secondary]="!hasAnswer(q) && i !== currentIndex()"
+      style="width: 36px; height: 36px;"
+      (click)="navigate.emit(i)">
+      {{ i + 1 }}
+    </button>
+  }
+</div>

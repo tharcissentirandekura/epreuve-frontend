@@ -1,0 +1,31 @@
+<div class="py-4">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-10 col-lg-8">
+      <h2 class="fs-4 fw-bold mb-4">Question {{ question().number }}</h2>
+
+      @if (question().text) {
+        <markdown [data]="question().text" class="mb-4 d-block"></markdown>
+      }
+
+      @if (question().subQuestions.length) {
+        <div class="mb-4">
+          @for (sub of question().subQuestions; track sub.label; let i = $index) {
+            <app-subquestion [subQuestion]="sub" [index]="i" [depth]="0"></app-subquestion>
+          }
+        </div>
+      }
+
+      @if (!question().subQuestions) {
+        <div class="mb-4">
+          <label class="form-label fw-semibold">Votre réponse</label>
+          <textarea
+            class="form-control"
+            [(ngModel)]="question().userAnswer"
+            placeholder="Entrez votre réponse ici..."
+            rows="3">
+          </textarea>
+        </div>
+      }
+    </div>
+  </div>
+</div>
